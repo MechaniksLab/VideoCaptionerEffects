@@ -68,7 +68,10 @@ class TranscriptThread(QThread):
                     if subtitle_dir.exists()
                     else []
                 )
-                if downloaded_subtitles:
+                # В word-режиме нам нужны word-level таймштампы,
+                # поэтому нельзя переиспользовать уже скачанный SRT.
+                force_fresh_asr = bool(self.task.transcribe_config.need_word_time_stamp)
+                if downloaded_subtitles and not force_fresh_asr:
                     subtitle_file = downloaded_subtitles[0]
                     self.task.output_path = str(
                         subtitle_file
@@ -79,6 +82,10 @@ class TranscriptThread(QThread):
                     self.progress.emit(100, self.tr("字幕已下载"))
                     self.finished.emit(self.task)
                     return
+                elif downloaded_subtitles and force_fresh_asr:
+                    logger.info(
+                        "检测到下载字幕，但当前需要词级时间戳，跳过复用下载字幕并强制重新转录"
+                    )
 
             self.progress.emit(5, self.tr("转换音频中"))
             logger.info(f"开始转换音频")

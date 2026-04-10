@@ -14,6 +14,7 @@ from app.core.entities import (
     SynthesisConfig,
     SynthesisTask,
     TranscribeConfig,
+    TranscribeModelEnum,
     TranscribeTask,
     TranscriptAndSubtitleTask,
 )
@@ -43,14 +44,25 @@ class TaskFactory:
     ) -> TranscribeTask:
         """创建转录任务"""
 
-        # 根据是否需要分段来决定是否需要词级时间戳
+        split_type_cfg = cfg.split_type.value
+        if isinstance(split_type_cfg, SplitTypeEnum):
+            split_type_enum = split_type_cfg
+        elif split_type_cfg == SplitTypeEnum.SENTENCE.value:
+            split_type_enum = SplitTypeEnum.SENTENCE
+        else:
+            split_type_enum = SplitTypeEnum.SEMANTIC
+        is_word_mode = split_type_enum == SplitTypeEnum.SEMANTIC
+
+        # 词级时间戳需求：
+        # - 全流程中由“是否需要断句”决定，避免意外始终变成按词字幕
+        # - 单独转录页面可继续尊重 FasterWhisper OneWord 开关
+        need_word_time_stamp = bool(cfg.need_split.value or is_word_mode)
 
         # 获取文件名
         file_name = Path(file_path).stem
 
         # 构建输出路径
         if need_next_task:
-            need_word_time_stamp = cfg.need_split.value
             output_path = str(
                 Path(cfg.work_dir.value)
                 / file_name
@@ -58,13 +70,20 @@ class TaskFactory:
                 / f"【原始字幕】{file_name}-{cfg.transcribe_model.value.value}-{cfg.transcribe_language.value.value}.srt"
             )
         else:
-            need_word_time_stamp = False
+            if cfg.transcribe_model.value == TranscribeModelEnum.FASTER_WHISPER:
+                need_word_time_stamp = bool(cfg.faster_whisper_one_word.value)
             output_path = str(Path(file_path).parent / f"{file_name}.srt")
+
+        use_asr_cache = cfg.use_asr_cache.value
+        # В word-режиме принудительно отключаем ASR-кэш,
+        # чтобы исключить подхват старых сегментных результатов.
+        if need_next_task and is_word_mode:
+            use_asr_cache = False
 
         config = TranscribeConfig(
             transcribe_model=cfg.transcribe_model.value,
             transcribe_language=LANGUAGES[cfg.transcribe_language.value.value],
-            use_asr_cache=cfg.use_asr_cache.value,
+            use_asr_cache=use_asr_cache,
             need_word_time_stamp=need_word_time_stamp,
             # Whisper Cpp 配置
             whisper_model=cfg.whisper_model.value.value,
@@ -118,10 +137,20 @@ class TaskFactory:
                 Path(file_path).parent / f"【字幕】{output_name}{suffix}.srt"
             )
 
-        if cfg.split_type.value == SplitTypeEnum.SENTENCE.value:
+        split_type_cfg = cfg.split_type.value
+        if isinstance(split_type_cfg, SplitTypeEnum):
+            split_type_enum = split_type_cfg
+        elif split_type_cfg == SplitTypeEnum.SENTENCE.value:
+            split_type_enum = SplitTypeEnum.SENTENCE
+        else:
+            split_type_enum = SplitTypeEnum.SEMANTIC
+
+        if split_type_enum == SplitTypeEnum.SENTENCE:
             split_type = "sentence"
         else:
             split_type = "semantic"
+
+        effective_need_split = bool(cfg.need_split.value or split_type == "semantic")
 
         # 根据当前选择的LLM服务获取对应的配置
         current_service = cfg.llm_service.value
@@ -185,7 +214,7 @@ class TaskFactory:
             # 字幕分割
             max_word_count_cjk=cfg.max_word_count_cjk.value,
             max_word_count_english=cfg.max_word_count_english.value,
-            need_split=cfg.need_split.value,
+            need_split=effective_need_split,
             # 字幕翻译
             target_language=cfg.target_language.value.value,
             # 字幕优化
@@ -201,6 +230,13 @@ class TaskFactory:
             subtitle_motion_amplitude=cfg.subtitle_motion_amplitude.value / 100,
             subtitle_motion_easing=cfg.subtitle_motion_easing.value,
             subtitle_motion_jitter=cfg.subtitle_motion_jitter.value / 100,
+            subtitle_karaoke_mode=cfg.subtitle_karaoke_mode.value,
+            subtitle_karaoke_window_ms=cfg.subtitle_karaoke_window_ms.value,
+            subtitle_auto_contrast=cfg.subtitle_auto_contrast.value,
+            subtitle_anti_flicker=cfg.subtitle_anti_flicker.value,
+            subtitle_gradient_mode=cfg.subtitle_gradient_mode.value,
+            subtitle_gradient_color_1=cfg.subtitle_gradient_color_1.value,
+            subtitle_gradient_color_2=cfg.subtitle_gradient_color_2.value,
         )
 
         return SubtitleTask(

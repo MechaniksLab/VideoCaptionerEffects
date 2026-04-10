@@ -43,6 +43,32 @@ class EffectConfig:
 
 class EffectManager:
     """Менеджер эффектов субтитров"""
+
+    # Единый реестр эффектов для UI и валидации.
+    # format: (label, value, category)
+    EFFECT_REGISTRY = [
+        ("Без эффекта", SubtitleEffect.NONE.value, "basic"),
+        ("Плавное появление", SubtitleEffect.FADE_IN.value, "fade"),
+        ("Плавное исчезновение", SubtitleEffect.FADE_OUT.value, "fade"),
+        ("Появление + исчезновение", SubtitleEffect.FADE_IN_OUT.value, "fade"),
+        ("Прыжок", SubtitleEffect.BOUNCE.value, "motion"),
+        ("Пульсация", SubtitleEffect.PULSE.value, "emphasis"),
+        ("Волна", SubtitleEffect.WAVE.value, "motion"),
+        ("Вращение", SubtitleEffect.SPIN.value, "motion"),
+        ("Увеличение", SubtitleEffect.ZOOM_IN.value, "motion"),
+        ("Качание", SubtitleEffect.SWING.value, "motion"),
+        ("Скольжение снизу", SubtitleEffect.SLIDE_UP.value, "motion"),
+        ("Скольжение слева", SubtitleEffect.SLIDE_LEFT.value, "motion"),
+        ("Поп + поворот", SubtitleEffect.POP_ROTATE.value, "motion"),
+        ("Дрожание", SubtitleEffect.SHAKE.value, "motion"),
+        ("Неоновое мерцание", SubtitleEffect.NEON_FLICKER.value, "style"),
+        ("Глитч", SubtitleEffect.GLITCH.value, "style"),
+        ("Печатная машинка", SubtitleEffect.TYPEWRITER.value, "style"),
+        ("Подсветка по словам", SubtitleEffect.WORD_HIGHLIGHT.value, "karaoke"),
+        ("Мерцание", SubtitleEffect.TWINKLE.value, "style"),
+        ("Радуга", SubtitleEffect.RAINBOW.value, "style"),
+        ("Блик", SubtitleEffect.SHINE.value, "style"),
+    ]
     
     def __init__(self):
         self.effects: Dict[str, EffectConfig] = {}
@@ -270,28 +296,19 @@ class EffectManager:
     @staticmethod
     def get_effect_options() -> Dict[str, str]:
         """Опции эффектов для UI: {label: value}."""
+        return {label: value for label, value, _ in EffectManager.EFFECT_REGISTRY}
+
+    @staticmethod
+    def get_effect_registry_duplicates() -> Dict[str, list[str]]:
+        """Проверка дубликатов в реестре эффектов."""
+        labels = [label for label, _, _ in EffectManager.EFFECT_REGISTRY]
+        values = [value for _, value, _ in EffectManager.EFFECT_REGISTRY]
+
+        dup_labels = sorted({x for x in labels if labels.count(x) > 1})
+        dup_values = sorted({x for x in values if values.count(x) > 1})
         return {
-            "Без эффекта": SubtitleEffect.NONE.value,
-            "Плавное появление": SubtitleEffect.FADE_IN.value,
-            "Плавное исчезновение": SubtitleEffect.FADE_OUT.value,
-            "Появление + исчезновение": SubtitleEffect.FADE_IN_OUT.value,
-            "Прыжок": SubtitleEffect.BOUNCE.value,
-            "Пульсация": SubtitleEffect.PULSE.value,
-            "Волна": SubtitleEffect.WAVE.value,
-            "Вращение": SubtitleEffect.SPIN.value,
-            "Увеличение": SubtitleEffect.ZOOM_IN.value,
-            "Качание": SubtitleEffect.SWING.value,
-            "Скольжение снизу": SubtitleEffect.SLIDE_UP.value,
-            "Скольжение слева": SubtitleEffect.SLIDE_LEFT.value,
-            "Поп + поворот": SubtitleEffect.POP_ROTATE.value,
-            "Дрожание": SubtitleEffect.SHAKE.value,
-            "Неоновое мерцание": SubtitleEffect.NEON_FLICKER.value,
-            "Глитч": SubtitleEffect.GLITCH.value,
-            "Печатная машинка": SubtitleEffect.TYPEWRITER.value,
-            "Подсветка по словам": SubtitleEffect.WORD_HIGHLIGHT.value,
-            "Мерцание": SubtitleEffect.TWINKLE.value,
-            "Радуга": SubtitleEffect.RAINBOW.value,
-            "Блик": SubtitleEffect.SHINE.value,
+            "labels": dup_labels,
+            "values": dup_values,
         }
 
     @staticmethod
@@ -348,6 +365,11 @@ class EffectManager:
         if not text:
             return text
 
+        # Если строка уже содержит ASS override-теги, не дробим её повторно,
+        # иначе можно получить «системные коды» в видимом тексте.
+        if "{\\" in text:
+            return text
+
         # Для языков с пробелами: подсветка по словам; иначе — по символам
         tokens = text.split()
         joiner = " "
@@ -363,6 +385,60 @@ class EffectManager:
         return joiner.join([f"{{\\k{per_cs}}}{token}" for token in tokens])
 
     @staticmethod
+    def _hex_to_ass_primary(hex_color: str, fallback: str = "&H00FFFFFF&") -> str:
+        """#RRGGBB -> &H00BBGGRR& для ASS \1c/\2c"""
+        if not hex_color:
+            return fallback
+        color = hex_color.strip().lstrip("#")
+        if len(color) != 6:
+            return fallback
+        rr, gg, bb = color[0:2], color[2:4], color[4:6]
+        return f"&H00{bb}{gg}{rr}&".upper()
+
+    @staticmethod
+    def _apply_gradient(text: str, mode: str, color_1: str, color_2: str) -> str:
+        """Простая символьная раскраска для градиентного вида."""
+        if not text:
+            return text
+        mode = (mode or "off").lower()
+        if mode == "off":
+            return text
+
+        if mode == "rainbow":
+            palette = ["#FF4D4D", "#FF9F43", "#FFD93D", "#6BCB77", "#4D96FF", "#B980F0"]
+        else:
+            palette = [color_1 or "#FFFFFF", color_2 or "#66CCFF"]
+
+        ass_palette = [EffectManager._hex_to_ass_primary(c) for c in palette]
+        out = []
+        color_idx = 0
+        i = 0
+        n = len(text)
+
+        while i < n:
+            ch = text[i]
+            # Сохраняем ASS override-теги как есть: {...}
+            if ch == "{":
+                j = i + 1
+                while j < n and text[j] != "}":
+                    j += 1
+                if j < n:
+                    out.append(text[i : j + 1])
+                    i = j + 1
+                    continue
+                # Невалидный хвост без закрывающей скобки
+                out.append(text[i:])
+                break
+
+            if ch.isspace():
+                out.append(ch)
+            else:
+                out.append(f"{{\\1c{ass_palette[color_idx % len(ass_palette)]}}}{ch}")
+                color_idx += 1
+            i += 1
+        return "".join(out)
+
+    @staticmethod
     def apply_ass_effect(
         text: str,
         effect_type: str,
@@ -376,6 +452,16 @@ class EffectManager:
         motion_amplitude: float = 1.0,
         motion_easing: str = "ease_out",
         motion_jitter: float = 0.0,
+        play_res_x: int = 1280,
+        play_res_y: int = 720,
+        karaoke_mode: bool = False,
+        karaoke_window_ms: int = 1200,
+        auto_contrast: bool = False,
+        anti_flicker: bool = False,
+        gradient_mode: str = "off",
+        gradient_color_1: str = "#FFFFFF",
+        gradient_color_2: str = "#66CCFF",
+        use_word_timestamps: bool = False,
     ) -> str:
         """Преобразует текст в ASS override-теги для базовых анимаций."""
         if not text:
@@ -383,81 +469,122 @@ class EffectManager:
 
         duration = max(end_ms - start_ms, 1)
 
-        if effect_type == SubtitleEffect.NONE.value:
-            return text
-
         effect_duration_ms = max(50, min(effect_duration_ms, duration))
         intensity = max(0.1, min(effect_intensity, 3.0))
         amp = max(0.2, min(motion_amplitude, 3.0))
         jitter = max(0.0, min(motion_jitter, 1.0))
+        if anti_flicker:
+            intensity *= 0.9
+            jitter *= 0.45
+            effect_duration_ms = max(120, effect_duration_ms)
         accel = EffectManager._easing_accel(motion_easing)
         j = int((6 * jitter) * (-1 if index % 2 else 1))
+        safe_x = max(320, int(play_res_x or 1280))
+        safe_y = max(180, int(play_res_y or 720))
+        base_x = safe_x // 2
+        base_y = int(safe_y * 0.9167)
+
+        # Базовая обработка текста перед motion-эффектом
+        processed_text = text
+        wants_karaoke = karaoke_mode or effect_type == SubtitleEffect.WORD_HIGHLIGHT.value
+
+        # Ключевая логика:
+        # - если есть реальные word timestamps -> используем их (без синтетических \k)
+        # - если word timestamps нет -> не делаем псевдо-караоке
+        karaoke_active = False
+        if wants_karaoke and use_word_timestamps:
+            kdur = max(80, min(effect_duration_ms, duration))
+            processed_text = (
+                f"{{\\1c&H00909090&"
+                f"\\t(0,{kdur},\\1c&H00FFFFFF&)}}{processed_text}"
+            )
+            karaoke_active = True
+        elif wants_karaoke:
+            # Fallback для случаев без word-level таймштампов:
+            # добавляем синтетические \k-теги, чтобы эффект караоке всё равно был видим.
+            kdur = max(80, min(karaoke_window_ms, duration))
+            processed_text = EffectManager._word_highlight_ass(processed_text, kdur)
+            karaoke_active = True
+
+        # Градиент применяем всегда; _apply_gradient умеет пропускать ASS-теги.
+        processed_text = EffectManager._apply_gradient(
+            processed_text,
+            gradient_mode,
+            gradient_color_1,
+            gradient_color_2,
+        )
+
+        if auto_contrast:
+            processed_text = f"{{\\bord3\\shad1\\3c&H000000&\\blur1}}{processed_text}"
+
+        if effect_type == SubtitleEffect.NONE.value:
+            return processed_text
 
         if effect_type == SubtitleEffect.FADE_IN.value:
-            return f"{{\\fad({min(effect_duration_ms, duration // 2)},0)}}{text}"
+            return f"{{\\fad({min(effect_duration_ms, duration // 2)},0)}}{processed_text}"
 
         if effect_type == SubtitleEffect.FADE_OUT.value:
-            return f"{{\\fad(0,{min(effect_duration_ms, duration // 2)})}}{text}"
+            return f"{{\\fad(0,{min(effect_duration_ms, duration // 2)})}}{processed_text}"
 
         if effect_type == SubtitleEffect.FADE_IN_OUT.value:
             fad = min(effect_duration_ms, duration // 3)
-            return f"{{\\fad({fad},{fad})}}{text}"
+            return f"{{\\fad({fad},{fad})}}{processed_text}"
 
         if effect_type == SubtitleEffect.BOUNCE.value:
             jump = int(30 * intensity * amp)
             dx, dy = EffectManager._dir_to_offset(motion_direction, jump)
-            sx, sy = 640 + dx + j, 660 + dy
-            return f"{{\\move({sx},{sy},640,660,0,{min(effect_duration_ms, duration)})}}{text}"
+            sx, sy = base_x + dx + j, base_y + dy
+            return f"{{\\move({sx},{sy},{base_x},{base_y},0,{min(effect_duration_ms, duration)})}}{processed_text}"
 
         if effect_type == SubtitleEffect.PULSE.value:
             scale = int(100 + 12 * intensity)
-            return f"{{\\t(0,{min(effect_duration_ms, duration)},\\fscx{scale}\\fscy{scale})}}{text}"
+            return f"{{\\t(0,{min(effect_duration_ms, duration)},\\fscx{scale}\\fscy{scale})}}{processed_text}"
 
         if effect_type == SubtitleEffect.WAVE.value:
             wave_amp = int(8 * intensity * amp)
-            y1 = 650 + (index % 2) * wave_amp
-            y2 = 640 - (index % 2) * wave_amp
-            return f"{{\\move({640+j},{y1},640,{y2},0,{min(effect_duration_ms, duration)})}}{text}"
+            y1 = base_y + (index % 2) * wave_amp
+            y2 = base_y - 10 - (index % 2) * wave_amp
+            return f"{{\\move({base_x+j},{y1},{base_x},{y2},0,{min(effect_duration_ms, duration)})}}{processed_text}"
 
         if effect_type == SubtitleEffect.SPIN.value:
             rot = int(360 * intensity)
-            return f"{{\\frz0\\t(0,{min(effect_duration_ms, duration)},\\frz{rot})}}{text}"
+            return f"{{\\frz0\\t(0,{min(effect_duration_ms, duration)},\\frz{rot})}}{processed_text}"
 
         if effect_type == SubtitleEffect.ZOOM_IN.value:
             start_scale = max(30, int(100 - 30 * intensity))
             distance = int(80 * amp)
             dx, dy = EffectManager._dir_to_offset(motion_direction, distance)
-            sx, sy = 640 + dx + j, 660 + dy
+            sx, sy = base_x + dx + j, base_y + dy
             return (
-                f"{{\\move({sx},{sy},640,660,0,{min(effect_duration_ms, duration)})"
+                f"{{\\move({sx},{sy},{base_x},{base_y},0,{min(effect_duration_ms, duration)})"
                 f"\\fscx{start_scale}\\fscy{start_scale}"
-                f"\\t(0,{min(effect_duration_ms, duration)},{accel:.2f},\\fscx100\\fscy100)}}{text}"
+                f"\\t(0,{min(effect_duration_ms, duration)},{accel:.2f},\\fscx100\\fscy100)}}{processed_text}"
             )
 
         if effect_type == SubtitleEffect.SWING.value:
             return (
                 f"{{\\frz0\\t(0,{min(effect_duration_ms//2, duration)},\\frz{int(8*intensity)})"
-                f"\\t({min(effect_duration_ms//2, duration)},{min(effect_duration_ms, duration)},\\frz{-int(8*intensity)})}}{text}"
+                f"\\t({min(effect_duration_ms//2, duration)},{min(effect_duration_ms, duration)},\\frz{-int(8*intensity)})}}{processed_text}"
             )
 
         if effect_type == SubtitleEffect.SLIDE_UP.value:
             distance = int(70 * intensity * amp)
             dx, dy = EffectManager._dir_to_offset(motion_direction, distance)
-            sx, sy = 640 + dx + j, 660 + dy
-            return f"{{\\move({sx},{sy},640,660,0,{min(effect_duration_ms, duration)})}}{text}"
+            sx, sy = base_x + dx + j, base_y + dy
+            return f"{{\\move({sx},{sy},{base_x},{base_y},0,{min(effect_duration_ms, duration)})}}{processed_text}"
 
         if effect_type == SubtitleEffect.SLIDE_LEFT.value:
             distance = int(240 * amp)
             dx, dy = EffectManager._dir_to_offset(motion_direction, distance)
-            sx, sy = 640 + dx + j, 660 + dy
-            return f"{{\\move({sx},{sy},640,660,0,{min(effect_duration_ms, duration)})}}{text}"
+            sx, sy = base_x + dx + j, base_y + dy
+            return f"{{\\move({sx},{sy},{base_x},{base_y},0,{min(effect_duration_ms, duration)})}}{processed_text}"
 
         if effect_type == SubtitleEffect.POP_ROTATE.value:
             start_scale = max(35, int(100 - 45 * intensity))
             rot = int(18 * intensity)
             return (
                 f"{{\\fscx{start_scale}\\fscy{start_scale}\\frz{rot}"
-                f"\\t(0,{min(effect_duration_ms, duration)},\\fscx100\\fscy100\\frz0)}}{text}"
+                f"\\t(0,{min(effect_duration_ms, duration)},\\fscx100\\fscy100\\frz0)}}{processed_text}"
             )
 
         if effect_type == SubtitleEffect.SHAKE.value:
@@ -466,38 +593,38 @@ class EffectManager:
             t2 = min((effect_duration_ms * 2) // 3, duration)
             t3 = min(effect_duration_ms, duration)
             return (
-                f"{{\\pos(640,660)"
-                f"\\t(0,{t1},\\pos({640-shake_amp+j},{660+shake_amp}))"
-                f"\\t({t1},{t2},\\pos({640+shake_amp+j},{660-shake_amp}))"
-                f"\\t({t2},{t3},\\pos(640,660))}}{text}"
+                f"{{\\pos({base_x},{base_y})"
+                f"\\t(0,{t1},\\pos({base_x-shake_amp+j},{base_y+shake_amp}))"
+                f"\\t({t1},{t2},\\pos({base_x+shake_amp+j},{base_y-shake_amp}))"
+                f"\\t({t2},{t3},\\pos({base_x},{base_y}))}}{processed_text}"
             )
 
         if effect_type == SubtitleEffect.NEON_FLICKER.value:
             glow_alpha = max(0, min(255, int(110 - 35 * intensity)))
             return (
                 f"{{\\bord3\\blur{max(1, int(2*intensity))}\\3a&H{glow_alpha:02X}&"
-                f"\\t(0,{min(effect_duration_ms, duration)},\\3a&H00&)}}{text}"
+                f"\\t(0,{min(effect_duration_ms, duration)},\\3a&H00&)}}{processed_text}"
             )
 
         if effect_type == SubtitleEffect.TWINKLE.value:
             alpha = max(0, min(255, int(68 * intensity)))
-            return f"{{\\alpha&H{alpha:02X}&\\t(0,{min(effect_duration_ms, duration)},\\alpha&H00&)}}{text}"
+            return f"{{\\alpha&H{alpha:02X}&\\t(0,{min(effect_duration_ms, duration)},\\alpha&H00&)}}{processed_text}"
 
         if effect_type == SubtitleEffect.SHINE.value:
             alpha = max(0, min(255, int(68 * intensity)))
-            return f"{{\\1a&H{alpha:02X}&\\t(0,{min(effect_duration_ms, duration)},\\1a&H00&)}}{text}"
+            return f"{{\\1a&H{alpha:02X}&\\t(0,{min(effect_duration_ms, duration)},\\1a&H00&)}}{processed_text}"
 
         if effect_type == SubtitleEffect.TYPEWRITER.value:
             # Простая имитация: плавный fade-in + более быстрое появление
-            return f"{{\\fad({min(effect_duration_ms, duration // 3)},0)}}{text}"
+            return f"{{\\fad({min(effect_duration_ms, duration // 3)},0)}}{processed_text}"
 
         if effect_type == SubtitleEffect.WORD_HIGHLIGHT.value:
-            return EffectManager._word_highlight_ass(text, effect_duration_ms)
+            return processed_text
 
         if effect_type == SubtitleEffect.RAINBOW.value:
             # ASS не поддерживает покадровую радугу без сложной генерации,
             # даем мягкую цветовую анимацию
             end_ass_color = EffectManager._hex_to_ass_bgr(rainbow_end_color)
-            return f"{{\\1c&H00FFFFFF&\\t(0,{min(effect_duration_ms, duration)},\\1c{end_ass_color})}}{text}"
+            return f"{{\\1c&H00FFFFFF&\\t(0,{min(effect_duration_ms, duration)},\\1c{end_ass_color})}}{processed_text}"
 
-        return text
+        return processed_text

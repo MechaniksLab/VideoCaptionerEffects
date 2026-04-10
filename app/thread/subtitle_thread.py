@@ -101,6 +101,10 @@ class SubtitleThread(QThread):
             assert subtitle_path is not None, self.tr("字幕文件路径为空")
 
             subtitle_config = self.task.subtitle_config
+            # split_type: "sentence" | "semantic"
+            # В текущем UX "semantic" используется как режим "по словам".
+            is_word_mode = subtitle_config.split_type == "semantic"
+            is_sentence_mode = subtitle_config.split_type == "sentence"
 
             asr_data = ASRData.from_subtitle_file(subtitle_path)
 
@@ -111,7 +115,7 @@ class SubtitleThread(QThread):
             # 获取API配置，会先检查可用性（优先使用设置的API，其次使用自带的公益API）
             if (
                 subtitle_config.need_optimize
-                or asr_data.is_word_timestamp()
+                or (subtitle_config.need_split and is_sentence_mode)
                 or (
                     (
                         subtitle_config.need_translate
@@ -129,23 +133,26 @@ class SubtitleThread(QThread):
                 os.environ["OPENAI_BASE_URL"] = subtitle_config.base_url
                 os.environ["OPENAI_API_KEY"] = subtitle_config.api_key
 
-            # 2. 重新断句（对于字词级字幕）
-            if asr_data.is_word_timestamp():
-                self.progress.emit(5, self.tr("字幕断句..."))
-                logger.info("正在字幕断句...")
-                splitter = SubtitleSplitter(
-                    thread_num=subtitle_config.thread_num,
-                    model=subtitle_config.llm_model,
-                    temperature=0.3,
-                    timeout=60,
-                    retry_times=1,
-                    split_type=subtitle_config.split_type,
-                    max_word_count_cjk=subtitle_config.max_word_count_cjk,
-                    max_word_count_english=subtitle_config.max_word_count_english,
-                )
-                asr_data = splitter.split_subtitle(asr_data)
-                asr_data.save(save_path=split_path)
-                self.update_all.emit(asr_data.to_json())
+            # 2. 重新断句（仅在开启断句时，对字词级字幕执行）
+            if subtitle_config.need_split and asr_data.is_word_timestamp():
+                if is_sentence_mode:
+                    self.progress.emit(5, self.tr("字幕断句..."))
+                    logger.info("正在字幕断句...")
+                    splitter = SubtitleSplitter(
+                        thread_num=subtitle_config.thread_num,
+                        model=subtitle_config.llm_model,
+                        temperature=0.3,
+                        timeout=60,
+                        retry_times=1,
+                        split_type=subtitle_config.split_type,
+                        max_word_count_cjk=subtitle_config.max_word_count_cjk,
+                        max_word_count_english=subtitle_config.max_word_count_english,
+                    )
+                    asr_data = splitter.split_subtitle(asr_data)
+                    asr_data.save(save_path=split_path)
+                    self.update_all.emit(asr_data.to_json())
+                elif is_word_mode:
+                    logger.info("Режим 'по словам': пропускаем LLM-разбиение, оставляем word-level сегменты")
 
             # 3. 优化字幕
             custom_prompt = subtitle_config.custom_prompt_text
@@ -188,9 +195,6 @@ class SubtitleThread(QThread):
                     update_callback=self.callback,
                 )
                 asr_data = translator.translate_subtitle(asr_data)
-                # 移除末尾标点符号
-                if subtitle_config.need_remove_punctuation:
-                    asr_data.remove_punctuation()
                 self.update_all.emit(asr_data.to_json())
                 # 保存翻译结果(单语、双语)
                 if self.task.need_next_task and self.task.video_path:
@@ -211,8 +215,19 @@ class SubtitleThread(QThread):
                             motion_amplitude=subtitle_config.subtitle_motion_amplitude,
                             motion_easing=subtitle_config.subtitle_motion_easing,
                             motion_jitter=subtitle_config.subtitle_motion_jitter,
+                            karaoke_mode=subtitle_config.subtitle_karaoke_mode,
+                            karaoke_window_ms=subtitle_config.subtitle_karaoke_window_ms,
+                            auto_contrast=subtitle_config.subtitle_auto_contrast,
+                            anti_flicker=subtitle_config.subtitle_anti_flicker,
+                            gradient_mode=subtitle_config.subtitle_gradient_mode,
+                            gradient_color_1=subtitle_config.subtitle_gradient_color_1,
+                            gradient_color_2=subtitle_config.subtitle_gradient_color_2,
                         )
                         logger.info(f"字幕保存到 {save_path}")
+
+            # 统一移除末尾标点（不依赖是否翻译）
+            if subtitle_config.need_remove_punctuation:
+                asr_data.remove_punctuation()
 
             # 5. 保存字幕
             asr_data.save(
@@ -227,6 +242,13 @@ class SubtitleThread(QThread):
                 motion_amplitude=subtitle_config.subtitle_motion_amplitude,
                 motion_easing=subtitle_config.subtitle_motion_easing,
                 motion_jitter=subtitle_config.subtitle_motion_jitter,
+                karaoke_mode=subtitle_config.subtitle_karaoke_mode,
+                karaoke_window_ms=subtitle_config.subtitle_karaoke_window_ms,
+                auto_contrast=subtitle_config.subtitle_auto_contrast,
+                anti_flicker=subtitle_config.subtitle_anti_flicker,
+                gradient_mode=subtitle_config.subtitle_gradient_mode,
+                gradient_color_1=subtitle_config.subtitle_gradient_color_1,
+                gradient_color_2=subtitle_config.subtitle_gradient_color_2,
             )
             logger.info(f"字幕保存到 {self.task.output_path}")
 

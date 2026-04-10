@@ -185,14 +185,14 @@ class ASRData:
 
     def remove_punctuation(self) -> "ASRData":
         """
-        移除字幕中的标点符号(中文逗号、句号)
+        移除字幕末尾标点符号（中英文及常见全角/半角终止符）
         """
-        punctuation = r"[，。]"
+        punctuation = r"[\.,，。!！\?？:：;；…~～、]+"
         for seg in self.segments:
 
-            seg.text = re.sub(f"{punctuation}+$", "", seg.text.strip())
+            seg.text = re.sub(rf"{punctuation}\s*$", "", seg.text.strip())
             seg.translated_text = re.sub(
-                f"{punctuation}+$", "", seg.translated_text.strip()
+                rf"{punctuation}\s*$", "", seg.translated_text.strip()
             )
         return self
 
@@ -209,6 +209,13 @@ class ASRData:
         motion_amplitude: float = 1.0,
         motion_easing: str = "ease_out",
         motion_jitter: float = 0.0,
+        karaoke_mode: bool = False,
+        karaoke_window_ms: int = 1200,
+        auto_contrast: bool = False,
+        anti_flicker: bool = False,
+        gradient_mode: str = "off",
+        gradient_color_1: str = "#FFFFFF",
+        gradient_color_2: str = "#66CCFF",
     ) -> None:
         """
         Save the ASRData to a file
@@ -244,6 +251,13 @@ class ASRData:
                 motion_amplitude=motion_amplitude,
                 motion_easing=motion_easing,
                 motion_jitter=motion_jitter,
+                karaoke_mode=karaoke_mode,
+                karaoke_window_ms=karaoke_window_ms,
+                auto_contrast=auto_contrast,
+                anti_flicker=anti_flicker,
+                gradient_mode=gradient_mode,
+                gradient_color_1=gradient_color_1,
+                gradient_color_2=gradient_color_2,
             )
         else:
             raise ValueError(f"Unsupported file extension: {save_path}")
@@ -340,6 +354,13 @@ class ASRData:
         motion_amplitude: float = 1.0,
         motion_easing: str = "ease_out",
         motion_jitter: float = 0.0,
+        karaoke_mode: bool = False,
+        karaoke_window_ms: int = 1200,
+        auto_contrast: bool = False,
+        anti_flicker: bool = False,
+        gradient_mode: str = "off",
+        gradient_color_1: str = "#FFFFFF",
+        gradient_color_2: str = "#66CCFF",
     ) -> str:
         """转换为ASS字幕格式
 
@@ -373,6 +394,8 @@ class ASRData:
             "[Events]\n"
             "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
         )
+        play_res_x = 1280
+        play_res_y = 720
 
         from app.core.subtitle_processor.effect_manager import EffectManager
 
@@ -400,6 +423,7 @@ class ASRData:
             return text
 
         dialogue_template = "Dialogue: 0,{},{},{},,0,0,0,,{}\n"
+        use_word_timestamps = self.is_word_timestamp()
         for idx, seg in enumerate(self.segments):
             start_time, end_time = seg.to_ass_ts()
             original = seg.text
@@ -412,11 +436,21 @@ class ASRData:
                 effect_duration_ms,
                 effect_intensity,
                 rainbow_end_color,
-                idx,
+                idx * 2,
                 motion_direction,
                 motion_amplitude,
                 motion_easing,
                 motion_jitter,
+                play_res_x,
+                play_res_y,
+                karaoke_mode,
+                karaoke_window_ms,
+                auto_contrast,
+                anti_flicker,
+                gradient_mode,
+                gradient_color_1,
+                gradient_color_2,
+                use_word_timestamps,
             )
             translated_effect_text = EffectManager.apply_ass_effect(
                 translated,
@@ -426,11 +460,21 @@ class ASRData:
                 effect_duration_ms,
                 effect_intensity,
                 rainbow_end_color,
-                idx,
+                idx * 2 + 1,
                 motion_direction,
                 motion_amplitude,
                 motion_easing,
                 motion_jitter,
+                play_res_x,
+                play_res_y,
+                karaoke_mode,
+                karaoke_window_ms,
+                auto_contrast,
+                anti_flicker,
+                gradient_mode,
+                gradient_color_1,
+                gradient_color_2,
+                use_word_timestamps,
             )
 
             # 检查是否有译文

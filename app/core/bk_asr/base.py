@@ -24,6 +24,7 @@ class BaseASR:
         self.audio_path = audio_path
         self.file_binary = None
         self.use_cache = use_cache
+        self.need_word_time_stamp = bool(need_word_time_stamp)
         self._set_data()
         self.cache_manager = CacheManager(str(CACHE_PATH))
 
@@ -63,7 +64,9 @@ class BaseASR:
 
     def _get_key(self):
         """获取缓存key"""
-        return self.crc32_hex
+        # Включаем режим таймштампов в ключ кэша,
+        # чтобы не получать «старые» сегменты из другого режима.
+        return f"{self.crc32_hex}-wts:{int(bool(self.need_word_time_stamp))}"
 
     def _make_segments(self, resp_data: dict) -> list[ASRDataSeg]:
         """将响应数据转换为ASRDataSeg列表"""

@@ -72,7 +72,10 @@ class WhisperAPI(BaseASR):
 
     def _get_key(self) -> str:
         """获取缓存键值"""
-        return f"{self.crc32_hex}-{self.model}-{self.language}-{self.prompt}"
+        return (
+            f"{self.crc32_hex}-{self.model}-{self.language}-{self.prompt}"
+            f"-wts:{int(bool(self.need_word_time_stamp))}"
+        )
 
     def _submit(self) -> dict:
         """提交音频进行识别"""

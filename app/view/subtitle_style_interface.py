@@ -32,6 +32,7 @@ from app.components.MySettingCard import (
     SpinBoxSettingCard,
 )
 from app.config import SUBTITLE_STYLE_PATH, ASSETS_PATH
+from app.core.entities import SplitTypeEnum
 from app.core.subtitle_processor.effect_manager import EffectManager
 from app.core.utils.subtitle_preview import generate_preview, generate_preview_video
 
@@ -54,8 +55,35 @@ STYLE_PRESET_LABEL_TO_VALUE = {
     "TikTok Dynamic": "tiktok_dynamic",
     "YouTube Shorts Clean": "shorts_clean",
     "Minimal Classic": "minimal_classic",
+    "Karaoke Pro": "karaoke_pro",
+    "Cinema Gradient": "cinema_gradient",
+    "Neon Pulse": "neon_pulse",
 }
 STYLE_PRESET_VALUE_TO_LABEL = {v: k for k, v in STYLE_PRESET_LABEL_TO_VALUE.items()}
+
+TOGGLE_LABEL_TO_VALUE = {
+    "Выкл": False,
+    "Вкл": True,
+}
+TOGGLE_VALUE_TO_LABEL = {v: k for k, v in TOGGLE_LABEL_TO_VALUE.items()}
+
+GRADIENT_MODE_LABEL_TO_VALUE = {
+    "Без градиента": "off",
+    "2 цвета": "two_color",
+    "Радужный": "rainbow",
+}
+GRADIENT_MODE_VALUE_TO_LABEL = {v: k for k, v in GRADIENT_MODE_LABEL_TO_VALUE.items()}
+
+SPLIT_TYPE_LABEL_TO_VALUE = {
+    "По предложениям": SplitTypeEnum.SENTENCE,
+    "По словам": SplitTypeEnum.SEMANTIC,
+}
+SPLIT_TYPE_VALUE_TO_LABEL = {
+    SplitTypeEnum.SENTENCE: "По предложениям",
+    SplitTypeEnum.SEMANTIC: "По словам",
+    SplitTypeEnum.SENTENCE.value: "По предложениям",
+    SplitTypeEnum.SEMANTIC.value: "По словам",
+}
 
 MOTION_DIRECTION_LABEL_TO_VALUE = {
     "Снизу вверх": "up",
@@ -75,7 +103,34 @@ MOTION_EASING_LABEL_TO_VALUE = {
 }
 MOTION_EASING_VALUE_TO_LABEL = {v: k for k, v in MOTION_EASING_LABEL_TO_VALUE.items()}
 
-PERVIEW_TEXTS = {
+SENTENCE_MODE_EFFECTS = {
+    "none",
+    "fade_in",
+    "fade_out",
+    "fade_in_out",
+    "typewriter",
+    "word_highlight",
+    "shine",
+}
+
+WORD_MODE_EFFECTS = {
+    "bounce",
+    "pulse",
+    "wave",
+    "spin",
+    "zoom_in",
+    "swing",
+    "slide_up",
+    "slide_left",
+    "pop_rotate",
+    "shake",
+    "neon_flicker",
+    "glitch",
+    "twinkle",
+    "rainbow",
+}
+
+PREVIEW_TEXTS_SENTENCE = {
     "Длинный текст": (
         "This is a long text used for testing subtitle preview and style settings.",
         "这是一段用于测试字幕预览和样式设置的长文本内容",
@@ -85,6 +140,21 @@ PERVIEW_TEXTS = {
         "欢迎报考百年名校华南师范大学",
     ),
     "Короткий текст": ("Elementary school students know this", "小学二年级的都知道"),
+}
+
+PREVIEW_TEXTS_WORD = {
+    "По словам — коротко": (
+        "Word by word karaoke preview",
+        "Слово за словом караоке",
+    ),
+    "По словам — ритм": (
+        "one two three four five",
+        "раз два три четыре пять",
+    ),
+    "По словам — акцент": (
+        "highlight every word clearly",
+        "подсветка каждого слова",
+    ),
 }
 
 DEFAULT_BG_LANDSCAPE = {
@@ -117,6 +187,13 @@ class PreviewThread(QThread):
         motion_amplitude: float,
         motion_easing: str,
         motion_jitter: float,
+        karaoke_mode: bool,
+        karaoke_window_ms: int,
+        auto_contrast: bool,
+        anti_flicker: bool,
+        gradient_mode: str,
+        gradient_color_1: str,
+        gradient_color_2: str,
         preview_time_sec: float,
         request_id: int,
     ):
@@ -139,6 +216,13 @@ class PreviewThread(QThread):
         self.motion_amplitude = motion_amplitude
         self.motion_easing = motion_easing
         self.motion_jitter = motion_jitter
+        self.karaoke_mode = karaoke_mode
+        self.karaoke_window_ms = karaoke_window_ms
+        self.auto_contrast = auto_contrast
+        self.anti_flicker = anti_flicker
+        self.gradient_mode = gradient_mode
+        self.gradient_color_1 = gradient_color_1
+        self.gradient_color_2 = gradient_color_2
         self.preview_time_sec = preview_time_sec
         self.request_id = request_id
 
@@ -158,6 +242,13 @@ class PreviewThread(QThread):
             motion_amplitude=self.motion_amplitude,
             motion_easing=self.motion_easing,
             motion_jitter=self.motion_jitter,
+            karaoke_mode=self.karaoke_mode,
+            karaoke_window_ms=self.karaoke_window_ms,
+            auto_contrast=self.auto_contrast,
+            anti_flicker=self.anti_flicker,
+            gradient_mode=self.gradient_mode,
+            gradient_color_1=self.gradient_color_1,
+            gradient_color_2=self.gradient_color_2,
             preview_time_sec=self.preview_time_sec,
             frame_token=frame_token,
         )
@@ -287,10 +378,18 @@ class SubtitleStyleInterface(QWidget):
             "Сгенерировать короткое видео предпросмотра и открыть его",
         )
 
+        self.wordTimestampHintLabel = BodyLabel(
+            "⚠ Для режима «по словам» и точного karaoke нужны word timestamps из ASR.")
+        self.wordTimestampHintLabel.setVisible(False)
+        self.wordTimestampHintLabel.setStyleSheet(
+            "color: #F5A524; font-size: 12px; padding: 2px 0;"
+        )
+
         self.previewBottomLayout.addWidget(self.styleNameComboBox)
         self.previewBottomLayout.addWidget(self.newStyleButton)
         self.previewBottomLayout.addWidget(self.openStyleFolderButton)
         self.previewBottomLayout.addWidget(self.previewEffectButton)
+        self.previewBottomLayout.addWidget(self.wordTimestampHintLabel)
         self.previewBottomLayout.addWidget(self.timelineWidget)
 
         self.previewLayout.addWidget(self.previewTopWidget)
@@ -374,6 +473,94 @@ class SubtitleStyleInterface(QWidget):
             "Микро-смещение позиции (только motion-эффекты)",
             minimum=0,
             maximum=100,
+        )
+
+        self.karaokeModeCard = ComboBoxSettingCard(
+            FIF.MUSIC,
+            "Караоке-режим",
+            "Подсветка слов по времени",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.karaokeWindowCard = SpinBoxSettingCard(
+            FIF.STOP_WATCH,
+            "Окно караоке (мс)",
+            "Длительность подсветки слов",
+            minimum=200,
+            maximum=4000,
+        )
+
+        # Единая точка настроек сегментации/пунктуации (перенесено из окна шестерёнки)
+        self.needSplitCard = ComboBoxSettingCard(
+            FIF.TILES,
+            "Умное разбиение (LLM)",
+            "Вкл: разбиение на фразы/предложения. Выкл: исходные сегменты",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.splitTypeCard = ComboBoxSettingCard(
+            FIF.ALIGNMENT,
+            "Тип разбиения",
+            "Как делить субтитры при включённом умном разбиении",
+            texts=list(SPLIT_TYPE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.maxWordCountCjkCard = SpinBoxSettingCard(
+            FIF.FONT_SIZE,
+            "Макс. символов CJK",
+            "Лимит длины строки для китайского/японского/корейского",
+            minimum=8,
+            maximum=100,
+        )
+
+        self.maxWordCountEnglishCard = SpinBoxSettingCard(
+            FIF.FONT_SIZE,
+            "Макс. слов (англ.)",
+            "Лимит длины строки для английского",
+            minimum=8,
+            maximum=100,
+        )
+
+        self.removePunctuationCard = ComboBoxSettingCard(
+            FIF.EDIT,
+            "Убирать конечную пунктуацию",
+            "Удалять хвостовые знаки препинания в конце строк",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.autoContrastCard = ComboBoxSettingCard(
+            FIF.CONSTRACT,
+            "Авто-контраст",
+            "Добавляет адаптивную читаемость (обводка/тень)",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.antiFlickerCard = ComboBoxSettingCard(
+            FIF.SYNC,
+            "Анти-мигание",
+            "Сглаживает резкие анимационные скачки",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.gradientModeCard = ComboBoxSettingCard(
+            FIF.PALETTE,
+            "Градиент текста",
+            "Режим многоцветной раскраски",
+            texts=list(GRADIENT_MODE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.gradientColor1Card = ColorSettingCard(
+            QColor(255, 255, 255),
+            FIF.PALETTE,
+            "Градиент: цвет 1",
+            "Начальный цвет 2-цветного градиента",
+        )
+
+        self.gradientColor2Card = ColorSettingCard(
+            QColor(102, 204, 255),
+            FIF.PALETTE,
+            "Градиент: цвет 2",
+            "Конечный цвет 2-цветного градиента",
         )
 
         # 垂直间距
@@ -536,7 +723,7 @@ class SubtitleStyleInterface(QWidget):
             FIF.MESSAGE,
             "Текст для предпросмотра",
             "Выберите набор текста для проверки стиля",
-            texts=PERVIEW_TEXTS.keys(),
+            texts=list(PREVIEW_TEXTS_SENTENCE.keys()),
             parent=self.previewGroup,
         )
 
@@ -559,16 +746,28 @@ class SubtitleStyleInterface(QWidget):
     def _initLayout(self):
         """初始化布局"""
         # 添加卡片到组
+        self.layoutGroup.addSettingCard(self.splitTypeCard)
+        self.layoutGroup.addSettingCard(self.needSplitCard)
         self.layoutGroup.addSettingCard(self.layoutCard)
         self.layoutGroup.addSettingCard(self.effectCard)
         self.layoutGroup.addSettingCard(self.effectDurationCard)
         self.layoutGroup.addSettingCard(self.effectIntensityCard)
-        self.layoutGroup.addSettingCard(self.rainbowEndColorCard)
+        self.layoutGroup.addSettingCard(self.karaokeModeCard)
+        self.layoutGroup.addSettingCard(self.karaokeWindowCard)
         self.layoutGroup.addSettingCard(self.presetCard)
         self.layoutGroup.addSettingCard(self.motionDirectionCard)
         self.layoutGroup.addSettingCard(self.motionAmplitudeCard)
         self.layoutGroup.addSettingCard(self.motionEasingCard)
         self.layoutGroup.addSettingCard(self.motionJitterCard)
+        self.layoutGroup.addSettingCard(self.rainbowEndColorCard)
+        self.layoutGroup.addSettingCard(self.maxWordCountCjkCard)
+        self.layoutGroup.addSettingCard(self.maxWordCountEnglishCard)
+        self.layoutGroup.addSettingCard(self.removePunctuationCard)
+        self.layoutGroup.addSettingCard(self.autoContrastCard)
+        self.layoutGroup.addSettingCard(self.antiFlickerCard)
+        self.layoutGroup.addSettingCard(self.gradientModeCard)
+        self.layoutGroup.addSettingCard(self.gradientColor1Card)
+        self.layoutGroup.addSettingCard(self.gradientColor2Card)
         self.layoutGroup.addSettingCard(self.verticalSpacingCard)
         self.mainGroup.addSettingCard(self.mainFontCard)
         self.mainGroup.addSettingCard(self.mainSizeCard)
@@ -660,6 +859,50 @@ class SubtitleStyleInterface(QWidget):
             )
         )
         self.motionJitterCard.spinBox.setValue(int(cfg.get(cfg.subtitle_motion_jitter)))
+        self.karaokeModeCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(bool(cfg.get(cfg.subtitle_karaoke_mode)), "Выкл")
+        )
+        self.karaokeWindowCard.spinBox.setValue(
+            int(cfg.get(cfg.subtitle_karaoke_window_ms))
+        )
+        self.needSplitCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(bool(cfg.get(cfg.need_split)), "Выкл")
+        )
+        self.splitTypeCard.comboBox.setCurrentText(
+            SPLIT_TYPE_VALUE_TO_LABEL.get(
+                cfg.get(cfg.split_type),
+                "По предложениям",
+            )
+        )
+        self._refresh_effect_options_by_split_mode()
+        self._refresh_preview_text_options()
+        self.maxWordCountCjkCard.spinBox.setValue(int(cfg.get(cfg.max_word_count_cjk)))
+        self.maxWordCountEnglishCard.spinBox.setValue(
+            int(cfg.get(cfg.max_word_count_english))
+        )
+        self.removePunctuationCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(
+                bool(cfg.get(cfg.needs_remove_punctuation)),
+                "Вкл",
+            )
+        )
+        self.autoContrastCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(bool(cfg.get(cfg.subtitle_auto_contrast)), "Выкл")
+        )
+        self.antiFlickerCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(bool(cfg.get(cfg.subtitle_anti_flicker)), "Вкл")
+        )
+        self.gradientModeCard.comboBox.setCurrentText(
+            GRADIENT_MODE_VALUE_TO_LABEL.get(
+                cfg.get(cfg.subtitle_gradient_mode), "Без градиента"
+            )
+        )
+        self.gradientColor1Card.setColor(
+            QColor(cfg.get(cfg.subtitle_gradient_color_1) or "#FFFFFF")
+        )
+        self.gradientColor2Card.setColor(
+            QColor(cfg.get(cfg.subtitle_gradient_color_2) or "#66CCFF")
+        )
         # 设置字幕样式
         self.styleNameComboBox.comboBox.setCurrentText(cfg.get(cfg.subtitle_style_name))
 
@@ -752,6 +995,75 @@ class SubtitleStyleInterface(QWidget):
         self.motionJitterCard.spinBox.valueChanged.connect(
             lambda value: cfg.set(cfg.subtitle_motion_jitter, int(value))
         )
+        self.karaokeModeCard.currentTextChanged.connect(self.onSettingChanged)
+        self.karaokeModeCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.subtitle_karaoke_mode,
+                TOGGLE_LABEL_TO_VALUE.get(text, False),
+            )
+        )
+        self.karaokeWindowCard.spinBox.valueChanged.connect(self.onSettingChanged)
+        self.karaokeWindowCard.spinBox.valueChanged.connect(
+            lambda value: cfg.set(cfg.subtitle_karaoke_window_ms, int(value))
+        )
+        self.needSplitCard.currentTextChanged.connect(self.onSettingChanged)
+        self.needSplitCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.need_split,
+                TOGGLE_LABEL_TO_VALUE.get(text, False),
+            )
+        )
+        self.splitTypeCard.currentTextChanged.connect(self._on_split_type_changed)
+        self.splitTypeCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.split_type,
+                SPLIT_TYPE_LABEL_TO_VALUE.get(text, SplitTypeEnum.SENTENCE.value),
+            )
+        )
+        self.maxWordCountCjkCard.spinBox.valueChanged.connect(self.onSettingChanged)
+        self.maxWordCountCjkCard.spinBox.valueChanged.connect(
+            lambda value: cfg.set(cfg.max_word_count_cjk, int(value))
+        )
+        self.maxWordCountEnglishCard.spinBox.valueChanged.connect(self.onSettingChanged)
+        self.maxWordCountEnglishCard.spinBox.valueChanged.connect(
+            lambda value: cfg.set(cfg.max_word_count_english, int(value))
+        )
+        self.removePunctuationCard.currentTextChanged.connect(self.onSettingChanged)
+        self.removePunctuationCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.needs_remove_punctuation,
+                TOGGLE_LABEL_TO_VALUE.get(text, True),
+            )
+        )
+        self.autoContrastCard.currentTextChanged.connect(self.onSettingChanged)
+        self.autoContrastCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.subtitle_auto_contrast,
+                TOGGLE_LABEL_TO_VALUE.get(text, False),
+            )
+        )
+        self.antiFlickerCard.currentTextChanged.connect(self.onSettingChanged)
+        self.antiFlickerCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.subtitle_anti_flicker,
+                TOGGLE_LABEL_TO_VALUE.get(text, True),
+            )
+        )
+        self.gradientModeCard.currentTextChanged.connect(self.onSettingChanged)
+        self.gradientModeCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.subtitle_gradient_mode,
+                GRADIENT_MODE_LABEL_TO_VALUE.get(text, "off"),
+            )
+        )
+        self.gradientColor1Card.colorChanged.connect(self.onSettingChanged)
+        self.gradientColor1Card.colorChanged.connect(
+            lambda color: cfg.set(cfg.subtitle_gradient_color_1, color.name())
+        )
+        self.gradientColor2Card.colorChanged.connect(self.onSettingChanged)
+        self.gradientColor2Card.colorChanged.connect(
+            lambda color: cfg.set(cfg.subtitle_gradient_color_2, color.name())
+        )
         # 垂直间距
         self.verticalSpacingCard.spinBox.valueChanged.connect(self.onSettingChanged)
 
@@ -827,6 +1139,8 @@ class SubtitleStyleInterface(QWidget):
         if self._loading_style:
             return
 
+        self._update_word_timestamp_hint()
+
         self._schedulePreviewUpdate()
         # 获取当前选择的样式名称
         current_style = self.styleNameComboBox.comboBox.currentText()
@@ -835,15 +1149,85 @@ class SubtitleStyleInterface(QWidget):
         else:
             self.saveStyle("default")  # 如果没有选择样式,保存为默认样式
 
+    def _on_split_type_changed(self):
+        self._refresh_effect_options_by_split_mode()
+        self._refresh_preview_text_options()
+        self._update_word_timestamp_hint()
+        self.onSettingChanged()
+
+    def _is_word_mode(self) -> bool:
+        return self.splitTypeCard.comboBox.currentText() == "По словам"
+
+    def _get_allowed_effect_values(self) -> set[str]:
+        return WORD_MODE_EFFECTS if self._is_word_mode() else SENTENCE_MODE_EFFECTS
+
+    def _refresh_effect_options_by_split_mode(self):
+        allowed = self._get_allowed_effect_values()
+        current_label = self.effectCard.comboBox.currentText()
+
+        filtered = [
+            label
+            for label, value in self.effect_options.items()
+            if value in allowed
+        ]
+        if not filtered:
+            filtered = ["Без эффекта"]
+
+        self.effectCard.comboBox.blockSignals(True)
+        self.effectCard.comboBox.clear()
+        self.effectCard.comboBox.addItems(filtered)
+        if current_label in filtered:
+            self.effectCard.comboBox.setCurrentText(current_label)
+        else:
+            self.effectCard.comboBox.setCurrentIndex(0)
+        self.effectCard.comboBox.blockSignals(False)
+
+        # Применяем значение в cfg после фильтрации
+        selected_label = self.effectCard.comboBox.currentText()
+        cfg.set(cfg.subtitle_effect, self.effect_options.get(selected_label, "none"))
+        self._update_motion_controls_state()
+
+    def _current_preview_texts(self):
+        split_label = self.splitTypeCard.comboBox.currentText()
+        if split_label == "По словам":
+            return PREVIEW_TEXTS_WORD
+        return PREVIEW_TEXTS_SENTENCE
+
+    def _refresh_preview_text_options(self):
+        texts_map = self._current_preview_texts()
+        current = self.previewTextCard.comboBox.currentText()
+        self.previewTextCard.comboBox.blockSignals(True)
+        self.previewTextCard.comboBox.clear()
+        self.previewTextCard.comboBox.addItems(list(texts_map.keys()))
+        if current in texts_map:
+            self.previewTextCard.comboBox.setCurrentText(current)
+        else:
+            self.previewTextCard.comboBox.setCurrentIndex(0)
+        self.previewTextCard.comboBox.blockSignals(False)
+
     def _update_motion_controls_state(self):
         effect_label = self.effectCard.comboBox.currentText()
         effect_value = self.effect_options.get(effect_label, "none")
-        enabled = EffectManager.is_motion_customizable(effect_value)
+        is_word_mode = self._is_word_mode()
+        enabled = is_word_mode and EffectManager.is_motion_customizable(effect_value)
+        self.karaokeModeCard.setEnabled(not is_word_mode)
+        self.karaokeWindowCard.setEnabled(not is_word_mode)
 
         self.motionDirectionCard.setEnabled(enabled)
         self.motionAmplitudeCard.setEnabled(enabled)
         self.motionEasingCard.setEnabled(enabled)
         self.motionJitterCard.setEnabled(enabled)
+        self._update_word_timestamp_hint()
+
+    def _update_word_timestamp_hint(self):
+        split_is_word = self.splitTypeCard.comboBox.currentText() == "По словам"
+        effect_value = self.effect_options.get(self.effectCard.comboBox.currentText(), "none")
+        effect_is_word = effect_value == "word_highlight"
+        karaoke_on = TOGGLE_LABEL_TO_VALUE.get(
+            self.karaokeModeCard.comboBox.currentText(), False
+        )
+        need_hint = split_is_word or effect_is_word or karaoke_on
+        self.wordTimestampHintLabel.setVisible(need_hint)
 
     def toggleLivePreview(self):
         self._live_playing = not self._live_playing
@@ -905,6 +1289,51 @@ class SubtitleStyleInterface(QWidget):
                 self.motionJitterCard.spinBox.setValue(0)
                 self.mainOutlineSizeCard.spinBox.setValue(1.6)
                 self.mainShadowCard.spinBox.setValue(0.8)
+                self.karaokeModeCard.comboBox.setCurrentText("Выкл")
+                self.autoContrastCard.comboBox.setCurrentText("Выкл")
+                self.antiFlickerCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("Без градиента")
+            elif preset == "karaoke_pro":
+                self.effectCard.comboBox.setCurrentText("Подсветка по словам")
+                self.effectDurationCard.spinBox.setValue(600)
+                self.effectIntensityCard.spinBox.setValue(130)
+                self.motionDirectionCard.comboBox.setCurrentText("Снизу вверх")
+                self.motionAmplitudeCard.spinBox.setValue(110)
+                self.motionEasingCard.comboBox.setCurrentText("Ease Out (мягкий финиш)")
+                self.motionJitterCard.spinBox.setValue(6)
+                self.karaokeModeCard.comboBox.setCurrentText("Вкл")
+                self.karaokeWindowCard.spinBox.setValue(1400)
+                self.autoContrastCard.comboBox.setCurrentText("Вкл")
+                self.antiFlickerCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("2 цвета")
+                self.gradientColor1Card.setColor(QColor("#FFF4B2"))
+                self.gradientColor2Card.setColor(QColor("#FF6FAE"))
+            elif preset == "cinema_gradient":
+                self.effectCard.comboBox.setCurrentText("Плавное появление")
+                self.effectDurationCard.spinBox.setValue(380)
+                self.effectIntensityCard.spinBox.setValue(105)
+                self.motionDirectionCard.comboBox.setCurrentText("Снизу вверх")
+                self.motionAmplitudeCard.spinBox.setValue(85)
+                self.motionEasingCard.comboBox.setCurrentText("Ease In-Out")
+                self.motionJitterCard.spinBox.setValue(0)
+                self.karaokeModeCard.comboBox.setCurrentText("Выкл")
+                self.autoContrastCard.comboBox.setCurrentText("Вкл")
+                self.antiFlickerCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("2 цвета")
+                self.gradientColor1Card.setColor(QColor("#E8F3FF"))
+                self.gradientColor2Card.setColor(QColor("#6AB8FF"))
+            elif preset == "neon_pulse":
+                self.effectCard.comboBox.setCurrentText("Неоновое мерцание")
+                self.effectDurationCard.spinBox.setValue(520)
+                self.effectIntensityCard.spinBox.setValue(150)
+                self.motionDirectionCard.comboBox.setCurrentText("Снизу вверх")
+                self.motionAmplitudeCard.spinBox.setValue(130)
+                self.motionEasingCard.comboBox.setCurrentText("Ease Out (мягкий финиш)")
+                self.motionJitterCard.spinBox.setValue(10)
+                self.karaokeModeCard.comboBox.setCurrentText("Выкл")
+                self.autoContrastCard.comboBox.setCurrentText("Вкл")
+                self.antiFlickerCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("Радужный")
         finally:
             self._loading_style = False
 
@@ -948,7 +1377,8 @@ class SubtitleStyleInterface(QWidget):
         style_str = self.generateAssStyles()
 
         # 获取预览文本
-        main_text, sub_text = PERVIEW_TEXTS[self.previewTextCard.comboBox.currentText()]
+        preview_texts = self._current_preview_texts()
+        main_text, sub_text = preview_texts[self.previewTextCard.comboBox.currentText()]
 
         # 字幕布局
         layout = self.layoutCard.comboBox.currentText()
@@ -1009,6 +1439,13 @@ class SubtitleStyleInterface(QWidget):
             motion_amplitude=cfg.get(cfg.subtitle_motion_amplitude) / 100,
             motion_easing=cfg.get(cfg.subtitle_motion_easing),
             motion_jitter=cfg.get(cfg.subtitle_motion_jitter) / 100,
+            karaoke_mode=cfg.get(cfg.subtitle_karaoke_mode),
+            karaoke_window_ms=cfg.get(cfg.subtitle_karaoke_window_ms),
+            auto_contrast=cfg.get(cfg.subtitle_auto_contrast),
+            anti_flicker=cfg.get(cfg.subtitle_anti_flicker),
+            gradient_mode=cfg.get(cfg.subtitle_gradient_mode),
+            gradient_color_1=cfg.get(cfg.subtitle_gradient_color_1),
+            gradient_color_2=cfg.get(cfg.subtitle_gradient_color_2),
             preview_time_sec=preview_time_sec,
             request_id=request_id,
         )
@@ -1097,7 +1534,8 @@ class SubtitleStyleInterface(QWidget):
     def showEffectPreview(self):
         """Сгенерировать короткое видео предпросмотра эффекта и открыть его."""
         style_str = self.generateAssStyles()
-        main_text, sub_text = PERVIEW_TEXTS[self.previewTextCard.comboBox.currentText()]
+        preview_texts = self._current_preview_texts()
+        main_text, sub_text = preview_texts[self.previewTextCard.comboBox.currentText()]
 
         layout_value = LAYOUT_LABEL_TO_VALUE.get(
             self.layoutCard.comboBox.currentText(), "译文在上"
@@ -1132,6 +1570,13 @@ class SubtitleStyleInterface(QWidget):
             motion_amplitude=cfg.get(cfg.subtitle_motion_amplitude) / 100,
             motion_easing=cfg.get(cfg.subtitle_motion_easing),
             motion_jitter=cfg.get(cfg.subtitle_motion_jitter) / 100,
+            karaoke_mode=cfg.get(cfg.subtitle_karaoke_mode),
+            karaoke_window_ms=cfg.get(cfg.subtitle_karaoke_window_ms),
+            auto_contrast=cfg.get(cfg.subtitle_auto_contrast),
+            anti_flicker=cfg.get(cfg.subtitle_anti_flicker),
+            gradient_mode=cfg.get(cfg.subtitle_gradient_mode),
+            gradient_color_1=cfg.get(cfg.subtitle_gradient_color_1),
+            gradient_color_2=cfg.get(cfg.subtitle_gradient_color_2),
         )
 
         if sys.platform == "win32":

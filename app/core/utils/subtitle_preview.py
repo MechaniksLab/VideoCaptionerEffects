@@ -36,14 +36,21 @@ DEFAULT_BG_PATH = RESOURCE_PATH / "assets" / "default_bg.png"
 def run_subprocess(command: list):
     """运行子进程命令，并处理异常"""
     try:
-        subprocess.run(
+        result = subprocess.run(
             command,
             check=True,
             capture_output=True,
             creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
         )
+        return result
     except subprocess.CalledProcessError as e:
-        logger.error(f"Subprocess error: {e.stderr}")
+        stderr = (
+            e.stderr.decode("utf-8", errors="ignore")
+            if isinstance(e.stderr, (bytes, bytearray))
+            else str(e.stderr)
+        )
+        logger.error(f"Subprocess error: {stderr}")
+        raise RuntimeError(f"FFmpeg command failed: {stderr}") from e
 
 
 def generate_ass_file(
@@ -59,6 +66,13 @@ def generate_ass_file(
     motion_amplitude: float = 1.0,
     motion_easing: str = "ease_out",
     motion_jitter: float = 0.0,
+    karaoke_mode: bool = False,
+    karaoke_window_ms: int = 1200,
+    auto_contrast: bool = False,
+    anti_flicker: bool = False,
+    gradient_mode: str = "off",
+    gradient_color_1: str = "#FFFFFF",
+    gradient_color_2: str = "#66CCFF",
 ) -> str:
     """生成临时 ASS 文件"""
     original_text, translate_text = preview_text
@@ -94,6 +108,15 @@ def generate_ass_file(
         motion_amplitude,
         motion_easing,
         motion_jitter,
+        video_width,
+        video_height,
+        karaoke_mode,
+        karaoke_window_ms,
+        auto_contrast,
+        anti_flicker,
+        gradient_mode,
+        gradient_color_1,
+        gradient_color_2,
     )
     translated_text = EffectManager.apply_ass_effect(
         translate_text,
@@ -108,6 +131,15 @@ def generate_ass_file(
         motion_amplitude,
         motion_easing,
         motion_jitter,
+        video_width,
+        video_height,
+        karaoke_mode,
+        karaoke_window_ms,
+        auto_contrast,
+        anti_flicker,
+        gradient_mode,
+        gradient_color_1,
+        gradient_color_2,
     )
 
     if original_text and default_blur > 0:
@@ -170,6 +202,13 @@ def generate_preview(
     motion_amplitude: float = 1.0,
     motion_easing: str = "ease_out",
     motion_jitter: float = 0.0,
+    karaoke_mode: bool = False,
+    karaoke_window_ms: int = 1200,
+    auto_contrast: bool = False,
+    anti_flicker: bool = False,
+    gradient_mode: str = "off",
+    gradient_color_1: str = "#FFFFFF",
+    gradient_color_2: str = "#66CCFF",
     preview_time_sec: float = 0.0,
     frame_token: Optional[str] = None,
 ) -> str:
@@ -188,6 +227,13 @@ def generate_preview(
         motion_amplitude,
         motion_easing,
         motion_jitter,
+        karaoke_mode,
+        karaoke_window_ms,
+        auto_contrast,
+        anti_flicker,
+        gradient_mode,
+        gradient_color_1,
+        gradient_color_2,
     )
     ass_file = auto_wrap_ass_file(ass_file)
     bg_path = ensure_background(Path(bg_path))
@@ -221,6 +267,8 @@ def generate_preview(
         str(output_path),
     ]
     run_subprocess(cmd)
+    if not output_path.exists():
+        raise FileNotFoundError(f"Preview image not generated: {output_path}")
     return str(output_path)
 
 
@@ -238,6 +286,13 @@ def generate_preview_video(
     motion_amplitude: float = 1.0,
     motion_easing: str = "ease_out",
     motion_jitter: float = 0.0,
+    karaoke_mode: bool = False,
+    karaoke_window_ms: int = 1200,
+    auto_contrast: bool = False,
+    anti_flicker: bool = False,
+    gradient_mode: str = "off",
+    gradient_color_1: str = "#FFFFFF",
+    gradient_color_2: str = "#66CCFF",
     duration_sec: float = 2.0,
 ) -> str:
     """Генерирует короткое видео предпросмотра с анимацией эффекта."""
@@ -255,6 +310,13 @@ def generate_preview_video(
         motion_amplitude,
         motion_easing,
         motion_jitter,
+        karaoke_mode,
+        karaoke_window_ms,
+        auto_contrast,
+        anti_flicker,
+        gradient_mode,
+        gradient_color_1,
+        gradient_color_2,
     )
     ass_file = auto_wrap_ass_file(ass_file)
     bg_path = ensure_background(Path(bg_path))
@@ -281,6 +343,8 @@ def generate_preview_video(
         str(output_path),
     ]
     run_subprocess(cmd)
+    if not output_path.exists():
+        raise FileNotFoundError(f"Preview video not generated: {output_path}")
     return str(output_path)
 
 

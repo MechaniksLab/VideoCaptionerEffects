@@ -9,6 +9,145 @@ from app.core.subtitle_processor.effect_manager import (
     SubtitleEffect,
     EffectConfig
 )
+from app.core.utils.subtitle_preview import generate_ass_file
+
+
+def test_apply_ass_effect_scaling_and_index_phase():
+    """Проверяем, что ASS-эффекты учитывают разрешение и фазу индекса."""
+    text = "Test"
+
+    # Проверка масштабирования базовой позиции под вертикальный кадр 480x852
+    bounce = EffectManager.apply_ass_effect(
+        text=text,
+        effect_type=SubtitleEffect.BOUNCE.value,
+        start_ms=0,
+        end_ms=2000,
+        effect_duration_ms=400,
+        effect_intensity=1.0,
+        index=0,
+        motion_direction="up",
+        motion_amplitude=1.0,
+        motion_easing="ease_out",
+        motion_jitter=0.0,
+        play_res_x=480,
+        play_res_y=852,
+    )
+    # Базовая точка для 480x852: (240, 780)
+    assert "\\move(" in bounce
+    assert ",240,780," in bounce
+
+    # Проверка, что jitter-фаза для разных индексов отличается
+    wave_0 = EffectManager.apply_ass_effect(
+        text=text,
+        effect_type=SubtitleEffect.WAVE.value,
+        start_ms=0,
+        end_ms=2000,
+        effect_duration_ms=300,
+        effect_intensity=1.0,
+        index=0,
+        motion_direction="up",
+        motion_amplitude=1.0,
+        motion_easing="ease_out",
+        motion_jitter=1.0,
+        play_res_x=1280,
+        play_res_y=720,
+    )
+    wave_1 = EffectManager.apply_ass_effect(
+        text=text,
+        effect_type=SubtitleEffect.WAVE.value,
+        start_ms=0,
+        end_ms=2000,
+        effect_duration_ms=300,
+        effect_intensity=1.0,
+        index=1,
+        motion_direction="up",
+        motion_amplitude=1.0,
+        motion_easing="ease_out",
+        motion_jitter=1.0,
+        play_res_x=1280,
+        play_res_y=720,
+    )
+    assert wave_0 != wave_1
+
+
+def test_apply_ass_effect_karaoke_gradient_and_contrast_flags():
+    text = "Hello world"
+    result = EffectManager.apply_ass_effect(
+        text=text,
+        effect_type=SubtitleEffect.FADE_IN.value,
+        start_ms=0,
+        end_ms=2000,
+        effect_duration_ms=400,
+        karaoke_mode=True,
+        karaoke_window_ms=1200,
+        auto_contrast=True,
+        anti_flicker=True,
+        gradient_mode="two_color",
+        gradient_color_1="#FFFFFF",
+        gradient_color_2="#66CCFF",
+    )
+
+    # В режиме сегментных таймингов включается fallback на синтетический \k.
+    assert "\\k" in result
+    assert "\\bord3" in result
+    assert "\\blur1" in result
+    assert "\\1c&H" in result
+
+
+def test_effect_registry_has_no_duplicates():
+    dups = EffectManager.get_effect_registry_duplicates()
+    assert dups["labels"] == []
+    assert dups["values"] == []
+
+
+def test_word_timestamp_mode_disables_synthetic_karaoke_k_tags():
+    result = EffectManager.apply_ass_effect(
+        text="hello",
+        effect_type=SubtitleEffect.WORD_HIGHLIGHT.value,
+        start_ms=1000,
+        end_ms=1450,
+        karaoke_mode=True,
+        use_word_timestamps=True,
+    )
+    assert "\\k" not in result
+
+
+def test_preview_smoke_for_multiple_presets_configs():
+    style = (
+        "[V4+ Styles]\n"
+        "Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,"
+        "Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,"
+        "Alignment,MarginL,MarginR,MarginV,Encoding\n"
+        "Style: Default,Arial,46,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,-1,0,0,0,100,100,"
+        "0,0,1,2,1,2,20,20,30,1\n"
+        "Style: Secondary,Arial,34,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,-1,0,0,0,100,100,"
+        "0,0,1,2,1,2,20,20,30,1\n"
+    )
+
+    presets = [
+        {"effect_type": "word_highlight", "karaoke_mode": True},
+        {"effect_type": "fade_in", "karaoke_mode": False},
+        {"effect_type": "neon_flicker", "karaoke_mode": False},
+    ]
+
+    for p in presets:
+        ass_path = generate_ass_file(
+            style_str=style,
+            preview_text=("Hello world", "Привет мир"),
+            video_width=1280,
+            video_height=720,
+            effect_type=p["effect_type"],
+            effect_duration_ms=500,
+            effect_intensity=1.2,
+            karaoke_mode=p["karaoke_mode"],
+            karaoke_window_ms=1200,
+            gradient_mode="off",
+        )
+        assert ass_path
+        with open(ass_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        assert "[Events]" in content
+        assert "Dialogue:" in content
 
 
 def test_all_effects():

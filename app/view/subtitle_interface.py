@@ -34,7 +34,6 @@ from qfluentwidgets import (
 
 from app.common.config import cfg
 from app.common.signal_bus import signalBus
-from app.components.SubtitleSettingDialog import SubtitleSettingDialog
 from app.config import SUBTITLE_STYLE_PATH
 from app.core.bk_asr.asr_data import ASRData
 from app.core.entities import (
@@ -309,11 +308,6 @@ class SubtitleInterface(QWidget):
         )
         self.command_bar.addAction(self.prompt_button)
 
-        # 添加设置按钮
-        self.command_bar.addAction(
-            Action(FIF.SETTING, "", triggered=self.show_subtitle_settings)
-        )
-
         # 添加视频播放按钮
         # self.command_bar.addAction(Action(FIF.VIDEO, "", triggered=self.show_video_player))
 
@@ -561,6 +555,13 @@ class SubtitleInterface(QWidget):
                     motion_amplitude=cfg.subtitle_motion_amplitude.value / 100,
                     motion_easing=cfg.subtitle_motion_easing.value,
                     motion_jitter=cfg.subtitle_motion_jitter.value / 100,
+                    karaoke_mode=cfg.subtitle_karaoke_mode.value,
+                    karaoke_window_ms=cfg.subtitle_karaoke_window_ms.value,
+                    auto_contrast=cfg.subtitle_auto_contrast.value,
+                    anti_flicker=cfg.subtitle_anti_flicker.value,
+                    gradient_mode=cfg.subtitle_gradient_mode.value,
+                    gradient_color_1=cfg.subtitle_gradient_color_1.value,
+                    gradient_color_2=cfg.subtitle_gradient_color_2.value,
                 )
             else:
                 asr_data.save(file_path, layout=layout)
@@ -644,11 +645,6 @@ class SubtitleInterface(QWidget):
             self.subtitle_optimization_thread.stop()
         super().closeEvent(event)
 
-    def show_subtitle_settings(self):
-        """显示字幕设置对话框"""
-        dialog = SubtitleSettingDialog(self.window())
-        dialog.exec_()
-
     def show_video_player(self):
         """显示视频播放器窗口"""
         # 创建视频播放器窗口
@@ -680,6 +676,13 @@ class SubtitleInterface(QWidget):
                 motion_amplitude=cfg.subtitle_motion_amplitude.value / 100,
                 motion_easing=cfg.subtitle_motion_easing.value,
                 motion_jitter=cfg.subtitle_motion_jitter.value / 100,
+                karaoke_mode=cfg.subtitle_karaoke_mode.value,
+                karaoke_window_ms=cfg.subtitle_karaoke_window_ms.value,
+                auto_contrast=cfg.subtitle_auto_contrast.value,
+                anti_flicker=cfg.subtitle_anti_flicker.value,
+                gradient_mode=cfg.subtitle_gradient_mode.value,
+                gradient_color_1=cfg.subtitle_gradient_color_1.value,
+                gradient_color_2=cfg.subtitle_gradient_color_2.value,
             )
             signalBus.add_subtitle(temp_srt_path)
 

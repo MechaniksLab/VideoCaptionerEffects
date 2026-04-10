@@ -260,7 +260,15 @@ class Config(QConfig):
         "SubtitleStyle",
         "StylePreset",
         "custom",
-        OptionsValidator(["custom", "tiktok_dynamic", "shorts_clean", "minimal_classic"]),
+        OptionsValidator([
+            "custom",
+            "tiktok_dynamic",
+            "shorts_clean",
+            "minimal_classic",
+            "karaoke_pro",
+            "cinema_gradient",
+            "neon_pulse",
+        ]),
     )
     subtitle_motion_direction = OptionsConfigItem(
         "SubtitleStyle",
@@ -279,6 +287,30 @@ class Config(QConfig):
     )
     subtitle_motion_jitter = RangeConfigItem(
         "SubtitleStyle", "MotionJitter", 0, RangeValidator(0, 100)
+    )
+    subtitle_karaoke_mode = ConfigItem(
+        "SubtitleStyle", "KaraokeMode", False, BoolValidator()
+    )
+    subtitle_karaoke_window_ms = RangeConfigItem(
+        "SubtitleStyle", "KaraokeWindowMs", 1200, RangeValidator(200, 4000)
+    )
+    subtitle_auto_contrast = ConfigItem(
+        "SubtitleStyle", "AutoContrast", False, BoolValidator()
+    )
+    subtitle_anti_flicker = ConfigItem(
+        "SubtitleStyle", "AntiFlicker", True, BoolValidator()
+    )
+    subtitle_gradient_mode = OptionsConfigItem(
+        "SubtitleStyle",
+        "GradientMode",
+        "off",
+        OptionsValidator(["off", "two_color", "rainbow"]),
+    )
+    subtitle_gradient_color_1 = ConfigItem(
+        "SubtitleStyle", "GradientColor1", "#FFFFFF"
+    )
+    subtitle_gradient_color_2 = ConfigItem(
+        "SubtitleStyle", "GradientColor2", "#66CCFF"
     )
 
     # ------------------- 保存配置 -------------------

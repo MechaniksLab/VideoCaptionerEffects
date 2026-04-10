@@ -8,11 +8,11 @@ PlayResY: 720
 
 [V4+ Styles]
 Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Default,Ebbe,64,&H00ffffff,&H000000FF,&H00000000,&H000000FF,-1,0,0,0,100,100,3.2,0,1,5.0,0.2,2,10,10,98,1
-Style: Secondary,Arial,30,&H00ffffff,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0.8,0,1,2.0,0.0,2,10,10,98,1
-;VC_BLUR:Default=7.0
+Style: Default,Ebbe,64,&H00ffffff,&H000000FF,&H00000000,&H00009302,-1,0,0,0,100,100,3.2,0,1,1.6,0.8,2,10,10,112,1
+Style: Secondary,Arial,30,&H00ffffff,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0.8,0,1,2.0,0.0,2,10,10,112,1
+;VC_BLUR:Default=5.4
 ;VC_BLUR:Secondary=0.0
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:02.00,Default,,0,0,0,,{\blur7.0}{\move(640,676,640,660,0,300)\fscx58\fscy58\t(0,300,0.70,\fscx100\fscy100)}This is a long text used for testing subtitle preview and style settings.
+Dialogue: 0,0:00:00.00,0:00:02.00,Default,,0,0,0,,{\blur5.4}{\move(640,684,640,660,0,200)\fscx73\fscy73\t(0,200,1.20,\fscx100\fscy100)}{\bord3\shad1\3c&H000000&\blur1}{\1c&H0033FF00&}W{\1c&H00FFFFFF&}o{\1c&H0033FF00&}r{\1c&H00FFFFFF&}d {\1c&H0033FF00&}b{\1c&H00FFFFFF&}y {\1c&H0033FF00&}w{\1c&H00FFFFFF&}o{\1c&H0033FF00&}r{\1c&H00FFFFFF&}d {\1c&H0033FF00&}k{\1c&H00FFFFFF&}a{\1c&H0033FF00&}r{\1c&H00FFFFFF&}a{\1c&H0033FF00&}o{\1c&H00FFFFFF&}k{\1c&H0033FF00&}e {\1c&H00FFFFFF&}p{\1c&H0033FF00&}r{\1c&H00FFFFFF&}e{\1c&H0033FF00&}v{\1c&H00FFFFFF&}i{\1c&H0033FF00&}e{\1c&H00FFFFFF&}w

@@ -8165,3 +8165,777 @@ CUDA可用
 视频总时长: 14.28秒
 视频合成完成
 视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 12:54:22.995359
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmppis13tc4.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 12:54:23.100359
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 12:54:23.140414
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 12:55:03 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 13:10:11.915437
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpp6_ymedz.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:10:12.022244
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:10:12.065355
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:10:29.181462
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpe34hxxvf.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmpg34yptob\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 0 --sentence --max_line_width 90 --max_line_count 1 --max_comma 20 --max_comma_cent 50 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpg34yptob\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.38 audio seconds/s
+Transcription speed: 2.31 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpg34yptob' directory.
+Operation finished in:  0:00:08.548
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:10:40.205997
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:10:40.221997
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 13:12:00 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 13:18:46.612991
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpdazybela.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:18:46.715988
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:18:46.745535
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:21:08.224369
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpfztjprps.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:21:08.326020
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:21:08.342021
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:21:39.163068
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp0k_vvuc9.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:21:39.264608
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:21:39.284608
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 13:27:12 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 13:27:35.738597
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp74i6to9e.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:27:35.842658
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:27:35.884654
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:27:57.573103
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpu7hs1f4b.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:27:57.676124
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:27:57.705125
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:28:13.392221
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpmbucccqn.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:28:13.507798
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:28:13.534800
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:28:53.585678
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp394e_end.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:28:53.689223
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:28:53.715226
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:29:25.187198
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpagkefxx6.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:29:25.294754
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:29:25.319809
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 13:30:52 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 13:38:50.623142
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpvwk950a_.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:38:50.725142
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:38:50.752141
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 13:39:12.655524
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmppv5yuad0.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 13:39:12.760874
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 13:39:12.781874
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+Latest version info: v1.3.3
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 14:01:05.299152
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpfkb8w_ry.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:01:05.401930
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:01:05.433930
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:01:49.527629
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpmpaxtoup.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:01:49.629009
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:01:49.645009
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 14:02:05 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 14:02:35.727937
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp7ry7eqmz.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:02:35.840742
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:02:35.876280
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 14:05:58.575081
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpao7gqkh9.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:05:58.680611
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:05:58.720611
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:06:29.136667
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpwswttovf.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:06:29.240667
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:06:29.256666
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:07:02.066918
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp1f3udebr.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:07:02.170408
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:07:02.184409
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 14:07:30 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 14:07:44.012713
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpqze29nwg.wav
+视频时长: 14.28秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:07:44.128458
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:07:44.169457
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 14:12:27.648842
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmph_9zckt0.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmpfht8r564\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpfht8r564\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.42 audio seconds/s
+Transcription speed: 2.35 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpfht8r564' directory.
+Operation finished in:  0:00:07.843
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:12:36.908109
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:12:36.937109
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:13:55.884422
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpps899uwj.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmponoyxydx\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmponoyxydx\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.42 audio seconds/s
+Transcription speed: 2.35 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmponoyxydx' directory.
+Operation finished in:  0:00:07.878
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:14:05.137009
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:14:05.155008
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:15:14.793501
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp8c1qa5c3.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmp9zopvjn4\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 0 --sentence --max_line_width 90 --max_line_count 1 --max_comma 20 --max_comma_cent 50 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp9zopvjn4\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.38 audio seconds/s
+Transcription speed: 2.31 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp9zopvjn4' directory.
+Operation finished in:  0:00:07.929
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:15:24.131685
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:15:24.152689
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:16:42.428793
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpncren2hd.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmp8_g3pyht\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp8_g3pyht\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.43 audio seconds/s
+Transcription speed: 2.35 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp8_g3pyht' directory.
+Operation finished in:  0:00:07.792
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:16:51.583846
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:16:51.608847
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 14:17:11 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-10 14:22:28.670517
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp6hfqusj6.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmpwlyuoqeg\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpwlyuoqeg\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.34 audio seconds/s
+Transcription speed: 2.28 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpwlyuoqeg' directory.
+Operation finished in:  0:00:08.040
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:22:38.120690
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:22:38.155696
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+
+===========转录任务开始===========
+时间：2026-04-10 14:24:24.944202
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 0221.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpilf5mjhl.wav
+视频时长: 14.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptioner\AppData\models C:\Temp\bk_asr\tmpitdgzl0q\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpitdgzl0q\audio.wav
+100% | 14/14 | 00:05<<00:00 |  2.39 audio seconds/s
+Transcription speed: 2.32 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpitdgzl0q' directory.
+Operation finished in:  0:00:08.071
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【原始字幕】Последовательность 0221-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-10 14:24:34.444953
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 0221\subtitle\【样式字幕】Последовательность 0221-FasterWhisper ✨-俄语.ass
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-10 14:24:34.466939
+开始合成视频: E:/Render/Последовательность 0221.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 0221.mp4" -acodec copy -vcodec libx264 -preset medium -vf subtitles='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 0221.mp4"
+视频总时长: 14.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 0221.mp4
+2026-04-10 14:24:56 - VideoCaptioner - ERROR - Traceback (most recent call last):
+  File "E:\Neyro\VideoCaptioner\runtime\Lib\site-packages\qfluentwidgets\components\widgets\info_bar.py", line 420, in eventFilter
+    return super().eventFilter(obj, e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type BottomInfoBarManager has been deleted
+
