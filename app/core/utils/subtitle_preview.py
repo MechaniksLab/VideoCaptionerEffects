@@ -77,6 +77,48 @@ def generate_ass_file(
     """生成临时 ASS 文件"""
     original_text, translate_text = preview_text
 
+    def _extract_style_position(styles_text: str, style_name: str) -> tuple[int, int, int, int]:
+        """Возвращает (alignment, margin_l, margin_r, margin_v) для стиля."""
+        if not styles_text:
+            return 2, 10, 10, 10
+        import re
+
+        m = re.search(rf"^Style:\s*{re.escape(style_name)}\s*,\s*(.+)$", styles_text, re.MULTILINE)
+        if not m:
+            return 2, 10, 10, 10
+        parts = [p.strip() for p in m.group(1).split(",")]
+        # indexes after Name field in ASS style line:
+        # Alignment=18, MarginL=19, MarginR=20, MarginV=21
+        try:
+            alignment = int(float(parts[17]))
+            margin_l = int(float(parts[18]))
+            margin_r = int(float(parts[19]))
+            margin_v = int(float(parts[20]))
+            return alignment, margin_l, margin_r, margin_v
+        except (IndexError, ValueError):
+            return 2, 10, 10, 10
+
+    def _anchor_from_style(alignment: int, margin_l: int, margin_r: int, margin_v: int) -> tuple[int, int]:
+        # ASS numpad alignment: 1..3 bottom, 4..6 middle, 7..9 top
+        col = ((alignment - 1) % 3) + 1
+        row = ((alignment - 1) // 3) + 1
+
+        if col == 1:
+            x = margin_l
+        elif col == 2:
+            x = video_width // 2
+        else:
+            x = video_width - margin_r
+
+        if row == 1:
+            y = video_height - margin_v
+        elif row == 2:
+            y = video_height // 2
+        else:
+            y = margin_v
+
+        return int(max(0, min(video_width, x))), int(max(0, min(video_height, y)))
+
     def _extract_style_blur(styles_text: str, style_name: str) -> float:
         if not styles_text:
             return 0.0
@@ -92,6 +134,8 @@ def generate_ass_file(
 
     default_blur = _extract_style_blur(style_str, "Default")
     secondary_blur = _extract_style_blur(style_str, "Secondary")
+    default_anchor = _anchor_from_style(*_extract_style_position(style_str, "Default"))
+    secondary_anchor = _anchor_from_style(*_extract_style_position(style_str, "Secondary"))
 
     preview_start_ms = 0
     preview_end_ms = 2000
@@ -117,6 +161,9 @@ def generate_ass_file(
         gradient_mode,
         gradient_color_1,
         gradient_color_2,
+        False,
+        default_anchor[0],
+        default_anchor[1],
     )
     translated_text = EffectManager.apply_ass_effect(
         translate_text,
@@ -140,6 +187,9 @@ def generate_ass_file(
         gradient_mode,
         gradient_color_1,
         gradient_color_2,
+        False,
+        secondary_anchor[0],
+        secondary_anchor[1],
     )
 
     if original_text and default_blur > 0:

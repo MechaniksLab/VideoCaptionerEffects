@@ -462,6 +462,8 @@ class EffectManager:
         gradient_color_1: str = "#FFFFFF",
         gradient_color_2: str = "#66CCFF",
         use_word_timestamps: bool = False,
+        anchor_x: Optional[int] = None,
+        anchor_y: Optional[int] = None,
     ) -> str:
         """Преобразует текст в ASS override-теги для базовых анимаций."""
         if not text:
@@ -481,8 +483,10 @@ class EffectManager:
         j = int((6 * jitter) * (-1 if index % 2 else 1))
         safe_x = max(320, int(play_res_x or 1280))
         safe_y = max(180, int(play_res_y or 720))
-        base_x = safe_x // 2
-        base_y = int(safe_y * 0.9167)
+        base_x = int(anchor_x) if anchor_x is not None else safe_x // 2
+        base_y = int(anchor_y) if anchor_y is not None else int(safe_y * 0.9167)
+        base_x = max(0, min(safe_x, base_x))
+        base_y = max(0, min(safe_y, base_y))
 
         # Базовая обработка текста перед motion-эффектом
         processed_text = text

@@ -178,8 +178,8 @@ def add_subtitles(
     else:
         logger.info("使用硬字幕")
         subtitle_file = Path(subtitle_file).as_posix().replace(":", r"\:")
-        # 根据输出文件后缀决定vf参数
-        if Path(output).suffix.lower() == ".ass":
+        # Для ASS используем ass=..., для остальных subtitle-треков subtitles=...
+        if suffix == ".ass":
             vf = f"ass='{subtitle_file}'"
         else:
             # 其他格式使用默认的vf参数
