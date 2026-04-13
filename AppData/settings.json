@@ -80,7 +80,7 @@
         "KaraokeMode": false,
         "KaraokeWindowMs": 1400,
         "Layout": "仅译文",
-        "MotionAmplitude": 20,
+        "MotionAmplitude": 11,
         "MotionDirection": "up",
         "MotionEasing": "ease_in_out",
         "MotionJitter": 0,
