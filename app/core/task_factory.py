@@ -231,6 +231,7 @@ class TaskFactory:
             subtitle_motion_amplitude=cfg.subtitle_motion_amplitude.value / 100,
             subtitle_motion_easing=cfg.subtitle_motion_easing.value,
             subtitle_motion_jitter=cfg.subtitle_motion_jitter.value / 100,
+            subtitle_motion_blur_strength=cfg.subtitle_motion_blur_strength.value,
             subtitle_karaoke_mode=cfg.subtitle_karaoke_mode.value,
             subtitle_karaoke_window_ms=cfg.subtitle_karaoke_window_ms.value,
             subtitle_auto_contrast=cfg.subtitle_auto_contrast.value,
@@ -238,6 +239,10 @@ class TaskFactory:
             subtitle_gradient_mode=cfg.subtitle_gradient_mode.value,
             subtitle_gradient_color_1=cfg.subtitle_gradient_color_1.value,
             subtitle_gradient_color_2=cfg.subtitle_gradient_color_2.value,
+            subtitle_safe_area_enabled=cfg.subtitle_safe_area_enabled.value,
+            subtitle_safe_margin_x=cfg.subtitle_safe_margin_x.value,
+            subtitle_safe_margin_y=cfg.subtitle_safe_margin_y.value,
+            subtitle_speaker_color_mode=cfg.subtitle_speaker_color_mode.value,
         )
 
         return SubtitleTask(

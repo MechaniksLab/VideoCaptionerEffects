@@ -272,6 +272,10 @@ class Config(QConfig):
             "karaoke_pro",
             "cinema_gradient",
             "neon_pulse",
+            "gaming_glitch",
+            "podcast_focus",
+            "travel_vlog",
+            "dramatic_trailer",
         ]),
     )
     subtitle_motion_direction = OptionsConfigItem(
@@ -292,6 +296,9 @@ class Config(QConfig):
     subtitle_motion_jitter = RangeConfigItem(
         "SubtitleStyle", "MotionJitter", 0, RangeValidator(0, 200)
     )
+    subtitle_motion_blur_strength = RangeConfigItem(
+        "SubtitleStyle", "MotionBlurStrength", 0, RangeValidator(0, 20)
+    )
     subtitle_karaoke_mode = ConfigItem(
         "SubtitleStyle", "KaraokeMode", False, BoolValidator()
     )
@@ -310,11 +317,26 @@ class Config(QConfig):
         "off",
         OptionsValidator(["off", "two_color", "rainbow"]),
     )
+    subtitle_speaker_color_mode = OptionsConfigItem(
+        "SubtitleStyle",
+        "SpeakerColorMode",
+        "off",
+        OptionsValidator(["off", "alternate"],),
+    )
     subtitle_gradient_color_1 = ConfigItem(
         "SubtitleStyle", "GradientColor1", "#FFFFFF"
     )
     subtitle_gradient_color_2 = ConfigItem(
         "SubtitleStyle", "GradientColor2", "#66CCFF"
+    )
+    subtitle_safe_area_enabled = ConfigItem(
+        "SubtitleStyle", "SafeAreaEnabled", True, BoolValidator()
+    )
+    subtitle_safe_margin_x = RangeConfigItem(
+        "SubtitleStyle", "SafeMarginX", 8, RangeValidator(0, 40)
+    )
+    subtitle_safe_margin_y = RangeConfigItem(
+        "SubtitleStyle", "SafeMarginY", 10, RangeValidator(0, 40)
     )
 
     # ------------------- 保存配置 -------------------

@@ -156,6 +156,10 @@ class SubtitleThread(QThread):
             subtitle_config.subtitle_effect_intensity = (
                 cfg.subtitle_effect_intensity.value / 100
             )
+            # split_type: "sentence" | "semantic"
+            # В текущем UX "semantic" используется как режим "по словам".
+            is_word_mode = subtitle_config.split_type == "semantic"
+            is_sentence_mode = subtitle_config.split_type == "sentence"
             subtitle_config.subtitle_rainbow_end_color = (
                 cfg.subtitle_rainbow_end_color.value
             )
@@ -165,7 +169,12 @@ class SubtitleThread(QThread):
             )
             subtitle_config.subtitle_motion_easing = cfg.subtitle_motion_easing.value
             subtitle_config.subtitle_motion_jitter = cfg.subtitle_motion_jitter.value / 100
-            subtitle_config.subtitle_karaoke_mode = cfg.subtitle_karaoke_mode.value
+            subtitle_config.subtitle_motion_blur_strength = (
+                cfg.subtitle_motion_blur_strength.value
+            )
+            subtitle_config.subtitle_karaoke_mode = (
+                cfg.subtitle_karaoke_mode.value and not is_word_mode
+            )
             subtitle_config.subtitle_karaoke_window_ms = (
                 cfg.subtitle_karaoke_window_ms.value
             )
@@ -174,10 +183,12 @@ class SubtitleThread(QThread):
             subtitle_config.subtitle_gradient_mode = cfg.subtitle_gradient_mode.value
             subtitle_config.subtitle_gradient_color_1 = cfg.subtitle_gradient_color_1.value
             subtitle_config.subtitle_gradient_color_2 = cfg.subtitle_gradient_color_2.value
-            # split_type: "sentence" | "semantic"
-            # В текущем UX "semantic" используется как режим "по словам".
-            is_word_mode = subtitle_config.split_type == "semantic"
-            is_sentence_mode = subtitle_config.split_type == "sentence"
+            subtitle_config.subtitle_safe_area_enabled = cfg.subtitle_safe_area_enabled.value
+            subtitle_config.subtitle_safe_margin_x = cfg.subtitle_safe_margin_x.value
+            subtitle_config.subtitle_safe_margin_y = cfg.subtitle_safe_margin_y.value
+            subtitle_config.subtitle_speaker_color_mode = (
+                cfg.subtitle_speaker_color_mode.value
+            )
 
             asr_data = ASRData.from_subtitle_file(subtitle_path)
             processed_cache_path = self._processed_cache_path(subtitle_path, subtitle_config)
@@ -323,6 +334,11 @@ class SubtitleThread(QThread):
                             gradient_mode=subtitle_config.subtitle_gradient_mode,
                             gradient_color_1=subtitle_config.subtitle_gradient_color_1,
                             gradient_color_2=subtitle_config.subtitle_gradient_color_2,
+                            safe_area_enabled=subtitle_config.subtitle_safe_area_enabled,
+                            safe_margin_x=subtitle_config.subtitle_safe_margin_x,
+                            safe_margin_y=subtitle_config.subtitle_safe_margin_y,
+                            speaker_color_mode=subtitle_config.subtitle_speaker_color_mode,
+                            motion_blur_strength=subtitle_config.subtitle_motion_blur_strength,
                         )
                         logger.info(f"字幕保存到 {save_path}")
 
@@ -378,6 +394,11 @@ class SubtitleThread(QThread):
                 gradient_mode=subtitle_config.subtitle_gradient_mode,
                 gradient_color_1=subtitle_config.subtitle_gradient_color_1,
                 gradient_color_2=subtitle_config.subtitle_gradient_color_2,
+                safe_area_enabled=subtitle_config.subtitle_safe_area_enabled,
+                safe_margin_x=subtitle_config.subtitle_safe_margin_x,
+                safe_margin_y=subtitle_config.subtitle_safe_margin_y,
+                speaker_color_mode=subtitle_config.subtitle_speaker_color_mode,
+                motion_blur_strength=subtitle_config.subtitle_motion_blur_strength,
             )
             logger.info(f"字幕保存到 {self.task.output_path}")
             _stage_end("save_outputs")

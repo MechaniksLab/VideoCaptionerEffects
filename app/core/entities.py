@@ -563,6 +563,7 @@ class SubtitleConfig:
     subtitle_motion_amplitude: float = 1.0
     subtitle_motion_easing: str = "ease_out"
     subtitle_motion_jitter: float = 0.0
+    subtitle_motion_blur_strength: float = 0.0
     subtitle_karaoke_mode: bool = False
     subtitle_karaoke_window_ms: int = 1200
     subtitle_auto_contrast: bool = False
@@ -570,6 +571,10 @@ class SubtitleConfig:
     subtitle_gradient_mode: str = "off"
     subtitle_gradient_color_1: str = "#FFFFFF"
     subtitle_gradient_color_2: str = "#66CCFF"
+    subtitle_safe_area_enabled: bool = True
+    subtitle_safe_margin_x: int = 8
+    subtitle_safe_margin_y: int = 10
+    subtitle_speaker_color_mode: str = "off"
 
 
 @dataclass

@@ -224,6 +224,11 @@ class ASRData:
         gradient_mode: str = "off",
         gradient_color_1: str = "#FFFFFF",
         gradient_color_2: str = "#66CCFF",
+        safe_area_enabled: bool = True,
+        safe_margin_x: int = 8,
+        safe_margin_y: int = 10,
+        speaker_color_mode: str = "off",
+        motion_blur_strength: float = 0.0,
     ) -> None:
         """
         Save the ASRData to a file
@@ -269,6 +274,11 @@ class ASRData:
                 gradient_mode=gradient_mode,
                 gradient_color_1=gradient_color_1,
                 gradient_color_2=gradient_color_2,
+                safe_area_enabled=safe_area_enabled,
+                safe_margin_x=safe_margin_x,
+                safe_margin_y=safe_margin_y,
+                speaker_color_mode=speaker_color_mode,
+                motion_blur_strength=motion_blur_strength,
             )
         else:
             raise ValueError(f"Unsupported file extension: {save_path}")
@@ -369,6 +379,11 @@ class ASRData:
         gradient_mode: str = "off",
         gradient_color_1: str = "#FFFFFF",
         gradient_color_2: str = "#66CCFF",
+        safe_area_enabled: bool = True,
+        safe_margin_x: int = 8,
+        safe_margin_y: int = 10,
+        speaker_color_mode: str = "off",
+        motion_blur_strength: float = 0.0,
     ) -> str:
         """转换为ASS字幕格式
 
@@ -539,6 +554,11 @@ class ASRData:
                 segment_end_ms=seg.end_time,
                 anchor_x=default_anchor[0],
                 anchor_y=default_anchor[1],
+                safe_area_enabled=safe_area_enabled,
+                safe_margin_x=safe_margin_x,
+                safe_margin_y=safe_margin_y,
+                speaker_color_mode=speaker_color_mode,
+                motion_blur_strength=motion_blur_strength,
             )
             translated_effect_text = EffectManager.apply_ass_effect(
                 translated,
@@ -568,6 +588,11 @@ class ASRData:
                 segment_end_ms=seg.end_time,
                 anchor_x=secondary_anchor[0],
                 anchor_y=secondary_anchor[1],
+                safe_area_enabled=safe_area_enabled,
+                safe_margin_x=safe_margin_x,
+                safe_margin_y=safe_margin_y,
+                speaker_color_mode=speaker_color_mode,
+                motion_blur_strength=motion_blur_strength,
             )
 
             # 检查是否有译文

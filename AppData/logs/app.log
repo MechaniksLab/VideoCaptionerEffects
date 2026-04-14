@@ -10114,3 +10114,60 @@ CUDA可用
 视频总时长: 53.59秒
 视频合成完成
 视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_13.mp4
+Latest version info: v1.3.3
+Latest version info: v1.3.3
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-14 16:04:27.488941
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_13.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpx1hrtxh8.wav
+视频时长: 53.59秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_13\subtitle\【原始字幕】Последовательность 01_13-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-14 16:04:27.644760
+命中处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\ee2d0c4136cdf2a83f5ce94452cdd1e3.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_13\subtitle\【样式字幕】Последовательность 01_13-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260414_160427.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-14 16:04:27.702812
+开始合成视频: E:/Render/Последовательность 01_13.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_13.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_13.mp4"
+视频总时长: 53.59秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_13.mp4
+
+===========转录任务开始===========
+时间：2026-04-14 16:05:27.106052
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_13.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpqn8doqzu.wav
+视频时长: 53.59秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_13\subtitle\【原始字幕】Последовательность 01_13-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-14 16:05:27.265096
+命中处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\ee2d0c4136cdf2a83f5ce94452cdd1e3.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_13\subtitle\【样式字幕】Последовательность 01_13-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260414_160527.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-14 16:05:27.307104
+开始合成视频: E:/Render/Последовательность 01_13.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_13.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_13.mp4"
+视频总时长: 53.59秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_13.mp4

@@ -58,6 +58,10 @@ STYLE_PRESET_LABEL_TO_VALUE = {
     "Karaoke Pro": "karaoke_pro",
     "Cinema Gradient": "cinema_gradient",
     "Neon Pulse": "neon_pulse",
+    "Gaming Glitch": "gaming_glitch",
+    "Podcast Focus": "podcast_focus",
+    "Travel Vlog": "travel_vlog",
+    "Dramatic Trailer": "dramatic_trailer",
 }
 STYLE_PRESET_VALUE_TO_LABEL = {v: k for k, v in STYLE_PRESET_LABEL_TO_VALUE.items()}
 
@@ -73,6 +77,14 @@ GRADIENT_MODE_LABEL_TO_VALUE = {
     "Радужный": "rainbow",
 }
 GRADIENT_MODE_VALUE_TO_LABEL = {v: k for k, v in GRADIENT_MODE_LABEL_TO_VALUE.items()}
+
+SPEAKER_COLOR_MODE_LABEL_TO_VALUE = {
+    "Выкл": "off",
+    "Чередовать по репликам": "alternate",
+}
+SPEAKER_COLOR_MODE_VALUE_TO_LABEL = {
+    v: k for k, v in SPEAKER_COLOR_MODE_LABEL_TO_VALUE.items()
+}
 
 SPLIT_TYPE_LABEL_TO_VALUE = {
     "По предложениям": SplitTypeEnum.SENTENCE,
@@ -187,6 +199,7 @@ class PreviewThread(QThread):
         motion_amplitude: float,
         motion_easing: str,
         motion_jitter: float,
+        motion_blur_strength: float,
         karaoke_mode: bool,
         karaoke_window_ms: int,
         auto_contrast: bool,
@@ -194,6 +207,10 @@ class PreviewThread(QThread):
         gradient_mode: str,
         gradient_color_1: str,
         gradient_color_2: str,
+        safe_area_enabled: bool,
+        safe_margin_x: int,
+        safe_margin_y: int,
+        speaker_color_mode: str,
         preview_time_sec: float,
         request_id: int,
     ):
@@ -216,6 +233,7 @@ class PreviewThread(QThread):
         self.motion_amplitude = motion_amplitude
         self.motion_easing = motion_easing
         self.motion_jitter = motion_jitter
+        self.motion_blur_strength = motion_blur_strength
         self.karaoke_mode = karaoke_mode
         self.karaoke_window_ms = karaoke_window_ms
         self.auto_contrast = auto_contrast
@@ -223,6 +241,10 @@ class PreviewThread(QThread):
         self.gradient_mode = gradient_mode
         self.gradient_color_1 = gradient_color_1
         self.gradient_color_2 = gradient_color_2
+        self.safe_area_enabled = safe_area_enabled
+        self.safe_margin_x = safe_margin_x
+        self.safe_margin_y = safe_margin_y
+        self.speaker_color_mode = speaker_color_mode
         self.preview_time_sec = preview_time_sec
         self.request_id = request_id
 
@@ -242,6 +264,7 @@ class PreviewThread(QThread):
             motion_amplitude=self.motion_amplitude,
             motion_easing=self.motion_easing,
             motion_jitter=self.motion_jitter,
+            motion_blur_strength=self.motion_blur_strength,
             karaoke_mode=self.karaoke_mode,
             karaoke_window_ms=self.karaoke_window_ms,
             auto_contrast=self.auto_contrast,
@@ -249,6 +272,10 @@ class PreviewThread(QThread):
             gradient_mode=self.gradient_mode,
             gradient_color_1=self.gradient_color_1,
             gradient_color_2=self.gradient_color_2,
+            safe_area_enabled=self.safe_area_enabled,
+            safe_margin_x=self.safe_margin_x,
+            safe_margin_y=self.safe_margin_y,
+            speaker_color_mode=self.speaker_color_mode,
             preview_time_sec=self.preview_time_sec,
             frame_token=frame_token,
         )
@@ -308,10 +335,28 @@ class SubtitleStyleInterface(QWidget):
         self.settingsScrollArea.setWidget(self.settingsWidget)
         self.settingsScrollArea.setWidgetResizable(True)
 
-        # 创建设置组
-        self.layoutGroup = SettingCardGroup("Расположение и эффекты", self.settingsWidget)
+        # Группа 1: быстрый старт и ключевые решения
+        self.quickStartGroup = SettingCardGroup("1) Быстрый старт", self.settingsWidget)
+
+        # Группа 2: разметка/сегментация текста
+        self.segmentationGroup = SettingCardGroup("2) Разбиение и структура", self.settingsWidget)
+
+        # Группа 3: анимация и динамика
+        self.effectsGroup = SettingCardGroup("3) Эффекты и движение", self.settingsWidget)
+
+        # Группа 4: читаемость и безопасность кадра
+        self.readabilityGroup = SettingCardGroup(
+            "4) Читаемость и безопасная зона", self.settingsWidget
+        )
+
+        # Группа 5: цветовая логика
+        self.colorGroup = SettingCardGroup("5) Цвет и акценты", self.settingsWidget)
+
+        # Группа 6-7: базовые стили
         self.mainGroup = SettingCardGroup("Стиль основного субтитра", self.settingsWidget)
         self.subGroup = SettingCardGroup("Стиль дополнительного субтитра", self.settingsWidget)
+
+        # Группа 8: предпросмотр
         self.previewGroup = SettingCardGroup("Предпросмотр", self.settingsWidget)
 
     def _initPreviewArea(self):
@@ -475,6 +520,14 @@ class SubtitleStyleInterface(QWidget):
             maximum=200,
         )
 
+        self.motionBlurCard = SpinBoxSettingCard(
+            FIF.HIGHTLIGHT,
+            "Motion Blur",
+            "Дополнительное размытие во время движения",
+            minimum=0,
+            maximum=20,
+        )
+
         self.karaokeModeCard = ComboBoxSettingCard(
             FIF.MUSIC,
             "Караоке-режим",
@@ -568,6 +621,36 @@ class SubtitleStyleInterface(QWidget):
             FIF.PALETTE,
             "Градиент: цвет 2",
             "Конечный цвет 2-цветного градиента",
+        )
+
+        self.speakerColorModeCard = ComboBoxSettingCard(
+            FIF.PEOPLE,
+            "Раскраска по спикерам",
+            "Базовый режим: чередование цветов по репликам",
+            texts=list(SPEAKER_COLOR_MODE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.safeAreaCard = ComboBoxSettingCard(
+            FIF.FIT_PAGE,
+            "Safe Area",
+            "Удерживать субтитры внутри безопасной зоны",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
+        self.safeMarginXCard = SpinBoxSettingCard(
+            FIF.ALIGNMENT,
+            "Safe Area: отступ X (%)",
+            "Отступ от левого/правого края",
+            minimum=0,
+            maximum=40,
+        )
+
+        self.safeMarginYCard = SpinBoxSettingCard(
+            FIF.ALIGNMENT,
+            "Safe Area: отступ Y (%)",
+            "Отступ от верхнего/нижнего края",
+            minimum=0,
+            maximum=40,
         )
 
         # 垂直间距
@@ -753,30 +836,45 @@ class SubtitleStyleInterface(QWidget):
     def _initLayout(self):
         """初始化布局"""
         # 添加卡片到组
-        self.layoutGroup.addSettingCard(self.splitTypeCard)
-        self.layoutGroup.addSettingCard(self.needSplitCard)
-        self.layoutGroup.addSettingCard(self.layoutCard)
-        self.layoutGroup.addSettingCard(self.effectCard)
-        self.layoutGroup.addSettingCard(self.effectDurationCard)
-        self.layoutGroup.addSettingCard(self.effectIntensityCard)
-        self.layoutGroup.addSettingCard(self.karaokeModeCard)
-        self.layoutGroup.addSettingCard(self.karaokeWindowCard)
-        self.layoutGroup.addSettingCard(self.presetCard)
-        self.layoutGroup.addSettingCard(self.motionDirectionCard)
-        self.layoutGroup.addSettingCard(self.motionAmplitudeCard)
-        self.layoutGroup.addSettingCard(self.motionEasingCard)
-        self.layoutGroup.addSettingCard(self.motionJitterCard)
-        self.layoutGroup.addSettingCard(self.rainbowEndColorCard)
-        self.layoutGroup.addSettingCard(self.maxWordCountCjkCard)
-        self.layoutGroup.addSettingCard(self.maxWordCountEnglishCard)
-        self.layoutGroup.addSettingCard(self.removePunctuationCard)
-        self.layoutGroup.addSettingCard(self.processedSubtitleCacheCard)
-        self.layoutGroup.addSettingCard(self.autoContrastCard)
-        self.layoutGroup.addSettingCard(self.antiFlickerCard)
-        self.layoutGroup.addSettingCard(self.gradientModeCard)
-        self.layoutGroup.addSettingCard(self.gradientColor1Card)
-        self.layoutGroup.addSettingCard(self.gradientColor2Card)
-        self.layoutGroup.addSettingCard(self.verticalSpacingCard)
+        # 1) Быстрый старт
+        self.quickStartGroup.addSettingCard(self.presetCard)
+        self.quickStartGroup.addSettingCard(self.layoutCard)
+        self.quickStartGroup.addSettingCard(self.effectCard)
+
+        # 2) Разбиение и структура
+        self.segmentationGroup.addSettingCard(self.needSplitCard)
+        self.segmentationGroup.addSettingCard(self.splitTypeCard)
+        self.segmentationGroup.addSettingCard(self.maxWordCountCjkCard)
+        self.segmentationGroup.addSettingCard(self.maxWordCountEnglishCard)
+        self.segmentationGroup.addSettingCard(self.removePunctuationCard)
+        self.segmentationGroup.addSettingCard(self.processedSubtitleCacheCard)
+        self.segmentationGroup.addSettingCard(self.karaokeModeCard)
+        self.segmentationGroup.addSettingCard(self.karaokeWindowCard)
+
+        # 3) Эффекты и движение
+        self.effectsGroup.addSettingCard(self.effectDurationCard)
+        self.effectsGroup.addSettingCard(self.effectIntensityCard)
+        self.effectsGroup.addSettingCard(self.motionDirectionCard)
+        self.effectsGroup.addSettingCard(self.motionAmplitudeCard)
+        self.effectsGroup.addSettingCard(self.motionEasingCard)
+        self.effectsGroup.addSettingCard(self.motionJitterCard)
+        self.effectsGroup.addSettingCard(self.motionBlurCard)
+
+        # 4) Читаемость и безопасная зона
+        self.readabilityGroup.addSettingCard(self.autoContrastCard)
+        self.readabilityGroup.addSettingCard(self.antiFlickerCard)
+        self.readabilityGroup.addSettingCard(self.safeAreaCard)
+        self.readabilityGroup.addSettingCard(self.safeMarginXCard)
+        self.readabilityGroup.addSettingCard(self.safeMarginYCard)
+        self.readabilityGroup.addSettingCard(self.verticalSpacingCard)
+
+        # 5) Цвет и акценты
+        self.colorGroup.addSettingCard(self.gradientModeCard)
+        self.colorGroup.addSettingCard(self.gradientColor1Card)
+        self.colorGroup.addSettingCard(self.gradientColor2Card)
+        self.colorGroup.addSettingCard(self.rainbowEndColorCard)
+        self.colorGroup.addSettingCard(self.speakerColorModeCard)
+
         self.mainGroup.addSettingCard(self.mainFontCard)
         self.mainGroup.addSettingCard(self.mainSizeCard)
         self.mainGroup.addSettingCard(self.mainSpacingCard)
@@ -802,7 +900,11 @@ class SubtitleStyleInterface(QWidget):
         self.previewGroup.addSettingCard(self.previewImageCard)
 
         # 添加组到布局
-        self.settingsLayout.addWidget(self.layoutGroup)
+        self.settingsLayout.addWidget(self.quickStartGroup)
+        self.settingsLayout.addWidget(self.segmentationGroup)
+        self.settingsLayout.addWidget(self.effectsGroup)
+        self.settingsLayout.addWidget(self.readabilityGroup)
+        self.settingsLayout.addWidget(self.colorGroup)
         self.settingsLayout.addWidget(self.mainGroup)
         self.settingsLayout.addWidget(self.subGroup)
         self.settingsLayout.addWidget(self.previewGroup)
@@ -867,6 +969,7 @@ class SubtitleStyleInterface(QWidget):
             )
         )
         self.motionJitterCard.spinBox.setValue(int(cfg.get(cfg.subtitle_motion_jitter)))
+        self.motionBlurCard.spinBox.setValue(int(cfg.get(cfg.subtitle_motion_blur_strength)))
         self.karaokeModeCard.comboBox.setCurrentText(
             TOGGLE_VALUE_TO_LABEL.get(bool(cfg.get(cfg.subtitle_karaoke_mode)), "Выкл")
         )
@@ -917,6 +1020,17 @@ class SubtitleStyleInterface(QWidget):
         self.gradientColor2Card.setColor(
             QColor(cfg.get(cfg.subtitle_gradient_color_2) or "#66CCFF")
         )
+        self.speakerColorModeCard.comboBox.setCurrentText(
+            SPEAKER_COLOR_MODE_VALUE_TO_LABEL.get(
+                cfg.get(cfg.subtitle_speaker_color_mode),
+                "Выкл",
+            )
+        )
+        self.safeAreaCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(bool(cfg.get(cfg.subtitle_safe_area_enabled)), "Вкл")
+        )
+        self.safeMarginXCard.spinBox.setValue(int(cfg.get(cfg.subtitle_safe_margin_x)))
+        self.safeMarginYCard.spinBox.setValue(int(cfg.get(cfg.subtitle_safe_margin_y)))
         # 设置字幕样式
         self.styleNameComboBox.comboBox.setCurrentText(cfg.get(cfg.subtitle_style_name))
 
@@ -1009,6 +1123,10 @@ class SubtitleStyleInterface(QWidget):
         self.motionJitterCard.spinBox.valueChanged.connect(
             lambda value: cfg.set(cfg.subtitle_motion_jitter, int(value))
         )
+        self.motionBlurCard.spinBox.valueChanged.connect(self.onSettingChanged)
+        self.motionBlurCard.spinBox.valueChanged.connect(
+            lambda value: cfg.set(cfg.subtitle_motion_blur_strength, int(value))
+        )
         self.karaokeModeCard.currentTextChanged.connect(self.onSettingChanged)
         self.karaokeModeCard.currentTextChanged.connect(
             lambda text: cfg.set(
@@ -1084,6 +1202,28 @@ class SubtitleStyleInterface(QWidget):
         self.gradientColor2Card.colorChanged.connect(self.onSettingChanged)
         self.gradientColor2Card.colorChanged.connect(
             lambda color: cfg.set(cfg.subtitle_gradient_color_2, color.name())
+        )
+        self.speakerColorModeCard.currentTextChanged.connect(self.onSettingChanged)
+        self.speakerColorModeCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.subtitle_speaker_color_mode,
+                SPEAKER_COLOR_MODE_LABEL_TO_VALUE.get(text, "off"),
+            )
+        )
+        self.safeAreaCard.currentTextChanged.connect(self.onSettingChanged)
+        self.safeAreaCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.subtitle_safe_area_enabled,
+                TOGGLE_LABEL_TO_VALUE.get(text, True),
+            )
+        )
+        self.safeMarginXCard.spinBox.valueChanged.connect(self.onSettingChanged)
+        self.safeMarginXCard.spinBox.valueChanged.connect(
+            lambda value: cfg.set(cfg.subtitle_safe_margin_x, int(value))
+        )
+        self.safeMarginYCard.spinBox.valueChanged.connect(self.onSettingChanged)
+        self.safeMarginYCard.spinBox.valueChanged.connect(
+            lambda value: cfg.set(cfg.subtitle_safe_margin_y, int(value))
         )
         # 垂直间距
         self.verticalSpacingCard.spinBox.valueChanged.connect(self.onSettingChanged)
@@ -1238,6 +1378,7 @@ class SubtitleStyleInterface(QWidget):
         self.motionAmplitudeCard.setEnabled(enabled)
         self.motionEasingCard.setEnabled(enabled)
         self.motionJitterCard.setEnabled(enabled)
+        self.motionBlurCard.setEnabled(enabled)
         self._update_word_timestamp_hint()
 
     def _update_word_timestamp_hint(self):
@@ -1280,6 +1421,10 @@ class SubtitleStyleInterface(QWidget):
 
         self._loading_style = True
         try:
+            # Сбрасываем «скрытые» цветовые модификаторы по умолчанию,
+            # чтобы ручной цвет текста оставался управляемым после смены пресета.
+            self.speakerColorModeCard.comboBox.setCurrentText("Выкл")
+
             if preset == "tiktok_dynamic":
                 self.effectCard.comboBox.setCurrentText("Подсветка по словам")
                 self.effectDurationCard.spinBox.setValue(450)
@@ -1355,6 +1500,55 @@ class SubtitleStyleInterface(QWidget):
                 self.autoContrastCard.comboBox.setCurrentText("Вкл")
                 self.antiFlickerCard.comboBox.setCurrentText("Вкл")
                 self.gradientModeCard.comboBox.setCurrentText("Радужный")
+                self.motionBlurCard.spinBox.setValue(4)
+            elif preset == "gaming_glitch":
+                self.effectCard.comboBox.setCurrentText("Глитч")
+                self.effectDurationCard.spinBox.setValue(420)
+                self.effectIntensityCard.spinBox.setValue(180)
+                self.motionDirectionCard.comboBox.setCurrentText("Снизу вверх")
+                self.motionAmplitudeCard.spinBox.setValue(120)
+                self.motionEasingCard.comboBox.setCurrentText("Ease In-Out")
+                self.motionJitterCard.spinBox.setValue(18)
+                self.motionBlurCard.spinBox.setValue(6)
+                self.autoContrastCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("2 цвета")
+                self.gradientColor1Card.setColor(QColor("#86F7FF"))
+                self.gradientColor2Card.setColor(QColor("#FF6FD8"))
+            elif preset == "podcast_focus":
+                self.effectCard.comboBox.setCurrentText("Плавное появление")
+                self.effectDurationCard.spinBox.setValue(240)
+                self.effectIntensityCard.spinBox.setValue(90)
+                self.motionJitterCard.spinBox.setValue(0)
+                self.motionBlurCard.spinBox.setValue(0)
+                self.karaokeModeCard.comboBox.setCurrentText("Выкл")
+                self.autoContrastCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("Без градиента")
+                self.speakerColorModeCard.comboBox.setCurrentText("Чередовать по репликам")
+            elif preset == "travel_vlog":
+                self.effectCard.comboBox.setCurrentText("Скольжение снизу")
+                self.effectDurationCard.spinBox.setValue(360)
+                self.effectIntensityCard.spinBox.setValue(120)
+                self.motionDirectionCard.comboBox.setCurrentText("Снизу вверх")
+                self.motionAmplitudeCard.spinBox.setValue(125)
+                self.motionEasingCard.comboBox.setCurrentText("Ease Out (мягкий финиш)")
+                self.motionJitterCard.spinBox.setValue(5)
+                self.motionBlurCard.spinBox.setValue(3)
+                self.gradientModeCard.comboBox.setCurrentText("2 цвета")
+                self.gradientColor1Card.setColor(QColor("#FFF0B3"))
+                self.gradientColor2Card.setColor(QColor("#6CD4FF"))
+            elif preset == "dramatic_trailer":
+                self.effectCard.comboBox.setCurrentText("Поп + поворот")
+                self.effectDurationCard.spinBox.setValue(500)
+                self.effectIntensityCard.spinBox.setValue(160)
+                self.motionDirectionCard.comboBox.setCurrentText("Снизу вверх")
+                self.motionAmplitudeCard.spinBox.setValue(140)
+                self.motionEasingCard.comboBox.setCurrentText("Ease In-Out")
+                self.motionJitterCard.spinBox.setValue(8)
+                self.motionBlurCard.spinBox.setValue(5)
+                self.autoContrastCard.comboBox.setCurrentText("Вкл")
+                self.gradientModeCard.comboBox.setCurrentText("2 цвета")
+                self.gradientColor1Card.setColor(QColor("#FFFFFF"))
+                self.gradientColor2Card.setColor(QColor("#FF9A7A"))
         finally:
             self._loading_style = False
 
@@ -1460,6 +1654,7 @@ class SubtitleStyleInterface(QWidget):
             motion_amplitude=cfg.get(cfg.subtitle_motion_amplitude) / 100,
             motion_easing=cfg.get(cfg.subtitle_motion_easing),
             motion_jitter=cfg.get(cfg.subtitle_motion_jitter) / 100,
+            motion_blur_strength=cfg.get(cfg.subtitle_motion_blur_strength),
             karaoke_mode=cfg.get(cfg.subtitle_karaoke_mode),
             karaoke_window_ms=cfg.get(cfg.subtitle_karaoke_window_ms),
             auto_contrast=cfg.get(cfg.subtitle_auto_contrast),
@@ -1467,6 +1662,10 @@ class SubtitleStyleInterface(QWidget):
             gradient_mode=cfg.get(cfg.subtitle_gradient_mode),
             gradient_color_1=cfg.get(cfg.subtitle_gradient_color_1),
             gradient_color_2=cfg.get(cfg.subtitle_gradient_color_2),
+            safe_area_enabled=cfg.get(cfg.subtitle_safe_area_enabled),
+            safe_margin_x=cfg.get(cfg.subtitle_safe_margin_x),
+            safe_margin_y=cfg.get(cfg.subtitle_safe_margin_y),
+            speaker_color_mode=cfg.get(cfg.subtitle_speaker_color_mode),
             preview_time_sec=preview_time_sec,
             request_id=request_id,
         )
@@ -1591,6 +1790,7 @@ class SubtitleStyleInterface(QWidget):
             motion_amplitude=cfg.get(cfg.subtitle_motion_amplitude) / 100,
             motion_easing=cfg.get(cfg.subtitle_motion_easing),
             motion_jitter=cfg.get(cfg.subtitle_motion_jitter) / 100,
+            motion_blur_strength=cfg.get(cfg.subtitle_motion_blur_strength),
             karaoke_mode=cfg.get(cfg.subtitle_karaoke_mode),
             karaoke_window_ms=cfg.get(cfg.subtitle_karaoke_window_ms),
             auto_contrast=cfg.get(cfg.subtitle_auto_contrast),
@@ -1598,6 +1798,10 @@ class SubtitleStyleInterface(QWidget):
             gradient_mode=cfg.get(cfg.subtitle_gradient_mode),
             gradient_color_1=cfg.get(cfg.subtitle_gradient_color_1),
             gradient_color_2=cfg.get(cfg.subtitle_gradient_color_2),
+            safe_area_enabled=cfg.get(cfg.subtitle_safe_area_enabled),
+            safe_margin_x=cfg.get(cfg.subtitle_safe_margin_x),
+            safe_margin_y=cfg.get(cfg.subtitle_safe_margin_y),
+            speaker_color_mode=cfg.get(cfg.subtitle_speaker_color_mode),
         )
 
         if sys.platform == "win32":

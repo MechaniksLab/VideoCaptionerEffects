@@ -560,6 +560,11 @@ class SubtitleInterface(QWidget):
                     gradient_mode=cfg.subtitle_gradient_mode.value,
                     gradient_color_1=cfg.subtitle_gradient_color_1.value,
                     gradient_color_2=cfg.subtitle_gradient_color_2.value,
+                    safe_area_enabled=cfg.subtitle_safe_area_enabled.value,
+                    safe_margin_x=cfg.subtitle_safe_margin_x.value,
+                    safe_margin_y=cfg.subtitle_safe_margin_y.value,
+                    speaker_color_mode=cfg.subtitle_speaker_color_mode.value,
+                    motion_blur_strength=cfg.subtitle_motion_blur_strength.value,
                 )
             else:
                 asr_data.save(file_path, layout=layout)
@@ -681,6 +686,11 @@ class SubtitleInterface(QWidget):
                 gradient_mode=cfg.subtitle_gradient_mode.value,
                 gradient_color_1=cfg.subtitle_gradient_color_1.value,
                 gradient_color_2=cfg.subtitle_gradient_color_2.value,
+                safe_area_enabled=cfg.subtitle_safe_area_enabled.value,
+                safe_margin_x=cfg.subtitle_safe_margin_x.value,
+                safe_margin_y=cfg.subtitle_safe_margin_y.value,
+                speaker_color_mode=cfg.subtitle_speaker_color_mode.value,
+                motion_blur_strength=cfg.subtitle_motion_blur_strength.value,
             )
             signalBus.add_subtitle(temp_srt_path)
 

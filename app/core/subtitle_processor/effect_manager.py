@@ -468,6 +468,11 @@ class EffectManager:
         segment_end_ms: Optional[int] = None,
         anchor_x: Optional[int] = None,
         anchor_y: Optional[int] = None,
+        safe_area_enabled: bool = True,
+        safe_margin_x: int = 8,
+        safe_margin_y: int = 10,
+        speaker_color_mode: str = "off",
+        motion_blur_strength: float = 0.0,
     ) -> str:
         """Преобразует текст в ASS override-теги для базовых анимаций."""
         if not text:
@@ -489,8 +494,14 @@ class EffectManager:
         safe_y = max(180, int(play_res_y or 720))
         base_x = int(anchor_x) if anchor_x is not None else safe_x // 2
         base_y = int(anchor_y) if anchor_y is not None else int(safe_y * 0.9167)
-        base_x = max(0, min(safe_x, base_x))
-        base_y = max(0, min(safe_y, base_y))
+        if safe_area_enabled:
+            margin_x_px = int(max(0, min(40, safe_margin_x)) * safe_x / 100)
+            margin_y_px = int(max(0, min(40, safe_margin_y)) * safe_y / 100)
+            base_x = max(margin_x_px, min(safe_x - margin_x_px, base_x))
+            base_y = max(margin_y_px, min(safe_y - margin_y_px, base_y))
+        else:
+            base_x = max(0, min(safe_x, base_x))
+            base_y = max(0, min(safe_y, base_y))
 
         # Базовая обработка текста перед motion-эффектом
         processed_text = text
@@ -498,8 +509,8 @@ class EffectManager:
         karaoke_active = False
 
         # Ключевая логика:
-        # - если есть реальные word timestamps -> используем их (без синтетических \k)
-        # - если word timestamps нет -> не делаем псевдо-караоке
+        # - если есть реальные word timestamps -> используем их
+        # - если word timestamps нет -> мягкий fallback без синтетического \k-каркаса
         if wants_karaoke and use_word_timestamps:
             wt = word_timestamps or []
             if wt:
@@ -551,10 +562,23 @@ class EffectManager:
                 karaoke_active = True
         elif wants_karaoke:
             # Fallback для случаев без word-level таймштампов:
-            # добавляем синтетические \k-теги, чтобы эффект караоке всё равно был видим.
+            # без синтетических \k-тегов, только мягкая подсветка.
             kdur = max(80, min(karaoke_window_ms, duration))
-            processed_text = EffectManager._word_highlight_ass(processed_text, kdur)
+            processed_text = (
+                f"{{\\1c&H00909090&\\t(0,{kdur},\\1c&H00FFFFFF&)}}"
+                f"{processed_text}"
+            )
             karaoke_active = True
+
+        if (speaker_color_mode or "off").lower() == "alternate":
+            speaker_palette = ["#8FD3FF", "#FFD27A", "#B5F5B0", "#F6A9FF"]
+            speaker_color = speaker_palette[index % len(speaker_palette)]
+            processed_text = EffectManager._apply_gradient(
+                processed_text,
+                "two_color",
+                speaker_color,
+                speaker_color,
+            )
 
         # Градиент применяем всегда; _apply_gradient умеет пропускать ASS-теги.
         processed_text = EffectManager._apply_gradient(
@@ -566,6 +590,10 @@ class EffectManager:
 
         if auto_contrast:
             processed_text = f"{{\\bord3\\shad1\\3c&H000000&\\blur1}}{processed_text}"
+
+        motion_blur = max(0.0, min(20.0, float(motion_blur_strength or 0.0)))
+        if motion_blur > 0:
+            processed_text = f"{{\\blur{motion_blur:.1f}}}{processed_text}"
 
         if effect_type == SubtitleEffect.NONE.value:
             return processed_text
