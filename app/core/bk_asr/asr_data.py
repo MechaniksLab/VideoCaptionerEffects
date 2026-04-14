@@ -2,9 +2,11 @@ import json
 import math
 import re
 from pathlib import Path
-from typing import List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import os
 import platform
+
+from app.core.utils.io_utils import atomic_write_text
 
 
 def handle_long_path(path: str) -> str:
@@ -28,12 +30,18 @@ def handle_long_path(path: str) -> str:
 
 class ASRDataSeg:
     def __init__(
-        self, text: str, start_time: int, end_time: int, translated_text: str = ""
+        self,
+        text: str,
+        start_time: int,
+        end_time: int,
+        translated_text: str = "",
+        word_timestamps: Optional[List[Dict[str, Any]]] = None,
     ):
         self.text = text
         self.translated_text = translated_text
         self.start_time = start_time
         self.end_time = end_time
+        self.word_timestamps = word_timestamps or []
 
     def to_srt_ts(self) -> str:
         """Convert to SRT timestamp format"""
@@ -236,8 +244,11 @@ class ASRData:
         elif save_path.endswith(".txt"):
             self.to_txt(save_path=save_path, layout=layout)
         elif save_path.endswith(".json"):
-            with open(save_path, "w", encoding="utf-8") as f:
-                json.dump(self.to_json(), f, ensure_ascii=False)
+            atomic_write_text(
+                save_path,
+                json.dumps(self.to_json(), ensure_ascii=False),
+                encoding="utf-8",
+            )
         elif save_path.endswith(".ass"):
             self.to_ass(
                 save_path=save_path,
@@ -286,9 +297,7 @@ class ASRData:
         if save_path:
             # 处理Windows长路径问题
             save_path = handle_long_path(save_path)
-
-            with open(save_path, "w", encoding="utf-8") as f:
-                f.write("\n".join(result))
+            atomic_write_text(save_path, "\n".join(result), encoding="utf-8")
         return text
 
     def to_srt(self, layout: str = "原文在上", save_path=None) -> str:
@@ -317,9 +326,7 @@ class ASRData:
         if save_path:
             # 处理Windows长路径问题
             save_path = handle_long_path(save_path)
-
-            with open(save_path, "w", encoding="utf-8") as f:
-                f.write(srt_text)
+            atomic_write_text(save_path, srt_text, encoding="utf-8")
         return srt_text
 
     def to_lrc(self, save_path=None) -> str:
@@ -338,6 +345,7 @@ class ASRData:
                 "end_time": segment.end_time,
                 "original_subtitle": original,
                 "translated_subtitle": translated,
+                "word_timestamps": segment.word_timestamps,
             }
         return result_json
 
@@ -495,11 +503,14 @@ class ASRData:
             return text
 
         dialogue_template = "Dialogue: 0,{},{},{},,0,0,0,,{}\n"
-        use_word_timestamps = self.is_word_timestamp()
+        use_word_timestamps = self.is_word_timestamp() or any(
+            bool(seg.word_timestamps) for seg in self.segments
+        )
         for idx, seg in enumerate(self.segments):
             start_time, end_time = seg.to_ass_ts()
             original = seg.text
             translated = seg.translated_text
+            seg_word_timestamps = seg.word_timestamps if seg.word_timestamps else None
             original_effect_text = EffectManager.apply_ass_effect(
                 original,
                 effect_type,
@@ -523,8 +534,11 @@ class ASRData:
                 gradient_color_1,
                 gradient_color_2,
                 use_word_timestamps,
-                default_anchor[0],
-                default_anchor[1],
+                word_timestamps=seg_word_timestamps,
+                segment_start_ms=seg.start_time,
+                segment_end_ms=seg.end_time,
+                anchor_x=default_anchor[0],
+                anchor_y=default_anchor[1],
             )
             translated_effect_text = EffectManager.apply_ass_effect(
                 translated,
@@ -549,8 +563,11 @@ class ASRData:
                 gradient_color_1,
                 gradient_color_2,
                 use_word_timestamps,
-                secondary_anchor[0],
-                secondary_anchor[1],
+                word_timestamps=seg_word_timestamps,
+                segment_start_ms=seg.start_time,
+                segment_end_ms=seg.end_time,
+                anchor_x=secondary_anchor[0],
+                anchor_y=secondary_anchor[1],
             )
 
             # 检查是否有译文
@@ -614,9 +631,7 @@ class ASRData:
         if save_path:
             # 处理Windows长路径问题
             save_path = handle_long_path(save_path)
-
-            with open(save_path, "w", encoding="utf-8") as f:
-                f.write(ass_content)
+            atomic_write_text(save_path, ass_content, encoding="utf-8")
         return ass_content
 
     def to_vtt(self, save_path=None) -> str:
@@ -711,6 +726,116 @@ class ASRData:
 
         return self
 
+    def validate_and_fix_timing(
+        self,
+        min_duration_ms: int = 120,
+        min_gap_ms: int = 20,
+    ) -> dict:
+        """校验并修复时间轴问题，返回修复统计。"""
+        fixes = {
+            "negative_duration": 0,
+            "too_short_duration": 0,
+            "overlap_fixed": 0,
+        }
+
+        if not self.segments:
+            return fixes
+
+        for i, seg in enumerate(self.segments):
+            if seg.end_time <= seg.start_time:
+                seg.end_time = seg.start_time + max(1, min_duration_ms)
+                fixes["negative_duration"] += 1
+
+            duration = seg.end_time - seg.start_time
+            if duration < min_duration_ms:
+                seg.end_time = seg.start_time + min_duration_ms
+                fixes["too_short_duration"] += 1
+
+            if i == 0:
+                continue
+
+            prev = self.segments[i - 1]
+            if seg.start_time < prev.end_time + min_gap_ms:
+                seg.start_time = prev.end_time + min_gap_ms
+                if seg.end_time <= seg.start_time:
+                    seg.end_time = seg.start_time + min_duration_ms
+                fixes["overlap_fixed"] += 1
+
+        return fixes
+
+    def apply_smart_line_break(
+        self, max_cjk_chars: int = 14, max_english_words: int = 8
+    ) -> "ASRData":
+        """按语言做简易自动换行，提升可读性。"""
+
+        def _wrap_cjk(text: str, max_chars: int) -> str:
+            text = (text or "").strip()
+            if not text or "\n" in text:
+                return text
+            if len(text) <= max_chars:
+                return text
+            split_at = min(len(text) - 1, max_chars)
+            return f"{text[:split_at]}\n{text[split_at:]}"
+
+        def _wrap_words(text: str, max_words: int) -> str:
+            text = (text or "").strip()
+            if not text or "\n" in text:
+                return text
+            words = text.split()
+            if len(words) <= max_words:
+                return text
+            split_at = max_words
+            return f"{' '.join(words[:split_at])}\n{' '.join(words[split_at:])}"
+
+        for seg in self.segments:
+            txt = seg.text or ""
+            if re.search(r"[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]", txt):
+                seg.text = _wrap_cjk(txt, max_cjk_chars)
+            else:
+                seg.text = _wrap_words(txt, max_english_words)
+
+            ttxt = seg.translated_text or ""
+            if re.search(r"[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]", ttxt):
+                seg.translated_text = _wrap_cjk(ttxt, max_cjk_chars)
+            else:
+                seg.translated_text = _wrap_words(ttxt, max_english_words)
+
+        return self
+
+    def build_qa_report(self, cps_limit: float = 22.0) -> dict:
+        """构建字幕QA报告（可读性/时序风险）。"""
+        issues = []
+        for idx, seg in enumerate(self.segments, 1):
+            duration_ms = max(1, seg.end_time - seg.start_time)
+            duration_s = duration_ms / 1000.0
+            text_len = len((seg.text or "").replace("\n", "").strip())
+            cps = text_len / duration_s
+
+            if cps > cps_limit:
+                issues.append(
+                    {
+                        "index": idx,
+                        "type": "high_cps",
+                        "cps": round(cps, 2),
+                        "text": seg.text,
+                    }
+                )
+            if duration_ms < 300:
+                issues.append(
+                    {
+                        "index": idx,
+                        "type": "too_short",
+                        "duration_ms": duration_ms,
+                        "text": seg.text,
+                    }
+                )
+
+        return {
+            "total_segments": len(self.segments),
+            "issue_count": len(issues),
+            "issues": issues,
+        }
+
     def __str__(self):
         return self.to_txt()
 
@@ -762,6 +887,7 @@ class ASRData:
                 translated_text=segment_data["translated_subtitle"],
                 start_time=segment_data["start_time"],
                 end_time=segment_data["end_time"],
+                word_timestamps=segment_data.get("word_timestamps", []),
             )
             segments.append(segment)
         return ASRData(segments)

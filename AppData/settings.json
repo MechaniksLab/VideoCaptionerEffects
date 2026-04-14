@@ -45,7 +45,9 @@
         "NeedTranslate": false,
         "NeedsRemovePunctuation": true,
         "SplitType": "语义分段",
-        "TargetLanguage": "俄语"
+        "TargetLanguage": "俄语",
+        "UseProcessedSubtitleCache": true,
+        "UseSubtitleCache": true
     },
     "MainWindow": {
         "DpiScale": "Auto",
@@ -80,7 +82,7 @@
         "KaraokeMode": false,
         "KaraokeWindowMs": 1400,
         "Layout": "仅译文",
-        "MotionAmplitude": 11,
+        "MotionAmplitude": 10,
         "MotionDirection": "up",
         "MotionEasing": "ease_in_out",
         "MotionJitter": 0,

@@ -42,6 +42,7 @@ def transcribe(audio_path: str, config: TranscribeConfig, callback=None) -> ASRD
     # 构建ASR参数
     asr_args = {
         "use_cache": config.use_asr_cache,
+        "asr_cache_tag": config.asr_cache_tag,
         "need_word_time_stamp": config.need_word_time_stamp,
     }
 

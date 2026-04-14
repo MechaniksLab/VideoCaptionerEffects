@@ -5,6 +5,7 @@ from pathlib import Path
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
+from app.common.config import cfg
 from app.core.bk_asr import transcribe
 from app.core.entities import TranscribeTask, TranscribeModelEnum
 from app.core.utils.logger import setup_logger
@@ -34,6 +35,13 @@ class TranscriptThread(QThread):
         try:
             logger.info(f"\n===========转录任务开始===========")
             logger.info(f"时间：{datetime.datetime.now()}")
+
+            # Единый мастер-переключатель повторного прогона:
+            # если кэш обработанных субтитров отключён, не используем shortcut/ASR cache.
+            allow_cache_shortcuts = bool(cfg.use_processed_subtitle_cache.value)
+            if not allow_cache_shortcuts:
+                self.task.transcribe_config.use_asr_cache = False
+                logger.info("UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации")
 
             # 检查是否已经存在字幕文件
             # if Path(self.task.output_path).exists():
@@ -71,7 +79,7 @@ class TranscriptThread(QThread):
                 # В word-режиме нам нужны word-level таймштампы,
                 # поэтому нельзя переиспользовать уже скачанный SRT.
                 force_fresh_asr = bool(self.task.transcribe_config.need_word_time_stamp)
-                if downloaded_subtitles and not force_fresh_asr:
+                if downloaded_subtitles and not force_fresh_asr and allow_cache_shortcuts:
                     subtitle_file = downloaded_subtitles[0]
                     self.task.output_path = str(
                         subtitle_file
@@ -85,6 +93,10 @@ class TranscriptThread(QThread):
                 elif downloaded_subtitles and force_fresh_asr:
                     logger.info(
                         "检测到下载字幕，但当前需要词级时间戳，跳过复用下载字幕并强制重新转录"
+                    )
+                elif downloaded_subtitles and not allow_cache_shortcuts:
+                    logger.info(
+                        "检测到下载字幕，但 UseProcessedSubtitleCache=OFF，强制重新转录"
                     )
 
             self.progress.emit(5, self.tr("转换音频中"))

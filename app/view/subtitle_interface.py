@@ -300,8 +300,6 @@ class SubtitleInterface(QWidget):
 
         self.command_bar.addWidget(self.target_language_button)
 
-        self.command_bar.addSeparator()
-
         # 添加文稿提示按钮
         self.prompt_button = Action(
             FIF.DOCUMENT, "Подсказка для LLM", triggered=self.show_prompt_dialog

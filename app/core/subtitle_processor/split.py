@@ -185,6 +185,8 @@ class SubtitleSplitter:
         max_word_count_cjk: int = MAX_WORD_COUNT_CJK,
         max_word_count_english: int = MAX_WORD_COUNT_ENGLISH,
         use_cache: bool = True,
+        openai_base_url: Optional[str] = None,
+        openai_api_key: Optional[str] = None,
     ):
         """
         初始化字幕分割器
@@ -200,7 +202,7 @@ class SubtitleSplitter:
             max_word_count_english: 英文文本最大单词数
             use_cache: 是否使用缓存
         """
-        self._init_client()
+        self._init_client(openai_base_url, openai_api_key)
         self.thread_num = thread_num
         self.model = model
         self.temperature = temperature
@@ -220,10 +222,12 @@ class SubtitleSplitter:
                 f"无效的分段类型: {split_type}，必须是 'semantic' 或 'sentence'"
             )
 
-    def _init_client(self):
+    def _init_client(
+        self, openai_base_url: Optional[str] = None, openai_api_key: Optional[str] = None
+    ):
         """初始化OpenAI客户端"""
-        base_url = os.getenv("OPENAI_BASE_URL")
-        api_key = os.getenv("OPENAI_API_KEY")
+        base_url = openai_base_url or os.getenv("OPENAI_BASE_URL")
+        api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
         if not (base_url and api_key):
             raise ValueError("环境变量 OPENAI_BASE_URL 和 OPENAI_API_KEY 必须设置")
 
@@ -451,6 +455,7 @@ class SubtitleSplitter:
         param = {
             "temperature": self.temperature,
             "split_type": self.split_type,
+            "cache_version": "subtitle_v2",
         }
         if self.use_cache:
             cached_result = self.cache_manager.get_llm_result(
@@ -465,6 +470,8 @@ class SubtitleSplitter:
                     return self._merge_segments_based_on_sentences(segments, sentences)
                 except json.JSONDecodeError as e:
                     logger.warning(f"缓存数据解析失败: {str(e)}")
+            else:
+                logger.info("分段缓存未命中，转为在线处理")
 
         # 调用API
         logger.info(f"开始调用API进行分段，文本长度: {count_words(txt)}")
@@ -769,6 +776,7 @@ class SubtitleSplitter:
                     merged_text.strip(),
                     current_segments[0].start_time,
                     current_segments[-1].end_time,
+                    word_timestamps=self._collect_word_timestamps(current_segments),
                 )
                 result_segs.append(merged_seg)
                 continue
@@ -805,6 +813,26 @@ class SubtitleSplitter:
         # 按时间排序
         result_segs.sort(key=lambda seg: seg.start_time)
         return result_segs
+
+    @staticmethod
+    def _collect_word_timestamps(segments: List[ASRDataSeg]) -> List[dict]:
+        """从若干 word-level 段聚合出句级 word timestamps。"""
+        word_timestamps: List[dict] = []
+        for seg in segments:
+            text = (seg.text or "").strip()
+            if not text:
+                continue
+            if seg.word_timestamps:
+                word_timestamps.extend(seg.word_timestamps)
+            else:
+                word_timestamps.append(
+                    {
+                        "text": text,
+                        "start_time": seg.start_time,
+                        "end_time": seg.end_time,
+                    }
+                )
+        return word_timestamps
 
     def _merge_processed_segments(
         self, processed_segments: List[List[ASRDataSeg]]
@@ -875,6 +903,20 @@ class SubtitleSplitter:
                 else:
                     current_seg.text += " " + next_seg.text  # 加空格连接
                 current_seg.end_time = next_seg.end_time
+                current_seg.word_timestamps = (
+                    (current_seg.word_timestamps or [])
+                    + (
+                        next_seg.word_timestamps
+                        if next_seg.word_timestamps
+                        else [
+                            {
+                                "text": (next_seg.text or "").strip(),
+                                "start_time": next_seg.start_time,
+                                "end_time": next_seg.end_time,
+                            }
+                        ]
+                    )
+                )
 
                 # 从列表中移除下一个段落
                 segments.pop(i + 1)

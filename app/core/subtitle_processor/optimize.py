@@ -27,16 +27,20 @@ class SubtitleOptimizer:
         thread_num: int = 5,
         batch_num: int = 10,
         model: str = "gpt-4o-mini",
+        use_cache: bool = True,
         custom_prompt: str = "",
         temperature: float = 0.7,
         timeout: int = 60,
         retry_times: int = 1,
         update_callback: Optional[Callable] = None,
+        openai_base_url: Optional[str] = None,
+        openai_api_key: Optional[str] = None,
     ):
-        self._init_client()
+        self._init_client(openai_base_url, openai_api_key)
         self.thread_num = thread_num
         self.batch_num = batch_num
         self.model = model
+        self.use_cache = use_cache
         self.custom_prompt = custom_prompt
         self.temperature = temperature
         self.timeout = timeout
@@ -46,10 +50,12 @@ class SubtitleOptimizer:
         self._init_thread_pool()
         self.cache_manager = CacheManager(str(CACHE_PATH))
 
-    def _init_client(self):
+    def _init_client(
+        self, openai_base_url: Optional[str] = None, openai_api_key: Optional[str] = None
+    ):
         """初始化OpenAI客户端"""
-        base_url = os.getenv("OPENAI_BASE_URL")
-        api_key = os.getenv("OPENAI_API_KEY")
+        base_url = openai_base_url or os.getenv("OPENAI_BASE_URL")
+        api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
         if not (base_url and api_key):
             raise ValueError("环境变量 OPENAI_BASE_URL 和 OPENAI_API_KEY 必须设置")
 
@@ -150,16 +156,20 @@ class SubtitleOptimizer:
         cache_params = {
             "temperature": self.temperature,
             "model": self.model,
+            "cache_version": "subtitle_v2",
         }
         # 构建缓存key
         cache_key = f"{len(OPTIMIZER_PROMPT)}_{user_prompt}"
-        cache_result = self.cache_manager.get_llm_result(
-            cache_key, self.model, **cache_params
-        )
+        cache_result = None
+        if self.use_cache:
+            cache_result = self.cache_manager.get_llm_result(
+                cache_key, self.model, **cache_params
+            )
 
         if cache_result:
             logger.info("使用缓存的优化结果")
             return json.loads(cache_result)
+        logger.info("优化缓存未命中，转为在线处理")
 
         # 构建提示词
         messages = [
@@ -185,12 +195,13 @@ class SubtitleOptimizer:
         aligned_result = self._repair_subtitle(subtitle_chunk, result)
 
         # 保存到缓存
-        self.cache_manager.set_llm_result(
-            cache_key,
-            json.dumps(aligned_result, ensure_ascii=False),
-            self.model,
-            **cache_params,
-        )
+        if self.use_cache:
+            self.cache_manager.set_llm_result(
+                cache_key,
+                json.dumps(aligned_result, ensure_ascii=False),
+                self.model,
+                **cache_params,
+            )
 
         if self.update_callback:
             self.update_callback(aligned_result)
@@ -228,6 +239,8 @@ class SubtitleOptimizer:
                 text=optimized_dict.get(str(i), seg.text),
                 start_time=seg.start_time,
                 end_time=seg.end_time,
+                translated_text=seg.translated_text,
+                word_timestamps=seg.word_timestamps,
             )
             for i, seg in enumerate(original_segments, 1)
         ]

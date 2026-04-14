@@ -212,6 +212,10 @@ class Config(QConfig):
     # ------------------- 字幕配置 -------------------
     need_optimize = ConfigItem("Subtitle", "NeedOptimize", False, BoolValidator())
     need_translate = ConfigItem("Subtitle", "NeedTranslate", False, BoolValidator())
+    use_subtitle_cache = ConfigItem("Subtitle", "UseSubtitleCache", True, BoolValidator())
+    use_processed_subtitle_cache = ConfigItem(
+        "Subtitle", "UseProcessedSubtitleCache", True, BoolValidator()
+    )
     need_split = ConfigItem("Subtitle", "NeedSplit", False, BoolValidator())
     split_type = OptionsConfigItem(
         "Subtitle",

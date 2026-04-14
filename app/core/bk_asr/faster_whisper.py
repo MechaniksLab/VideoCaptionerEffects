@@ -27,6 +27,7 @@ class FasterWhisperASR(BaseASR):
         output_format: str = "srt",
         use_cache: bool = False,
         need_word_time_stamp: bool = False,
+        asr_cache_tag: str = "default",
         # VAD 相关参数
         vad_filter: bool = True,
         vad_threshold: float = 0.4,
@@ -42,7 +43,12 @@ class FasterWhisperASR(BaseASR):
         max_comma_cent: int = 50,
         prompt: str = None,
     ):
-        super().__init__(audio_path, use_cache)
+        super().__init__(
+            audio_path,
+            use_cache=use_cache,
+            need_word_time_stamp=need_word_time_stamp,
+            asr_cache_tag=asr_cache_tag,
+        )
 
         # 基本参数
         self.model_path = whisper_model

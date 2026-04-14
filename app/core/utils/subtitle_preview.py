@@ -161,9 +161,9 @@ def generate_ass_file(
         gradient_mode,
         gradient_color_1,
         gradient_color_2,
-        False,
-        default_anchor[0],
-        default_anchor[1],
+        use_word_timestamps=False,
+        anchor_x=default_anchor[0],
+        anchor_y=default_anchor[1],
     )
     translated_text = EffectManager.apply_ass_effect(
         translate_text,
@@ -187,9 +187,9 @@ def generate_ass_file(
         gradient_mode,
         gradient_color_1,
         gradient_color_2,
-        False,
-        secondary_anchor[0],
-        secondary_anchor[1],
+        use_word_timestamps=False,
+        anchor_x=secondary_anchor[0],
+        anchor_y=secondary_anchor[1],
     )
 
     if original_text and default_blur > 0:

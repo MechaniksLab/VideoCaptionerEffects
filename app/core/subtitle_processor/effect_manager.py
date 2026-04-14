@@ -4,7 +4,8 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, Optional
+import re
+from typing import Dict, Optional, List, Any
 
 
 class SubtitleEffect(str, Enum):
@@ -462,6 +463,9 @@ class EffectManager:
         gradient_color_1: str = "#FFFFFF",
         gradient_color_2: str = "#66CCFF",
         use_word_timestamps: bool = False,
+        word_timestamps: Optional[List[Dict[str, Any]]] = None,
+        segment_start_ms: Optional[int] = None,
+        segment_end_ms: Optional[int] = None,
         anchor_x: Optional[int] = None,
         anchor_y: Optional[int] = None,
     ) -> str:
@@ -491,18 +495,60 @@ class EffectManager:
         # Базовая обработка текста перед motion-эффектом
         processed_text = text
         wants_karaoke = karaoke_mode or effect_type == SubtitleEffect.WORD_HIGHLIGHT.value
+        karaoke_active = False
 
         # Ключевая логика:
         # - если есть реальные word timestamps -> используем их (без синтетических \k)
         # - если word timestamps нет -> не делаем псевдо-караоке
-        karaoke_active = False
         if wants_karaoke and use_word_timestamps:
-            kdur = max(80, min(effect_duration_ms, duration))
-            processed_text = (
-                f"{{\\1c&H00909090&"
-                f"\\t(0,{kdur},\\1c&H00FFFFFF&)}}{processed_text}"
-            )
-            karaoke_active = True
+            wt = word_timestamps or []
+            if wt:
+                seg_start = start_ms if segment_start_ms is None else segment_start_ms
+                seg_end = end_ms if segment_end_ms is None else segment_end_ms
+                tokens = []
+                for item in wt:
+                    t = str(item.get("text", "")).strip()
+                    if not t:
+                        continue
+                    ws = int(item.get("start_time", seg_start))
+                    we = int(item.get("end_time", ws + 120))
+                    ws = max(seg_start, ws)
+                    we = min(seg_end, max(ws + 10, we))
+                    k_cs = max(1, int((we - ws) / 10))
+                    tokens.append((t, ws, we, k_cs))
+
+                if tokens:
+                    joined = []
+                    cursor_ms = seg_start
+                    for i, (token, ws, we, k_cs) in enumerate(tokens):
+                        # 保留词与词之间的真实停顿，避免“按顺序提前高亮”
+                        if ws > cursor_ms:
+                            gap_cs = max(1, int((ws - cursor_ms) / 10))
+                            joined.append(f"{{\\k{gap_cs}}}")
+
+                        if i > 0:
+                            prev = tokens[i - 1][0]
+                            if re.match(r"^[A-Za-z0-9']+$", prev) and re.match(
+                                r"^[A-Za-z0-9']+$", token
+                            ):
+                                joined.append(" ")
+                        joined.append(f"{{\\k{k_cs}}}{token}")
+                        cursor_ms = max(cursor_ms, we)
+
+                    # 尾部停顿也保留，避免最后一个词太早结束
+                    if cursor_ms < seg_end:
+                        tail_cs = max(1, int((seg_end - cursor_ms) / 10))
+                        joined.append(f"{{\\k{tail_cs}}}")
+
+                    processed_text = "".join(joined)
+                    karaoke_active = True
+            if not karaoke_active:
+                kdur = max(80, min(effect_duration_ms, duration))
+                processed_text = (
+                    f"{{\\1c&H00909090&\\t(0,{kdur},\\1c&H00FFFFFF&)}}"
+                    f"{processed_text}"
+                )
+                karaoke_active = True
         elif wants_karaoke:
             # Fallback для случаев без word-level таймштампов:
             # добавляем синтетические \k-теги, чтобы эффект караоке всё равно был видим.

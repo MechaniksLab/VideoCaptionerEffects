@@ -528,6 +528,13 @@ class SubtitleStyleInterface(QWidget):
             texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
         )
 
+        self.processedSubtitleCacheCard = ComboBoxSettingCard(
+            FIF.SAVE,
+            "Кэшировать обработанные субтитры",
+            "При смене только стиля повторно использовать результат без прогона LLM",
+            texts=list(TOGGLE_LABEL_TO_VALUE.keys()),
+        )
+
         self.autoContrastCard = ComboBoxSettingCard(
             FIF.CONSTRACT,
             "Авто-контраст",
@@ -763,6 +770,7 @@ class SubtitleStyleInterface(QWidget):
         self.layoutGroup.addSettingCard(self.maxWordCountCjkCard)
         self.layoutGroup.addSettingCard(self.maxWordCountEnglishCard)
         self.layoutGroup.addSettingCard(self.removePunctuationCard)
+        self.layoutGroup.addSettingCard(self.processedSubtitleCacheCard)
         self.layoutGroup.addSettingCard(self.autoContrastCard)
         self.layoutGroup.addSettingCard(self.antiFlickerCard)
         self.layoutGroup.addSettingCard(self.gradientModeCard)
@@ -883,6 +891,12 @@ class SubtitleStyleInterface(QWidget):
         self.removePunctuationCard.comboBox.setCurrentText(
             TOGGLE_VALUE_TO_LABEL.get(
                 bool(cfg.get(cfg.needs_remove_punctuation)),
+                "Вкл",
+            )
+        )
+        self.processedSubtitleCacheCard.comboBox.setCurrentText(
+            TOGGLE_VALUE_TO_LABEL.get(
+                bool(cfg.get(cfg.use_processed_subtitle_cache)),
                 "Вкл",
             )
         )
@@ -1032,6 +1046,13 @@ class SubtitleStyleInterface(QWidget):
         self.removePunctuationCard.currentTextChanged.connect(
             lambda text: cfg.set(
                 cfg.needs_remove_punctuation,
+                TOGGLE_LABEL_TO_VALUE.get(text, True),
+            )
+        )
+        self.processedSubtitleCacheCard.currentTextChanged.connect(self.onSettingChanged)
+        self.processedSubtitleCacheCard.currentTextChanged.connect(
+            lambda text: cfg.set(
+                cfg.use_processed_subtitle_cache,
                 TOGGLE_LABEL_TO_VALUE.get(text, True),
             )
         )

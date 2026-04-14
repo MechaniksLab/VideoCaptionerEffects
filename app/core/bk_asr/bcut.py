@@ -36,8 +36,14 @@ class BcutASR(BaseASR):
         audio_path: str | bytes,
         use_cache: bool = True,
         need_word_time_stamp: bool = False,
+        asr_cache_tag: str = "default",
     ):
-        super().__init__(audio_path, use_cache=use_cache)
+        super().__init__(
+            audio_path,
+            use_cache=use_cache,
+            need_word_time_stamp=need_word_time_stamp,
+            asr_cache_tag=asr_cache_tag,
+        )
         self.session = requests.Session()
         self.task_id: Optional[str] = None
         self.__etags: list[str] = []

@@ -75,15 +75,14 @@ class TaskFactory:
             output_path = str(Path(file_path).parent / f"{file_name}.srt")
 
         use_asr_cache = cfg.use_asr_cache.value
-        # В word-режиме принудительно отключаем ASR-кэш,
-        # чтобы исключить подхват старых сегментных результатов.
-        if need_next_task and is_word_mode:
-            use_asr_cache = False
+
+        asr_cache_tag = "word" if need_word_time_stamp else "sentence"
 
         config = TranscribeConfig(
             transcribe_model=cfg.transcribe_model.value,
             transcribe_language=LANGUAGES[cfg.transcribe_language.value.value],
             use_asr_cache=use_asr_cache,
+            asr_cache_tag=asr_cache_tag,
             need_word_time_stamp=need_word_time_stamp,
             # Whisper Cpp 配置
             whisper_model=cfg.whisper_model.value.value,
@@ -204,6 +203,8 @@ class TaskFactory:
             need_reflect=cfg.need_reflect_translate.value,
             need_translate=cfg.need_translate.value,
             need_optimize=cfg.need_optimize.value,
+            use_cache=cfg.use_subtitle_cache.value,
+            use_processed_subtitle_cache=cfg.use_processed_subtitle_cache.value,
             thread_num=cfg.thread_num.value,
             batch_size=cfg.batch_size.value,
             # 字幕布局、样式

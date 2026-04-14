@@ -1,5 +1,8 @@
 import datetime
+import hashlib
+import json
 import os
+import time
 from pathlib import Path
 from typing import Dict
 
@@ -14,9 +17,12 @@ from app.core.subtitle_processor.optimize import SubtitleOptimizer
 from app.core.subtitle_processor.translate import TranslatorFactory, TranslatorType
 from app.core.utils.logger import setup_logger
 from app.core.utils.test_opanai import test_openai
+from app.core.utils.get_subtitle_style import get_subtitle_style
 from app.core.storage.cache_manager import ServiceUsageManager
 from app.core.storage.database import DatabaseManager
-from app.config import CACHE_PATH
+from app.core.errors import AppError, ConfigError, map_exception
+from app.core.utils.io_utils import atomic_write_text
+from app.config import CACHE_PATH, WORK_PATH
 
 # 配置日志
 logger = setup_logger("subtitle_optimization_thread")
@@ -42,6 +48,30 @@ class SubtitleThread(QThread):
 
     def set_custom_prompt_text(self, text: str):
         self.custom_prompt_text = text
+
+    def _processed_cache_path(self, subtitle_path: str, subtitle_config: SubtitleConfig) -> Path:
+        source_bytes = Path(subtitle_path).read_bytes()
+        source_hash = hashlib.md5(source_bytes).hexdigest()
+        process_profile = {
+            "source_hash": source_hash,
+            "split": subtitle_config.need_split,
+            "split_type": subtitle_config.split_type,
+            "max_word_count_cjk": subtitle_config.max_word_count_cjk,
+            "max_word_count_english": subtitle_config.max_word_count_english,
+            "optimize": subtitle_config.need_optimize,
+            "translate": subtitle_config.need_translate,
+            "reflect": subtitle_config.need_reflect,
+            "translator_service": str(subtitle_config.translator_service),
+            "target_language": str(subtitle_config.target_language),
+            "llm_model": subtitle_config.llm_model,
+            "custom_prompt": subtitle_config.custom_prompt_text or "",
+            "remove_punctuation": subtitle_config.need_remove_punctuation,
+        }
+        key = hashlib.md5(
+            json.dumps(process_profile, ensure_ascii=False, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+        cache_dir = Path(CACHE_PATH) / "processed_subtitles"
+        return cache_dir / f"{key}.json"
 
     def _setup_api_config(self) -> SubtitleConfig:
         """设置API配置，返回SubtitleConfig"""
@@ -84,6 +114,18 @@ class SubtitleThread(QThread):
             )
 
     def run(self):
+        stage_metrics = {}
+        qa_report = {}
+
+        def _stage_start(name: str):
+            stage_metrics[name] = {"start": time.perf_counter()}
+
+        def _stage_end(name: str):
+            if name in stage_metrics and "start" in stage_metrics[name]:
+                stage_metrics[name]["seconds"] = round(
+                    time.perf_counter() - stage_metrics[name]["start"], 3
+                )
+
         try:
             logger.info(f"\n===========字幕处理任务开始===========")
             logger.info(f"时间：{datetime.datetime.now()}")
@@ -101,23 +143,67 @@ class SubtitleThread(QThread):
             assert subtitle_path is not None, self.tr("字幕文件路径为空")
 
             subtitle_config = self.task.subtitle_config
+            # 同步最新UI配置，避免复用旧任务对象导致设置不生效
+            subtitle_config.use_processed_subtitle_cache = bool(
+                cfg.use_processed_subtitle_cache.value
+            )
+            subtitle_config.subtitle_layout = cfg.subtitle_layout.value
+            subtitle_config.subtitle_style = get_subtitle_style(
+                cfg.subtitle_style_name.value
+            )
+            subtitle_config.subtitle_effect = cfg.subtitle_effect.value
+            subtitle_config.subtitle_effect_duration = cfg.subtitle_effect_duration.value
+            subtitle_config.subtitle_effect_intensity = (
+                cfg.subtitle_effect_intensity.value / 100
+            )
+            subtitle_config.subtitle_rainbow_end_color = (
+                cfg.subtitle_rainbow_end_color.value
+            )
+            subtitle_config.subtitle_motion_direction = cfg.subtitle_motion_direction.value
+            subtitle_config.subtitle_motion_amplitude = (
+                cfg.subtitle_motion_amplitude.value / 100
+            )
+            subtitle_config.subtitle_motion_easing = cfg.subtitle_motion_easing.value
+            subtitle_config.subtitle_motion_jitter = cfg.subtitle_motion_jitter.value / 100
+            subtitle_config.subtitle_karaoke_mode = cfg.subtitle_karaoke_mode.value
+            subtitle_config.subtitle_karaoke_window_ms = (
+                cfg.subtitle_karaoke_window_ms.value
+            )
+            subtitle_config.subtitle_auto_contrast = cfg.subtitle_auto_contrast.value
+            subtitle_config.subtitle_anti_flicker = cfg.subtitle_anti_flicker.value
+            subtitle_config.subtitle_gradient_mode = cfg.subtitle_gradient_mode.value
+            subtitle_config.subtitle_gradient_color_1 = cfg.subtitle_gradient_color_1.value
+            subtitle_config.subtitle_gradient_color_2 = cfg.subtitle_gradient_color_2.value
             # split_type: "sentence" | "semantic"
             # В текущем UX "semantic" используется как режим "по словам".
             is_word_mode = subtitle_config.split_type == "semantic"
             is_sentence_mode = subtitle_config.split_type == "sentence"
 
             asr_data = ASRData.from_subtitle_file(subtitle_path)
+            processed_cache_path = self._processed_cache_path(subtitle_path, subtitle_config)
+            reused_processed_cache = False
+
+            if subtitle_config.use_processed_subtitle_cache and processed_cache_path.exists():
+                try:
+                    cached_data = json.loads(processed_cache_path.read_text(encoding="utf-8"))
+                    asr_data = ASRData.from_json(cached_data)
+                    reused_processed_cache = True
+                    logger.info(f"命中处理后字幕缓存：{processed_cache_path}")
+                    self.update_all.emit(asr_data.to_json())
+                except Exception as e:
+                    logger.warning(f"读取处理后字幕缓存失败，回退到正常流程: {str(e)}")
 
             # 1. 分割成字词级时间戳（对于非断句字幕且开启分割选项）
-            if subtitle_config.need_split and not asr_data.is_word_timestamp():
+            if (not reused_processed_cache) and subtitle_config.need_split and not asr_data.is_word_timestamp():
                 asr_data.split_to_word_segments()
 
             # 获取API配置，会先检查可用性（优先使用设置的API，其次使用自带的公益API）
             if (
-                subtitle_config.need_optimize
-                or (subtitle_config.need_split and is_sentence_mode)
-                or (
-                    (
+                not reused_processed_cache
+                and (
+                    subtitle_config.need_optimize
+                    or (subtitle_config.need_split and is_sentence_mode)
+                    or (
                         subtitle_config.need_translate
                         and subtitle_config.translator_service
                         not in [
@@ -128,19 +214,23 @@ class SubtitleThread(QThread):
                     )
                 )
             ):
+                _stage_start("api_check")
                 self.progress.emit(2, self.tr("开始验证API配置..."))
                 subtitle_config = self._setup_api_config()
-                os.environ["OPENAI_BASE_URL"] = subtitle_config.base_url
-                os.environ["OPENAI_API_KEY"] = subtitle_config.api_key
+                _stage_end("api_check")
 
             # 2. 重新断句（仅在开启断句时，对字词级字幕执行）
-            if subtitle_config.need_split and asr_data.is_word_timestamp():
+            if (not reused_processed_cache) and subtitle_config.need_split and asr_data.is_word_timestamp():
                 if is_sentence_mode:
+                    _stage_start("split")
                     self.progress.emit(5, self.tr("字幕断句..."))
                     logger.info("正在字幕断句...")
                     splitter = SubtitleSplitter(
                         thread_num=subtitle_config.thread_num,
                         model=subtitle_config.llm_model,
+                        use_cache=subtitle_config.use_cache,
+                        openai_base_url=subtitle_config.base_url,
+                        openai_api_key=subtitle_config.api_key,
                         temperature=0.3,
                         timeout=60,
                         retry_times=1,
@@ -151,6 +241,7 @@ class SubtitleThread(QThread):
                     asr_data = splitter.split_subtitle(asr_data)
                     asr_data.save(save_path=split_path)
                     self.update_all.emit(asr_data.to_json())
+                    _stage_end("split")
                 elif is_word_mode:
                     logger.info("Режим 'по словам': пропускаем LLM-разбиение, оставляем word-level сегменты")
 
@@ -158,19 +249,24 @@ class SubtitleThread(QThread):
             custom_prompt = subtitle_config.custom_prompt_text
             self.subtitle_length = len(asr_data.segments)
 
-            if subtitle_config.need_optimize:
+            if (not reused_processed_cache) and subtitle_config.need_optimize:
+                _stage_start("optimize")
                 self.progress.emit(0, self.tr("优化字幕..."))
                 logger.info("正在优化字幕...")
                 self.finished_subtitle_length = 0  # 重置计数器
                 optimizer = SubtitleOptimizer(
                     custom_prompt=custom_prompt,
                     model=subtitle_config.llm_model,
+                    use_cache=subtitle_config.use_cache,
                     batch_num=subtitle_config.batch_size,
                     thread_num=subtitle_config.thread_num,
+                    openai_base_url=subtitle_config.base_url,
+                    openai_api_key=subtitle_config.api_key,
                     update_callback=self.callback,
                 )
                 asr_data = optimizer.optimize_subtitle(asr_data)
                 self.update_all.emit(asr_data.to_json())
+                _stage_end("optimize")
 
             # 4. 翻译字幕
             translator_map = {
@@ -179,11 +275,11 @@ class SubtitleThread(QThread):
                 TranslatorServiceEnum.BING: TranslatorType.BING,
                 TranslatorServiceEnum.GOOGLE: TranslatorType.GOOGLE,
             }
-            if subtitle_config.need_translate:
+            if (not reused_processed_cache) and subtitle_config.need_translate:
+                _stage_start("translate")
                 self.progress.emit(0, self.tr("翻译字幕..."))
                 logger.info("正在翻译字幕...")
                 self.finished_subtitle_length = 0  # 重置计数器
-                os.environ["DEEPLX_ENDPOINT"] = subtitle_config.deeplx_endpoint
                 translator = TranslatorFactory.create_translator(
                     translator_type=translator_map[subtitle_config.translator_service],
                     thread_num=subtitle_config.thread_num,
@@ -192,10 +288,15 @@ class SubtitleThread(QThread):
                     model=subtitle_config.llm_model,
                     custom_prompt=custom_prompt,
                     is_reflect=subtitle_config.need_reflect,
+                    use_cache=subtitle_config.use_cache,
+                    openai_base_url=subtitle_config.base_url,
+                    openai_api_key=subtitle_config.api_key,
+                    deeplx_endpoint=subtitle_config.deeplx_endpoint,
                     update_callback=self.callback,
                 )
                 asr_data = translator.translate_subtitle(asr_data)
                 self.update_all.emit(asr_data.to_json())
+                _stage_end("translate")
                 # 保存翻译结果(单语、双语)
                 if self.task.need_next_task and self.task.video_path:
                     for subtitle_layout in ["原文在上", "译文在上", "仅原文", "仅译文"]:
@@ -226,10 +327,38 @@ class SubtitleThread(QThread):
                         logger.info(f"字幕保存到 {save_path}")
 
             # 统一移除末尾标点（不依赖是否翻译）
-            if subtitle_config.need_remove_punctuation:
+            if (not reused_processed_cache) and subtitle_config.need_remove_punctuation:
                 asr_data.remove_punctuation()
 
-            # 5. 保存字幕
+            # 5. 可读性增强 + 时间轴修复 + QA
+            _stage_start("quality_checks")
+            if not reused_processed_cache:
+                asr_data.apply_smart_line_break(
+                    max_cjk_chars=max(8, min(20, subtitle_config.max_word_count_cjk)),
+                    max_english_words=max(5, min(14, subtitle_config.max_word_count_english // 2)),
+                )
+                timing_fixes = asr_data.validate_and_fix_timing()
+                qa_report = asr_data.build_qa_report(cps_limit=22.0)
+                qa_report["timing_fixes"] = timing_fixes
+
+                if subtitle_config.use_processed_subtitle_cache:
+                    atomic_write_text(
+                        str(processed_cache_path),
+                        json.dumps(asr_data.to_json(), ensure_ascii=False),
+                        encoding="utf-8",
+                    )
+                    logger.info(f"写入处理后字幕缓存：{processed_cache_path}")
+            else:
+                qa_report = asr_data.build_qa_report(cps_limit=22.0)
+                qa_report["timing_fixes"] = {
+                    "negative_duration": 0,
+                    "too_short_duration": 0,
+                    "overlap_fixed": 0,
+                }
+            _stage_end("quality_checks")
+
+            # 6. 保存字幕
+            _stage_start("save_outputs")
             asr_data.save(
                 save_path=self.task.output_path,
                 ass_style=subtitle_config.subtitle_style,
@@ -251,8 +380,9 @@ class SubtitleThread(QThread):
                 gradient_color_2=subtitle_config.subtitle_gradient_color_2,
             )
             logger.info(f"字幕保存到 {self.task.output_path}")
+            _stage_end("save_outputs")
 
-            # 6. 文件移动与清理
+            # 7. 文件移动与清理
             if self.task.need_next_task and self.task.video_path:
                 # 保存srt/ass文件到视频目录（对于全流程任务）
                 save_srt_path = (
@@ -280,12 +410,38 @@ class SubtitleThread(QThread):
                 if os.path.exists(split_path):
                     os.remove(split_path)
 
+            # 8. 诊断报告写入 work-dir
+            report_name = f"subtitle_diagnostics_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            report_path = Path(WORK_PATH) / report_name
+            diagnostics = {
+                "task": {
+                    "input_subtitle": self.task.subtitle_path,
+                    "output_subtitle": self.task.output_path,
+                    "video_path": self.task.video_path,
+                },
+                "stage_metrics": {
+                    k: {"seconds": v.get("seconds", 0)} for k, v in stage_metrics.items()
+                },
+                "qa_report": qa_report,
+            }
+            atomic_write_text(
+                str(report_path),
+                json.dumps(diagnostics, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            logger.info(f"诊断报告保存到 {report_path}")
+
             self.progress.emit(100, self.tr("优化完成"))
             logger.info("优化完成")
             self.finished.emit(self.task.video_path, self.task.output_path)
-        except Exception as e:
-            logger.exception(f"优化失败: {str(e)}")
+        except AppError as e:
+            logger.exception(f"业务错误: {str(e)}")
             self.error.emit(str(e))
+            self.progress.emit(100, self.tr("优化失败"))
+        except Exception as e:
+            mapped = map_exception(e)
+            logger.exception(f"优化失败: {str(mapped)}")
+            self.error.emit(str(mapped))
             self.progress.emit(100, self.tr("优化失败"))
 
     def callback(self, result: Dict):

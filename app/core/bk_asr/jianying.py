@@ -20,8 +20,13 @@ logger = setup_logger("jianying_asr")
 
 class JianYingASR(BaseASR):
     def __init__(self, audio_path: Union[str, bytes], use_cache: bool = False, need_word_time_stamp: bool = False,
-                 start_time: float = 0, end_time: float = 6000):
-        super().__init__(audio_path, use_cache)
+                 asr_cache_tag: str = "default", start_time: float = 0, end_time: float = 6000):
+        super().__init__(
+            audio_path,
+            use_cache=use_cache,
+            need_word_time_stamp=need_word_time_stamp,
+            asr_cache_tag=asr_cache_tag,
+        )
         self.audio_path = audio_path
         self.end_time = end_time
         self.start_time = start_time
@@ -113,7 +118,10 @@ class JianYingASR(BaseASR):
             return [ASRDataSeg(u['text'], u['start_time'], u['end_time']) for u in resp_data['data']['utterances']]
 
     def _get_key(self):
-        return f"{self.__class__.__name__}-{self.crc32_hex}-{self.need_word_time_stamp}"
+        return (
+            f"{self.__class__.__name__}-{self.crc32_hex}-{self.need_word_time_stamp}"
+            f"-tag:{self.asr_cache_tag}"
+        )
     
     def _get_tid(self):
         i = str(datetime.datetime.now().year)[3]

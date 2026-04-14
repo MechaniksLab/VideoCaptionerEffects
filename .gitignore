@@ -6,3 +6,13 @@
 /unins000.exe
 /VideoCaptioner.exe
 /work-dir/
+/app/common/__pycache__/
+/app/components/__pycache__/
+/app/core/__pycache__/
+/app/thread/__pycache__/
+/app/view/__pycache__/
+/app/__pycache__/
+/app/core/bk_asr/__pycache__/
+/app/core/storage/__pycache__/
+/app/core/subtitle_processor/__pycache__/
+/app/core/utils/__pycache__/

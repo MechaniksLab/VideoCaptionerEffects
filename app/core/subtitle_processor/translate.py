@@ -54,6 +54,8 @@ class BaseTranslator(ABC):
         timeout: int = 60,
         update_callback: Optional[Callable] = None,
         custom_prompt: Optional[str] = None,
+        use_cache: bool = True,
+        cache_version: str = "subtitle_v2",
     ):
         self.thread_num = thread_num
         self.batch_num = batch_num
@@ -63,6 +65,8 @@ class BaseTranslator(ABC):
         self.is_running = True
         self.update_callback = update_callback
         self.custom_prompt = custom_prompt
+        self.use_cache = use_cache
+        self.cache_version = cache_version
         self._init_thread_pool()
         self.cache_manager = CacheManager(CACHE_PATH)
 
@@ -195,6 +199,9 @@ class OpenAITranslator(BaseTranslator):
         timeout: int = 60,
         retry_times: int = 1,
         update_callback: Optional[Callable] = None,
+        use_cache: bool = True,
+        openai_base_url: Optional[str] = None,
+        openai_api_key: Optional[str] = None,
     ):
         super().__init__(
             thread_num=thread_num,
@@ -203,18 +210,21 @@ class OpenAITranslator(BaseTranslator):
             retry_times=retry_times,
             timeout=timeout,
             update_callback=update_callback,
+            use_cache=use_cache,
         )
 
-        self._init_client()
+        self._init_client(openai_base_url, openai_api_key)
         self.model = model
         self.custom_prompt = custom_prompt
         self.is_reflect = is_reflect
         self.temperature = temperature
 
-    def _init_client(self):
+    def _init_client(
+        self, openai_base_url: Optional[str] = None, openai_api_key: Optional[str] = None
+    ):
         """初始化OpenAI客户端"""
-        base_url = os.getenv("OPENAI_BASE_URL")
-        api_key = os.getenv("OPENAI_API_KEY")
+        base_url = openai_base_url or os.getenv("OPENAI_BASE_URL")
+        api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
         if not (base_url and api_key):
             raise ValueError("环境变量 OPENAI_BASE_URL 和 OPENAI_API_KEY 必须设置")
 
@@ -243,13 +253,18 @@ class OpenAITranslator(BaseTranslator):
                 "is_reflect": self.is_reflect,
                 "temperature": self.temperature,
                 "prompt_hash": prompt_hash,
+                "cache_version": self.cache_version,
             }
             cache_key = f"{json.dumps(subtitle_chunk, ensure_ascii=False)}"
-            cache_result = self.cache_manager.get_llm_result(
-                cache_key,
-                self.model,
-                **cache_params,
-            )
+            cache_result = None
+            if self.use_cache:
+                cache_result = self.cache_manager.get_llm_result(
+                    cache_key,
+                    self.model,
+                    **cache_params,
+                )
+                if cache_result:
+                    logger.info("翻译缓存命中(OpenAI/batch)")
 
             result = {}
             if cache_result:
@@ -266,12 +281,13 @@ class OpenAITranslator(BaseTranslator):
                     logger.warning(f"翻译结果数量不匹配，将使用单条翻译模式重试")
                     return self._translate_chunk_single(subtitle_chunk)
                 # 保存到缓存
-                self.cache_manager.set_llm_result(
-                    cache_key,
-                    json.dumps(result, ensure_ascii=False),
-                    self.model,
-                    **cache_params,
-                )
+                if self.use_cache:
+                    self.cache_manager.set_llm_result(
+                        cache_key,
+                        json.dumps(result, ensure_ascii=False),
+                        self.model,
+                        **cache_params,
+                    )
 
             if self.is_reflect:
                 result = {k: f"{v['revised_translation']}" for k, v in result.items()}
@@ -301,10 +317,15 @@ class OpenAITranslator(BaseTranslator):
                     "is_reflect": self.is_reflect,
                     "temperature": self.temperature,
                     "prompt_hash": prompt_hash,
+                    "cache_version": self.cache_version,
                 }
-                cache_result = self.cache_manager.get_llm_result(
-                    f"{text}", self.model, **cache_params
-                )
+                cache_result = None
+                if self.use_cache:
+                    cache_result = self.cache_manager.get_llm_result(
+                        f"{text}", self.model, **cache_params
+                    )
+                    if cache_result:
+                        logger.info("翻译缓存命中(OpenAI/single)")
 
                 if cache_result:
                     result[idx] = cache_result
@@ -320,12 +341,13 @@ class OpenAITranslator(BaseTranslator):
                 translated_text = translated_text.strip()
 
                 # 保存到缓存
-                self.cache_manager.set_llm_result(
-                    f"{text}",
-                    translated_text,
-                    self.model,
-                    **cache_params,
-                )
+                if self.use_cache:
+                    self.cache_manager.set_llm_result(
+                        f"{text}",
+                        translated_text,
+                        self.model,
+                        **cache_params,
+                    )
 
                 result[idx] = translated_text
             except Exception as e:
@@ -369,6 +391,7 @@ class GoogleTranslator(BaseTranslator):
         target_language: str = "Chinese",
         retry_times: int = 1,
         timeout: int = 20,
+        use_cache: bool = True,
         update_callback: Optional[Callable] = None,
     ):
         super().__init__(
@@ -377,6 +400,7 @@ class GoogleTranslator(BaseTranslator):
             target_language=target_language,
             retry_times=retry_times,
             timeout=timeout,
+            use_cache=use_cache,
             update_callback=update_callback,
         )
         self.session = requests.Session()
@@ -411,9 +435,12 @@ class GoogleTranslator(BaseTranslator):
             try:
                 # 检查缓存
                 cache_params = {"target_language": target_lang}
-                cache_result = self.cache_manager.get_translation(
-                    text, TranslatorType.GOOGLE.value, **cache_params
-                )
+                cache_params["cache_version"] = self.cache_version
+                cache_result = None
+                if self.use_cache:
+                    cache_result = self.cache_manager.get_translation(
+                        text, TranslatorType.GOOGLE.value, **cache_params
+                    )
 
                 if cache_result:
                     result[idx] = cache_result
@@ -439,12 +466,13 @@ class GoogleTranslator(BaseTranslator):
                 if re_result:
                     translated_text = html.unescape(re_result[0])
                     # 保存到缓存
-                    self.cache_manager.set_translation(
-                        text,
-                        translated_text,
-                        TranslatorType.GOOGLE.value,
-                        **cache_params,
-                    )
+                    if self.use_cache:
+                        self.cache_manager.set_translation(
+                            text,
+                            translated_text,
+                            TranslatorType.GOOGLE.value,
+                            **cache_params,
+                        )
                     result[idx] = translated_text
                 else:
                     result[idx] = "ERROR"
@@ -465,6 +493,7 @@ class BingTranslator(BaseTranslator):
         target_language: str = "Chinese",
         retry_times: int = 1,
         timeout: int = 20,
+        use_cache: bool = True,
         update_callback: Optional[Callable] = None,
     ):
         super().__init__(
@@ -473,6 +502,7 @@ class BingTranslator(BaseTranslator):
             target_language=target_language,
             retry_times=retry_times,
             timeout=timeout,
+            use_cache=use_cache,
             update_callback=update_callback,
         )
         self.session = requests.Session()
@@ -533,9 +563,12 @@ class BingTranslator(BaseTranslator):
         for idx, text in subtitle_chunk.items():
             # 检查缓存
             cache_params = {"target_language": target_lang}
-            cache_result = self.cache_manager.get_translation(
-                text, TranslatorType.BING.value, **cache_params
-            )
+            cache_params["cache_version"] = self.cache_version
+            cache_result = None
+            if self.use_cache:
+                cache_result = self.cache_manager.get_translation(
+                    text, TranslatorType.BING.value, **cache_params
+                )
 
             if cache_result:
                 result[idx] = cache_result
@@ -569,12 +602,13 @@ class BingTranslator(BaseTranslator):
 
                     # 保存到缓存
                     original_text = texts_to_translate[i]["Text"]
-                    self.cache_manager.set_translation(
-                        original_text,
-                        translated_text,
-                        TranslatorType.BING.value,
-                        **{"target_language": target_lang},
-                    )
+                    if self.use_cache:
+                        self.cache_manager.set_translation(
+                            original_text,
+                            translated_text,
+                            TranslatorType.BING.value,
+                            **{"target_language": target_lang},
+                        )
 
                     result[idx] = translated_text
 
@@ -604,6 +638,8 @@ class DeepLXTranslator(BaseTranslator):
         target_language: str = "Chinese",
         retry_times: int = 1,
         timeout: int = 20,
+        use_cache: bool = True,
+        deeplx_endpoint: Optional[str] = None,
         update_callback: Optional[Callable] = None,
     ):
         super().__init__(
@@ -612,10 +648,13 @@ class DeepLXTranslator(BaseTranslator):
             target_language=target_language,
             retry_times=retry_times,
             timeout=timeout,
+            use_cache=use_cache,
             update_callback=update_callback,
         )
         self.session = requests.Session()
-        self.endpoint = os.getenv("DEEPLX_ENDPOINT", "https://api.deeplx.org/translate")
+        self.endpoint = deeplx_endpoint or os.getenv(
+            "DEEPLX_ENDPOINT", "https://api.deeplx.org/translate"
+        )
         self.lang_map = {
             "简体中文": "zh",
             "繁体中文": "zh-TW",
@@ -652,10 +691,13 @@ class DeepLXTranslator(BaseTranslator):
                 cache_params = {
                     "target_language": target_lang,
                     "endpoint": self.endpoint,
+                    "cache_version": self.cache_version,
                 }
-                cache_result = self.cache_manager.get_translation(
-                    text, TranslatorType.DEEPLX.value, **cache_params
-                )
+                cache_result = None
+                if self.use_cache:
+                    cache_result = self.cache_manager.get_translation(
+                        text, TranslatorType.DEEPLX.value, **cache_params
+                    )
 
                 if cache_result:
                     result[idx] = cache_result
@@ -675,9 +717,10 @@ class DeepLXTranslator(BaseTranslator):
                 translated_text = response.json()["data"]
 
                 # 保存到缓存
-                self.cache_manager.set_translation(
-                    text, translated_text, TranslatorType.DEEPLX.value, **cache_params
-                )
+                if self.use_cache:
+                    self.cache_manager.set_translation(
+                        text, translated_text, TranslatorType.DEEPLX.value, **cache_params
+                    )
 
                 result[idx] = translated_text
             except Exception as e:
@@ -699,6 +742,10 @@ class TranslatorFactory:
         custom_prompt: str = "",
         temperature: float = 0.7,
         is_reflect: bool = False,
+        use_cache: bool = True,
+        openai_base_url: Optional[str] = None,
+        openai_api_key: Optional[str] = None,
+        deeplx_endpoint: Optional[str] = None,
         update_callback: Optional[Callable] = None,
     ) -> BaseTranslator:
         """创建翻译器实例"""
@@ -712,6 +759,9 @@ class TranslatorFactory:
                     custom_prompt=custom_prompt,
                     is_reflect=is_reflect,
                     temperature=temperature,
+                    use_cache=use_cache,
+                    openai_base_url=openai_base_url,
+                    openai_api_key=openai_api_key,
                     update_callback=update_callback,
                 )
             elif translator_type == TranslatorType.GOOGLE:
@@ -720,6 +770,7 @@ class TranslatorFactory:
                     thread_num=thread_num,
                     batch_num=batch_num,
                     target_language=target_language,
+                    use_cache=use_cache,
                     update_callback=update_callback,
                 )
             elif translator_type == TranslatorType.BING:
@@ -728,6 +779,7 @@ class TranslatorFactory:
                     thread_num=thread_num,
                     batch_num=batch_num,
                     target_language=target_language,
+                    use_cache=use_cache,
                     update_callback=update_callback,
                 )
             elif translator_type == TranslatorType.DEEPLX:
@@ -736,6 +788,8 @@ class TranslatorFactory:
                     thread_num=thread_num,
                     batch_num=batch_num,
                     target_language=target_language,
+                    use_cache=use_cache,
+                    deeplx_endpoint=deeplx_endpoint,
                     update_callback=update_callback,
                 )
             else:

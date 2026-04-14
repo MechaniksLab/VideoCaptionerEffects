@@ -504,6 +504,7 @@ class TranscribeConfig:
     transcribe_model: Optional[TranscribeModelEnum] = None
     transcribe_language: str = ""
     use_asr_cache: bool = True
+    asr_cache_tag: str = "default"
     need_word_time_stamp: bool = True
     # Whisper Cpp 配置
     whisper_model: Optional[WhisperModelEnum] = None
@@ -539,6 +540,8 @@ class SubtitleConfig:
     need_translate: bool = False
     need_optimize: bool = False
     need_reflect: bool = False
+    use_cache: bool = True
+    use_processed_subtitle_cache: bool = True
     thread_num: int = 10
     batch_size: int = 10
     # 字幕布局和分割

@@ -23,8 +23,14 @@ class WhisperCppASR(BaseASR):
         whisper_model=None,
         use_cache: bool = False,
         need_word_time_stamp: bool = False,
+        asr_cache_tag: str = "default",
     ):
-        super().__init__(audio_path, False)
+        super().__init__(
+            audio_path,
+            use_cache=use_cache,
+            need_word_time_stamp=need_word_time_stamp,
+            asr_cache_tag=asr_cache_tag,
+        )
         assert os.path.exists(audio_path), f"音频文件 {audio_path} 不存在"
         assert audio_path.endswith(".wav"), f"音频文件 {audio_path} 必须是WAV格式"
 
@@ -185,7 +191,10 @@ class WhisperCppASR(BaseASR):
                 raise RuntimeError(f"生成 SRT 文件失败: {str(e)}")
 
     def _get_key(self):
-        return f"{self.crc32_hex}-{self.need_word_time_stamp}-{self.model_path}-{self.language}"
+        return (
+            f"{self.crc32_hex}-{self.need_word_time_stamp}-{self.model_path}-{self.language}"
+            f"-tag:{self.asr_cache_tag}"
+        )
 
     def get_audio_duration(self, filepath: str) -> int:
         try:
