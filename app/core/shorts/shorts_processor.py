@@ -199,13 +199,17 @@ class ShortsProcessor:
                 }
             )
 
+        min_s = max(8, int(self.min_duration_ms / 1000))
+        max_s = max(min_s + 5, int(self.max_duration_ms / 1000))
+
         system = (
             "Ты enterprise-редактор YouTube Shorts. Найди лучшие моменты удержания. "
             "Критерии: hook в первые 2-5 секунд, эмоция, конфликт/неожиданность, панчлайн, кульминация, потенциал для шеринга. "
             "Верни СТРОГО JSON: "
             "{\"items\":[{\"start_idx\":int,\"end_idx\":int,\"score\":0-100,\"title\":str,\"reason\":str,"
             "\"hook\":0-10,\"emotion\":0-10,\"novelty\":0-10,\"shareability\":0-10}]}. "
-            "Длительность каждого фрагмента 15-60 секунд. Не придумывай таймкоды, используй только переданные idx."
+            f"Длительность каждого фрагмента {min_s}-{max_s} секунд. "
+            "Не придумывай таймкоды, используй только переданные idx."
         )
         user = f"Сегменты:\n{json.dumps(rows, ensure_ascii=False)}"
 
@@ -769,6 +773,26 @@ def render_shorts(
 
     src_w_i, src_h_i, src_fps = _probe_video_meta(input_video)
 
+    def _layer_fx_tail(layer_cfg: Dict) -> str:
+        fx = layer_cfg if isinstance(layer_cfg, dict) else {}
+        brightness = float(fx.get("brightness", 0.0) or 0.0)
+        contrast = float(fx.get("contrast", 1.0) or 1.0)
+        saturation = float(fx.get("saturation", 1.0) or 1.0)
+        sharpness = float(fx.get("sharpness", 0.0) or 0.0)
+
+        parts = []
+        if abs(brightness) > 1e-6 or abs(contrast - 1.0) > 1e-6 or abs(saturation - 1.0) > 1e-6:
+            parts.append(
+                f"eq=brightness={brightness:.3f}:contrast={contrast:.3f}:saturation={saturation:.3f}"
+            )
+        if sharpness > 0.01:
+            amt = min(2.0, max(0.1, sharpness))
+            parts.append(f"unsharp=5:5:{amt:.2f}:5:5:0.00")
+        return ("," + ",".join(parts)) if parts else ""
+
+    # Совместимость с возможной старой ссылкой в рантайме/кэше.
+    _layer_ft_tail = _layer_fx_tail
+
     def _probe_has_audio(path: str) -> bool:
         try:
             p = subprocess.run(
@@ -935,6 +959,20 @@ def render_shorts(
     _append_render_debug(f"ENCODER selected={selected_encoder_label}")
 
     render_candidates = list(candidates)
+
+    def _overlap_ratio(a: ShortCandidate, b: ShortCandidate) -> float:
+        inter = max(0, min(a.end_ms, b.end_ms) - max(a.start_ms, b.start_ms))
+        short = max(1, min(a.duration_ms, b.duration_ms))
+        return inter / short
+
+    # Дополнительная защита от похожих шортсов в одном рендере.
+    # Если пользователь выбрал много близких моментов, оставляем более сильные.
+    deduped_for_render: List[ShortCandidate] = []
+    for cand in sorted(render_candidates, key=lambda x: x.score, reverse=True):
+        if any(_overlap_ratio(cand, kept) > 0.65 for kept in deduped_for_render):
+            continue
+        deduped_for_render.append(cand)
+    render_candidates = deduped_for_render
     if len(render_candidates) > MAX_RENDER_CLIPS:
         _append_render_debug(
             f"CANDIDATES_TRIM render={MAX_RENDER_CLIPS} from={len(render_candidates)}"
@@ -1193,6 +1231,8 @@ def render_shorts(
         if use_dual:
             wc = layout_template.get("webcam", {})
             gm = layout_template.get("game", {})
+            wc_fx = _layer_fx_tail(layout_template.get("webcam_fx", {}))
+            gm_fx = _layer_fx_tail(layout_template.get("game_fx", {}))
 
             wc_crop_x = max(0, min(src_w_i - 2, _safe_int(wc.get("crop_x"), 0)))
             wc_crop_y = max(0, min(src_h_i - 2, _safe_int(wc.get("crop_y"), 0)))
@@ -1248,9 +1288,9 @@ def render_shorts(
                 filter_complex = pre_cut + (
                     f"color=c=black:s={target_w_i}x{target_h_i},format=nv12,hwupload_cuda[base];"
                     f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
-                    f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
+                    f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y}{wc_fx},"
                     f"format=nv12,hwupload_cuda,scale_cuda={wc_out_w}:{wc_out_h}[cam];"
-                    f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
+                    f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y}{gm_fx},"
                     f"format=nv12,hwupload_cuda,scale_cuda={gm_out_w}:{gm_out_h}[game];"
                     f"[base][cam]overlay_cuda={wc_out_x}:{wc_out_y}[tmp];"
                     f"[tmp][game]overlay_cuda={gm_out_x}:{gm_out_y}[vout]"
@@ -1261,9 +1301,9 @@ def render_shorts(
                 if is_vertical_stack_layout:
                     filter_complex = pre_cut + (
                         f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
-                        f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
+                        f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y}{wc_fx},"
                         f"scale={target_w_i}:{wc_stack_h}:flags=fast_bilinear[cam];"
-                        f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
+                        f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y}{gm_fx},"
                         f"scale={target_w_i}:{gm_stack_h}:flags=fast_bilinear[game];"
                         f"[cam][game]vstack=inputs=2[vout]"
                     )
@@ -1271,9 +1311,9 @@ def render_shorts(
                     filter_complex = pre_cut + (
                         f"color=size={target_w_i}x{target_h_i}:color=black[base];"
                         f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
-                        f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
+                        f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y}{wc_fx},"
                         f"{wc_scale}[cam];"
-                        f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
+                        f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y}{gm_fx},"
                         f"{gm_scale}[game];"
                         f"[base][cam]overlay={wc_out_x}:{wc_out_y}[tmp];"
                         f"[tmp][game]overlay={gm_out_x}:{gm_out_y}[vout]"
@@ -1283,9 +1323,9 @@ def render_shorts(
             if is_vertical_stack_layout:
                 cpu_filter_complex = pre_cut + (
                     f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
-                    f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
+                    f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y}{wc_fx},"
                     f"scale={target_w_i}:{wc_stack_h}:flags=fast_bilinear[cam];"
-                    f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
+                    f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y}{gm_fx},"
                     f"scale={target_w_i}:{gm_stack_h}:flags=fast_bilinear[game];"
                     f"[cam][game]vstack=inputs=2[vout]"
                 )
@@ -1296,9 +1336,9 @@ def render_shorts(
                 cpu_filter_complex = pre_cut + (
                     f"color=size={target_w_i}x{target_h_i}:color=black[base];"
                     f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
-                    f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
+                    f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y}{wc_fx},"
                     f"scale={wc_out_w}:{wc_out_h}:flags=fast_bilinear[cam];"
-                    f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
+                    f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y}{gm_fx},"
                     f"scale={gm_out_w}:{gm_out_h}:flags=fast_bilinear[game];"
                     f"[base][cam]overlay={wc_out_x}:{wc_out_y}[tmp];"
                     f"[tmp][game]overlay={gm_out_x}:{gm_out_y}[vout]"

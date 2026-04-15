@@ -9,12 +9,24 @@ from typing import Dict, List
 
 from PyQt5.QtCore import QPointF, QRect, QRectF, Qt, QStandardPaths, pyqtSignal
 from PyQt5.QtGui import QColor, QPainter, QPen, QPixmap
-from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QScrollArea, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import (
+    QFileDialog,
+    QHBoxLayout,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QScrollArea,
+    QSlider,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 from qfluentwidgets import Action, BodyLabel, CardWidget, CheckBox, ComboBox, CommandBar, FluentIcon, InfoBar, InfoBarPosition, PrimaryPushButton, ProgressBar, PushButton, StrongBodyLabel, SpinBox, isDarkTheme
 
 from app.common.config import cfg
 from app.config import APPDATA_PATH, WORK_PATH
-from app.core.entities import SupportedAudioFormats, SupportedVideoFormats
+from app.core.entities import BatchTaskType, SupportedAudioFormats, SupportedVideoFormats
 from app.thread.auto_shorts_thread import AutoShortsAnalyzeThread, AutoShortsRenderThread
 
 
@@ -341,6 +353,7 @@ class AutoShortsInterface(QWidget):
 
         self.video_path: str = ""
         self.candidates: List[Dict] = []
+        self.rendered_files: List[str] = []
         self.last_output_dir: str = ""
         self.template_path = APPDATA_PATH / "shorts_layout_template.json"
         self.source_width = 1920
@@ -415,8 +428,8 @@ class AutoShortsInterface(QWidget):
 
         params_row.addWidget(BodyLabel("Макс. длительность (сек):"))
         self.max_duration = SpinBox(self)
-        self.max_duration.setRange(12, 180)
-        self.max_duration.setValue(60)
+        self.max_duration.setRange(20, 300)
+        self.max_duration.setValue(90)
         params_row.addWidget(self.max_duration)
 
         self.analyze_btn = PrimaryPushButton("Найти интересные моменты")
@@ -499,6 +512,114 @@ class AutoShortsInterface(QWidget):
         row_tpl_actions.addWidget(self.load_template_btn)
         row_tpl_actions.addWidget(self.save_template_btn)
         template_layout.addLayout(row_tpl_actions)
+
+        fx_title = StrongBodyLabel("Цветокоррекция слоёв")
+        template_layout.addWidget(fx_title)
+
+        webcam_fx_row = QHBoxLayout()
+        webcam_fx_row.addWidget(BodyLabel("WEBCAM:"))
+        webcam_fx_row.addWidget(BodyLabel("Ярк."))
+        self.wc_brightness = SpinBox(self)
+        self.wc_brightness.setRange(-50, 50)
+        self.wc_brightness.setValue(0)
+        self.wc_brightness.setAccelerated(True)
+        webcam_fx_row.addWidget(self.wc_brightness)
+        webcam_fx_row.addWidget(BodyLabel("Контр."))
+        self.wc_contrast = SpinBox(self)
+        self.wc_contrast.setRange(50, 180)
+        self.wc_contrast.setValue(100)
+        self.wc_contrast.setAccelerated(True)
+        webcam_fx_row.addWidget(self.wc_contrast)
+        webcam_fx_row.addWidget(BodyLabel("Насыщ."))
+        self.wc_saturation = SpinBox(self)
+        self.wc_saturation.setRange(50, 180)
+        self.wc_saturation.setValue(100)
+        self.wc_saturation.setAccelerated(True)
+        webcam_fx_row.addWidget(self.wc_saturation)
+        webcam_fx_row.addWidget(BodyLabel("Резкость"))
+        self.wc_sharpness = SpinBox(self)
+        self.wc_sharpness.setRange(0, 200)
+        self.wc_sharpness.setValue(0)
+        self.wc_sharpness.setAccelerated(True)
+        webcam_fx_row.addWidget(self.wc_sharpness)
+        webcam_fx_row.addStretch(1)
+        template_layout.addLayout(webcam_fx_row)
+
+        webcam_slider_row = QHBoxLayout()
+        self.wc_brightness_slider = QSlider(Qt.Horizontal, self)
+        self.wc_brightness_slider.setRange(-50, 50)
+        self.wc_brightness_slider.setValue(0)
+        self.wc_contrast_slider = QSlider(Qt.Horizontal, self)
+        self.wc_contrast_slider.setRange(50, 180)
+        self.wc_contrast_slider.setValue(100)
+        self.wc_saturation_slider = QSlider(Qt.Horizontal, self)
+        self.wc_saturation_slider.setRange(50, 180)
+        self.wc_saturation_slider.setValue(100)
+        self.wc_sharpness_slider = QSlider(Qt.Horizontal, self)
+        self.wc_sharpness_slider.setRange(0, 200)
+        self.wc_sharpness_slider.setValue(0)
+        webcam_slider_row.addWidget(self.wc_brightness_slider)
+        webcam_slider_row.addWidget(self.wc_contrast_slider)
+        webcam_slider_row.addWidget(self.wc_saturation_slider)
+        webcam_slider_row.addWidget(self.wc_sharpness_slider)
+        template_layout.addLayout(webcam_slider_row)
+
+        game_fx_row = QHBoxLayout()
+        game_fx_row.addWidget(BodyLabel("GAME:"))
+        game_fx_row.addWidget(BodyLabel("Ярк."))
+        self.gm_brightness = SpinBox(self)
+        self.gm_brightness.setRange(-50, 50)
+        self.gm_brightness.setValue(0)
+        self.gm_brightness.setAccelerated(True)
+        game_fx_row.addWidget(self.gm_brightness)
+        game_fx_row.addWidget(BodyLabel("Контр."))
+        self.gm_contrast = SpinBox(self)
+        self.gm_contrast.setRange(50, 180)
+        self.gm_contrast.setValue(100)
+        self.gm_contrast.setAccelerated(True)
+        game_fx_row.addWidget(self.gm_contrast)
+        game_fx_row.addWidget(BodyLabel("Насыщ."))
+        self.gm_saturation = SpinBox(self)
+        self.gm_saturation.setRange(50, 180)
+        self.gm_saturation.setValue(100)
+        self.gm_saturation.setAccelerated(True)
+        game_fx_row.addWidget(self.gm_saturation)
+        game_fx_row.addWidget(BodyLabel("Резкость"))
+        self.gm_sharpness = SpinBox(self)
+        self.gm_sharpness.setRange(0, 200)
+        self.gm_sharpness.setValue(0)
+        self.gm_sharpness.setAccelerated(True)
+        game_fx_row.addWidget(self.gm_sharpness)
+        game_fx_row.addStretch(1)
+        template_layout.addLayout(game_fx_row)
+
+        game_slider_row = QHBoxLayout()
+        self.gm_brightness_slider = QSlider(Qt.Horizontal, self)
+        self.gm_brightness_slider.setRange(-50, 50)
+        self.gm_brightness_slider.setValue(0)
+        self.gm_contrast_slider = QSlider(Qt.Horizontal, self)
+        self.gm_contrast_slider.setRange(50, 180)
+        self.gm_contrast_slider.setValue(100)
+        self.gm_saturation_slider = QSlider(Qt.Horizontal, self)
+        self.gm_saturation_slider.setRange(50, 180)
+        self.gm_saturation_slider.setValue(100)
+        self.gm_sharpness_slider = QSlider(Qt.Horizontal, self)
+        self.gm_sharpness_slider.setRange(0, 200)
+        self.gm_sharpness_slider.setValue(0)
+        game_slider_row.addWidget(self.gm_brightness_slider)
+        game_slider_row.addWidget(self.gm_contrast_slider)
+        game_slider_row.addWidget(self.gm_saturation_slider)
+        game_slider_row.addWidget(self.gm_sharpness_slider)
+        template_layout.addLayout(game_slider_row)
+
+        self._link_fx_control_pair(self.wc_brightness, self.wc_brightness_slider)
+        self._link_fx_control_pair(self.wc_contrast, self.wc_contrast_slider)
+        self._link_fx_control_pair(self.wc_saturation, self.wc_saturation_slider)
+        self._link_fx_control_pair(self.wc_sharpness, self.wc_sharpness_slider)
+        self._link_fx_control_pair(self.gm_brightness, self.gm_brightness_slider)
+        self._link_fx_control_pair(self.gm_contrast, self.gm_contrast_slider)
+        self._link_fx_control_pair(self.gm_saturation, self.gm_saturation_slider)
+        self._link_fx_control_pair(self.gm_sharpness, self.gm_sharpness_slider)
         self.main_layout.addWidget(self.template_card)
 
         self.table = QTableWidget(self)
@@ -548,6 +669,25 @@ class AutoShortsInterface(QWidget):
         self.output_hint_label = BodyLabel("Папка результата: пока нет")
         self.output_hint_label.setWordWrap(True)
         self.main_layout.addWidget(self.output_hint_label)
+
+        self.rendered_card = CardWidget(self)
+        self.rendered_card.setObjectName("shortsRenderedCard")
+        rendered_layout = QVBoxLayout(self.rendered_card)
+        rendered_layout.addWidget(StrongBodyLabel("Готовые шортсы"))
+        self.rendered_list = QListWidget(self)
+        self.rendered_list.setSelectionMode(self.rendered_list.ExtendedSelection)
+        rendered_layout.addWidget(self.rendered_list)
+
+        rendered_actions = QHBoxLayout()
+        self.open_selected_short_btn = PushButton("Открыть выбранный")
+        self.open_selected_short_btn.clicked.connect(self._open_selected_rendered)
+        self.send_to_batch_btn = PrimaryPushButton("Отправить выбранные в пакетные субтитры")
+        self.send_to_batch_btn.clicked.connect(self._send_selected_to_batch)
+        rendered_actions.addWidget(self.open_selected_short_btn)
+        rendered_actions.addStretch(1)
+        rendered_actions.addWidget(self.send_to_batch_btn)
+        rendered_layout.addLayout(rendered_actions)
+        self.main_layout.addWidget(self.rendered_card)
 
         self.main_layout.addStretch(1)
 
@@ -850,6 +990,8 @@ class AutoShortsInterface(QWidget):
         self.progress_label.setText(f"Готово. Создано шортсов: {len(files)}")
         if self.last_output_dir:
             self.output_hint_label.setText(f"Папка результата: {self.last_output_dir}")
+        self.rendered_files = list(files)
+        self._populate_rendered_list(self.rendered_files)
         InfoBar.success(
             "Шортсы созданы",
             f"Сохранено файлов: {len(files)}\n{self.last_output_dir}",
@@ -911,6 +1053,18 @@ class AutoShortsInterface(QWidget):
                 "out_w": out["game"]["w"],
                 "out_h": out["game"]["h"],
             },
+            "webcam_fx": {
+                "brightness": self.wc_brightness.value() / 100.0,
+                "contrast": self.wc_contrast.value() / 100.0,
+                "saturation": self.wc_saturation.value() / 100.0,
+                "sharpness": self.wc_sharpness.value() / 100.0,
+            },
+            "game_fx": {
+                "brightness": self.gm_brightness.value() / 100.0,
+                "contrast": self.gm_contrast.value() / 100.0,
+                "saturation": self.gm_saturation.value() / 100.0,
+                "sharpness": self.gm_sharpness.value() / 100.0,
+            },
         }
 
     def _reset_layout_template(self):
@@ -922,6 +1076,22 @@ class AutoShortsInterface(QWidget):
             QRectF(0, 0, 1080, 640),
             QRectF(0, 640, 1080, 1280),
         )
+        self.wc_brightness.setValue(0)
+        self.wc_contrast.setValue(100)
+        self.wc_saturation.setValue(100)
+        self.wc_sharpness.setValue(0)
+        self.gm_brightness.setValue(0)
+        self.gm_contrast.setValue(100)
+        self.gm_saturation.setValue(100)
+        self.gm_sharpness.setValue(0)
+        self.wc_brightness_slider.setValue(0)
+        self.wc_contrast_slider.setValue(100)
+        self.wc_saturation_slider.setValue(100)
+        self.wc_sharpness_slider.setValue(0)
+        self.gm_brightness_slider.setValue(0)
+        self.gm_contrast_slider.setValue(100)
+        self.gm_saturation_slider.setValue(100)
+        self.gm_sharpness_slider.setValue(0)
         self._refresh_output_composite_preview()
 
     def _save_layout_template(self):
@@ -958,9 +1128,160 @@ class AutoShortsInterface(QWidget):
                 QRectF(int(wc.get("out_x", 0)), int(wc.get("out_y", 0)), int(wc.get("out_w", 1080)), int(wc.get("out_h", 640))),
                 QRectF(int(gm.get("out_x", 0)), int(gm.get("out_y", 640)), int(gm.get("out_w", 1080)), int(gm.get("out_h", 1280))),
             )
+            wfx = data.get("webcam_fx", {}) if isinstance(data, dict) else {}
+            gfx = data.get("game_fx", {}) if isinstance(data, dict) else {}
+            self.wc_brightness.setValue(int(round(float(wfx.get("brightness", 0.0) or 0.0) * 100)))
+            self.wc_contrast.setValue(int(round(float(wfx.get("contrast", 1.0) or 1.0) * 100)))
+            self.wc_saturation.setValue(int(round(float(wfx.get("saturation", 1.0) or 1.0) * 100)))
+            self.wc_sharpness.setValue(int(round(float(wfx.get("sharpness", 0.0) or 0.0) * 100)))
+            self.gm_brightness.setValue(int(round(float(gfx.get("brightness", 0.0) or 0.0) * 100)))
+            self.gm_contrast.setValue(int(round(float(gfx.get("contrast", 1.0) or 1.0) * 100)))
+            self.gm_saturation.setValue(int(round(float(gfx.get("saturation", 1.0) or 1.0) * 100)))
+            self.gm_sharpness.setValue(int(round(float(gfx.get("sharpness", 0.0) or 0.0) * 100)))
+            self.wc_brightness_slider.setValue(self.wc_brightness.value())
+            self.wc_contrast_slider.setValue(self.wc_contrast.value())
+            self.wc_saturation_slider.setValue(self.wc_saturation.value())
+            self.wc_sharpness_slider.setValue(self.wc_sharpness.value())
+            self.gm_brightness_slider.setValue(self.gm_brightness.value())
+            self.gm_contrast_slider.setValue(self.gm_contrast.value())
+            self.gm_saturation_slider.setValue(self.gm_saturation.value())
+            self.gm_sharpness_slider.setValue(self.gm_sharpness.value())
             self._refresh_output_composite_preview()
         except Exception:
             pass
+
+    def _link_fx_control_pair(self, spin: SpinBox, slider: QSlider):
+        spin.valueChanged.connect(slider.setValue)
+        slider.valueChanged.connect(spin.setValue)
+        spin.valueChanged.connect(lambda _v: self._refresh_output_composite_preview())
+
+    @staticmethod
+    def _clamp_u8(v: float) -> int:
+        return max(0, min(255, int(round(v))))
+
+    def _apply_fx_preview(self, pixmap: QPixmap, layer: str) -> QPixmap:
+        if pixmap.isNull():
+            return pixmap
+
+        if layer == "webcam":
+            brightness = self.wc_brightness.value() / 100.0
+            contrast = self.wc_contrast.value() / 100.0
+            saturation = self.wc_saturation.value() / 100.0
+            sharpness = self.wc_sharpness.value() / 100.0
+        else:
+            brightness = self.gm_brightness.value() / 100.0
+            contrast = self.gm_contrast.value() / 100.0
+            saturation = self.gm_saturation.value() / 100.0
+            sharpness = self.gm_sharpness.value() / 100.0
+
+        if (
+            abs(brightness) < 1e-6
+            and abs(contrast - 1.0) < 1e-6
+            and abs(saturation - 1.0) < 1e-6
+            and sharpness < 1e-3
+        ):
+            return pixmap
+
+        img = pixmap.toImage().convertToFormat(4)  # QImage.Format_ARGB32
+        w, h = img.width(), img.height()
+        bright_add = brightness * 255.0
+        local_contrast = 1.0 + sharpness * 0.25  # лёгкая имитация резкости в превью
+        contrast_total = contrast * local_contrast
+
+        for y in range(h):
+            for x in range(w):
+                c = img.pixelColor(x, y)
+                r, g, b, a = c.red(), c.green(), c.blue(), c.alpha()
+
+                r = (r - 127.5) * contrast_total + 127.5 + bright_add
+                g = (g - 127.5) * contrast_total + 127.5 + bright_add
+                b = (b - 127.5) * contrast_total + 127.5 + bright_add
+
+                lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+                r = lum + (r - lum) * saturation
+                g = lum + (g - lum) * saturation
+                b = lum + (b - lum) * saturation
+
+                img.setPixelColor(
+                    x,
+                    y,
+                    QColor(self._clamp_u8(r), self._clamp_u8(g), self._clamp_u8(b), a),
+                )
+
+        return QPixmap.fromImage(img)
+
+    def _populate_rendered_list(self, files: List[str]):
+        self.rendered_list.clear()
+        for f in files or []:
+            item = QListWidgetItem(Path(f).name)
+            item.setToolTip(f)
+            item.setData(Qt.UserRole, f)
+            item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+            item.setCheckState(Qt.Checked)
+            self.rendered_list.addItem(item)
+
+    def _selected_rendered_files(self) -> List[str]:
+        selected = []
+        for i in range(self.rendered_list.count()):
+            item = self.rendered_list.item(i)
+            if item and item.checkState() == Qt.Checked:
+                path = item.data(Qt.UserRole)
+                if path and Path(path).exists():
+                    selected.append(str(path))
+        return selected
+
+    def _open_selected_rendered(self):
+        files = self._selected_rendered_files()
+        if not files:
+            return
+        if sys.platform == "win32":
+            for f in files[:3]:
+                os.startfile(f)
+
+    def _send_selected_to_batch(self):
+        files = self._selected_rendered_files()
+        if not files:
+            InfoBar.warning(
+                "Внимание",
+                "Выберите хотя бы один готовый шортс",
+                duration=2500,
+                position=InfoBarPosition.TOP,
+                parent=self,
+            )
+            return
+
+        main_win = self.window()
+        batch = getattr(main_win, "batchProcessInterface", None)
+        if not batch:
+            InfoBar.error(
+                "Ошибка",
+                "Не удалось найти вкладку пакетной обработки",
+                duration=3000,
+                position=InfoBarPosition.TOP,
+                parent=self,
+            )
+            return
+
+        try:
+            batch.task_type_combo.setCurrentText(str(BatchTaskType.FULL_PROCESS))
+            batch.add_files(files)
+            if hasattr(main_win, "switchTo"):
+                main_win.switchTo(batch)
+            InfoBar.success(
+                "Готово",
+                f"Отправлено в пакетную обработку: {len(files)}",
+                duration=3000,
+                position=InfoBarPosition.TOP,
+                parent=self,
+            )
+        except Exception as e:
+            InfoBar.error(
+                "Ошибка",
+                f"Не удалось отправить в пакетную обработку: {e}",
+                duration=3500,
+                position=InfoBarPosition.TOP,
+                parent=self,
+            )
 
     def _load_source_preview_frame(self, video_path: str, seek_s: int = 2):
         try:
@@ -1047,6 +1368,7 @@ class AutoShortsInterface(QWidget):
                 crop = self.source_frame_pixmap.copy(sx, sy, sw, sh)
                 if crop.isNull():
                     continue
+                crop = self._apply_fx_preview(crop, key)
                 painter.drawPixmap(QRectF(dx, dy, dw, dh), crop, QRectF(0, 0, crop.width(), crop.height()))
         finally:
             painter.end()
