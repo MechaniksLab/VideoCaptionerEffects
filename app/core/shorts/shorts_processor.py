@@ -1,6 +1,8 @@
 import json
+import os
 import re
 import subprocess
+import tempfile
 from datetime import datetime
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -496,8 +498,13 @@ def render_shorts(
         return 1920, 1080, 30.0
 
     src_w_i, src_h_i, src_fps = _probe_video_meta(input_video)
-    target_fps = int(min(60, max(24, round(src_fps))))
-    _append_render_debug(f"SOURCE meta={src_w_i}x{src_h_i}@{round(src_fps, 3)}fps target_fps={target_fps}")
+    # Для Auto Shorts высокий FPS (например, 60) резко замедляет montage pipeline,
+    # особенно при CPU filter graph (даже с NVENC энкодером).
+    # Ограничиваем целевой FPS до 30 для более предсказуемой скорости.
+    target_fps = int(min(30, max(24, round(src_fps))))
+    _append_render_debug(
+        f"SOURCE meta={src_w_i}x{src_h_i}@{round(src_fps, 3)}fps target_fps={target_fps} (capped_to_30_for_speed)"
+    )
 
     def _detect_best_encoder() -> Tuple[List[str], str]:
         cpu_args = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-threads", "0"]
@@ -635,9 +642,21 @@ def render_shorts(
     total = max(1, len(candidates))
 
     def _run_ffmpeg(cmd_line: List[str], clip_idx: int, clip_duration_s: float):
+        progress_file = None
+        cmd_for_run = list(cmd_line)
+        # Реальный прогресс рендера из ffmpeg (-progress), чтобы полоса была не "фейковой".
+        # Пишем в временный файл и периодически читаем out_time_*.
+        try:
+            fd, progress_file = tempfile.mkstemp(prefix="shorts_ffmpeg_progress_", suffix=".log")
+            os.close(fd)
+            if cmd_for_run and "ffmpeg" in Path(cmd_for_run[0]).name.lower():
+                cmd_for_run = [cmd_for_run[0], "-progress", progress_file, "-nostats", *cmd_for_run[1:]]
+        except Exception:
+            progress_file = None
+
         creationflags = subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0
         p = subprocess.Popen(
-            cmd_line,
+            cmd_for_run,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
@@ -646,6 +665,29 @@ def render_shorts(
             creationflags=creationflags,
         )
         t_run = perf_counter()
+        last_real_frac = 0.0
+
+        def _read_real_progress_frac() -> Optional[float]:
+            if not progress_file:
+                return None
+            try:
+                data = Path(progress_file).read_text(encoding="utf-8", errors="replace")
+                out_time_us_all = re.findall(r"out_time_us=(\d+)", data)
+                if out_time_us_all:
+                    sec = int(out_time_us_all[-1]) / 1_000_000.0
+                    return max(0.0, min(1.0, sec / max(0.2, clip_duration_s)))
+
+                out_time_ms_all = re.findall(r"out_time_ms=(\d+)", data)
+                if out_time_ms_all:
+                    raw = int(out_time_ms_all[-1])
+                    # Совместимость с разными сборками ffmpeg:
+                    # где-то это microseconds (исторически), где-то milliseconds.
+                    sec = raw / (1_000_000.0 if raw > (clip_duration_s * 10_000) else 1000.0)
+                    return max(0.0, min(1.0, sec / max(0.2, clip_duration_s)))
+            except Exception:
+                return None
+            return None
+
         while True:
             if cancel_cb and cancel_cb():
                 try:
@@ -659,19 +701,42 @@ def render_shorts(
                         p.kill()
                     except Exception:
                         pass
-                return subprocess.CompletedProcess(cmd_line, 130, "", "Cancelled by user")
+                try:
+                    if progress_file and Path(progress_file).exists():
+                        Path(progress_file).unlink()
+                except Exception:
+                    pass
+                return subprocess.CompletedProcess(cmd_for_run, 130, "", "Cancelled by user")
 
             rc = p.poll()
             if rc is not None:
                 out, err = p.communicate()
-                return subprocess.CompletedProcess(cmd_line, rc, out or "", err or "")
+                try:
+                    if progress_file and Path(progress_file).exists():
+                        Path(progress_file).unlink()
+                except Exception:
+                    pass
+                return subprocess.CompletedProcess(cmd_for_run, rc, out or "", err or "")
 
             if progress_cb:
                 base = int(((clip_idx - 1) / total) * 100)
                 span = max(1, int(100 / total) - 1)
-                est = max(2.0, clip_duration_s * 1.8)
-                frac = min(0.97, (perf_counter() - t_run) / est)
-                progress_cb(min(99, base + int(span * frac)), f"Рендер шортсов: {clip_idx}/{total}")
+                real_frac = _read_real_progress_frac()
+                progress_msg = f"Рендер шортсов: {clip_idx}/{total}"
+                if real_frac is not None:
+                    last_real_frac = max(last_real_frac, real_frac)
+                    # На сложных графах ffmpeg может долго финализировать контейнер после ~99% out_time.
+                    # Держим небольшой "хвост" под стадию завершения, чтобы полоса не выглядела зависшей.
+                    if last_real_frac >= 0.985:
+                        frac = 0.94
+                        progress_msg = f"Финализация клипа {clip_idx}/{total} (аудио/контейнер)..."
+                    else:
+                        frac = min(0.94, last_real_frac)
+                else:
+                    # Fallback на оценку по времени, если ffmpeg ещё не успел записать прогресс.
+                    est = max(2.0, clip_duration_s * 1.8)
+                    frac = min(0.90, (perf_counter() - t_run) / est)
+                progress_cb(min(99, base + int(span * frac)), progress_msg)
             sleep(0.35)
 
     for i, c in enumerate(candidates, 1):
@@ -728,17 +793,33 @@ def render_shorts(
             gm_out_x, gm_out_y = _scale_x(gm_out_x), _scale_y(gm_out_y)
             gm_out_w, gm_out_h = _scale_x(gm_out_w), _scale_y(gm_out_h)
 
-            # Быстрый путь: если слои ровно вертикально состыкованы (top+bottom),
-            # используем vstack вместо overlay-композита (меньше операций, быстрее рендер).
-            is_vertical_stack_layout = (
-                wc_out_x == 0
-                and gm_out_x == 0
-                and wc_out_y == 0
-                and gm_out_y == wc_out_h
-                and wc_out_w == target_w_i
-                and gm_out_w == target_w_i
-                and (wc_out_h + gm_out_h) == target_h_i
+            # Быстрый путь: вертикальный top+bottom layout.
+            # Делаем определение с "допуском", т.к. из UI часто приходят значения вроде 637+1280=1917.
+            # В таком случае нормализуем высоты до target_h и используем vstack,
+            # что заметно быстрее overlay-композита.
+            stack_tol = max(8, int(target_h_i * 0.005))
+            width_tol = max(8, int(target_w_i * 0.01))
+            full_width = (
+                abs(wc_out_x) <= width_tol
+                and abs(gm_out_x) <= width_tol
+                and abs(wc_out_w - target_w_i) <= width_tol
+                and abs(gm_out_w - target_w_i) <= width_tol
             )
+            top_bottom_ordered = wc_out_y <= gm_out_y and (wc_out_y + wc_out_h) <= (gm_out_y + stack_tol)
+            starts_from_top = abs(wc_out_y) <= stack_tol
+            ends_at_bottom = abs((gm_out_y + gm_out_h) - target_h_i) <= stack_tol
+            near_full_height = abs((wc_out_h + gm_out_h) - target_h_i) <= max(stack_tol, int(target_h_i * 0.02))
+
+            is_vertical_stack_layout = (
+                full_width and top_bottom_ordered and starts_from_top and ends_at_bottom and near_full_height
+            )
+
+            wc_stack_h = wc_out_h
+            gm_stack_h = gm_out_h
+            if is_vertical_stack_layout:
+                total_h = max(2, wc_out_h + gm_out_h)
+                wc_stack_h = max(2, int(round(target_h_i * (wc_out_h / total_h))))
+                gm_stack_h = max(2, target_h_i - wc_stack_h)
 
             if use_nvenc_gpu_filters:
                 filter_complex = (
@@ -758,9 +839,9 @@ def render_shorts(
                     filter_complex = (
                         f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
                         f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
-                        f"{wc_scale}[cam];"
+                        f"scale={target_w_i}:{wc_stack_h}:flags=fast_bilinear[cam];"
                         f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
-                        f"{gm_scale}[game];"
+                        f"scale={target_w_i}:{gm_stack_h}:flags=fast_bilinear[game];"
                         f"[cam][game]vstack=inputs=2[vout]"
                     )
                 else:
@@ -780,12 +861,14 @@ def render_shorts(
                 cpu_filter_complex = (
                     f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
                     f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
-                    f"scale={wc_out_w}:{wc_out_h}:flags=fast_bilinear[cam];"
+                    f"scale={target_w_i}:{wc_stack_h}:flags=fast_bilinear[cam];"
                     f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
-                    f"scale={gm_out_w}:{gm_out_h}:flags=fast_bilinear[game];"
+                    f"scale={target_w_i}:{gm_stack_h}:flags=fast_bilinear[game];"
                     f"[cam][game]vstack=inputs=2[vout]"
                 )
-                _append_render_debug("LAYOUT path=vstack")
+                _append_render_debug(
+                    f"LAYOUT path=vstack normalized_h={wc_stack_h}+{gm_stack_h} target_h={target_h_i}"
+                )
             else:
                 cpu_filter_complex = (
                     f"color=size={target_w_i}x{target_h_i}:color=black[base];"
@@ -806,7 +889,7 @@ def render_shorts(
                     "-map",
                     "[vout]",
                     "-map",
-                    "0:a?",
+                    "0:a:0?",
                 ]
             )
 
@@ -827,7 +910,7 @@ def render_shorts(
                 "-map",
                 "[vout]",
                 "-map",
-                "0:a?",
+                "0:a:0?",
             ]
         else:
             vf = (
@@ -859,6 +942,7 @@ def render_shorts(
             "yuv420p",
             "-movflags",
             "+faststart",
+            "-shortest",
             "-c:a",
             "aac",
             "-b:a",

@@ -10777,3 +10777,251 @@ Latest version info: v1.3.3
 转换为音频执行命令: ffmpeg -i C:\Temp\tmpq6nlqc8b.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpyg8y35p9.wav
 Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex color=size=1080x1920:color=black[base];[0:v]fps=60,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:637:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1280:flags=fast_bilinear[game];[base][cam]overlay=0:0[tmp];[tmp][game]overlay=0:640[vout] -map [vout] -map 0:a? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
 Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex color=size=1080x1920:color=black[base];[0:v]fps=60,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:637:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1280:flags=fast_bilinear[game];[base][cam]overlay=0:0[tmp];[tmp][game]overlay=0:640[vout] -map [vout] -map 0:a? -c:v libx264 -preset veryfast -crf 20 -threads 0 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-15 13:03:11.000665
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpb7mkhxxk.wav
+视频时长: 57.29秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpailph6aw\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpailph6aw\audio.wav
+51% | 29/57 | 00:09<<00:09 |  3.00 audio seconds/s
+100% | 57/57 | 00:20<<00:00 |  2.81 audio seconds/s
+Transcription speed: 2.78 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpailph6aw' directory.
+Operation finished in:  0:00:22.982
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【原始字幕】Последовательность 01-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-15 13:03:36.596708
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\0e33c33366242031b797e599f0e84628.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【样式字幕】Последовательность 01-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260415_130336.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-15 13:03:36.649327
+开始合成视频: E:/Render/Последовательность 01.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01.mp4"
+视频总时长: 57.29秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01.mp4
+
+===========转录任务开始===========
+时间：2026-04-15 13:10:08.112655
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_1.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpphbrjoy_.wav
+视频时长: 59.83秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpxafi2j7d\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpxafi2j7d\audio.wav
+50% | 30/60 | 00:11<<00:11 |  2.68 audio seconds/s
+97% | 58/60 | 00:21<<00:00 |  2.72 audio seconds/s
+100% | 60/60 | 00:23<<00:00 |  2.58 audio seconds/s
+Transcription speed: 2.54 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpxafi2j7d' directory.
+Operation finished in:  0:00:25.313
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_1\subtitle\【原始字幕】Последовательность 01_1-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-15 13:10:34.997351
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\2b4946553b5dc0a3c4d9aa313db2c040.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_1\subtitle\【样式字幕】Последовательность 01_1-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260415_131035.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-15 13:10:35.037967
+开始合成视频: E:/Render/Последовательность 01_1.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_1.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_1.mp4"
+视频总时长: 59.83秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_1.mp4
+
+===========转录任务开始===========
+时间：2026-04-15 13:16:34.373323
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_2.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpcoujhaa_.wav
+视频时长: 46.88秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpewyexzfc\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpewyexzfc\audio.wav
+62% | 29/47 | 00:10<<00:06 |  2.73 audio seconds/s
+100% | 47/47 | 00:17<<00:00 |  2.63 audio seconds/s
+Transcription speed: 2.58 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpewyexzfc' directory.
+Operation finished in:  0:00:19.936
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_2\subtitle\【原始字幕】Последовательность 01_2-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-15 13:16:55.806595
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\7b57813f46117bc694fa8444f7a9d0d6.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_2\subtitle\【样式字幕】Последовательность 01_2-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260415_131655.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-15 13:16:55.833180
+开始合成视频: E:/Render/Последовательность 01_2.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_2.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_2.mp4"
+视频总时长: 46.88秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_2.mp4
+
+===========转录任务开始===========
+时间：2026-04-15 13:25:28.788287
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_3.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpf8my1mv_.wav
+视频时长: 36.24秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpa8dh0wkl\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpa8dh0wkl\audio.wav
+78% | 28/36 | 00:07<<00:02 |  3.51 audio seconds/s
+86% | 31/36 | 00:09<<00:01 |  3.15 audio seconds/s
+100% | 36/36 | 00:10<<00:00 |  3.54 audio seconds/s
+Transcription speed: 3.56 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpa8dh0wkl' directory.
+Operation finished in:  0:00:11.922
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_3\subtitle\【原始字幕】Последовательность 01_3-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-15 13:25:42.155371
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\d4668a3a5e8cc79b0c3c7775386bb986.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_3\subtitle\【样式字幕】Последовательность 01_3-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260415_132542.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-15 13:25:42.189109
+开始合成视频: E:/Render/Последовательность 01_3.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_3.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_3.mp4"
+视频总时长: 36.24秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_3.mp4
+
+===========转录任务开始===========
+时间：2026-04-15 13:40:20.135432
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_4.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpc58ut70u.wav
+视频时长: 34.87秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpowt5cm7j\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpowt5cm7j\audio.wav
+83% | 29/35 | 00:08<<00:01 |  3.26 audio seconds/s
+100% | 35/35 | 00:11<<00:00 |  3.16 audio seconds/s
+Transcription speed: 3.07 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpowt5cm7j' directory.
+Operation finished in:  0:00:13.137
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_4\subtitle\【原始字幕】Последовательность 01_4-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-15 13:40:34.854725
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\465cb052cf956f8f4dc8047c529e09b7.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_4\subtitle\【样式字幕】Последовательность 01_4-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260415_134034.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-15 13:40:34.878221
+开始合成视频: E:/Render/Последовательность 01_4.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_4.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_4.mp4"
+视频总时长: 34.87秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_4.mp4
+
+===========转录任务开始===========
+时间：2026-04-15 13:47:12.977519
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_5.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpdn39tg99.wav
+视频时长: 90.72秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpokwazofk\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpokwazofk\audio.wav
+29% | 26/91 | 00:12<<00:32 |  2.01 audio seconds/s
+57% | 52/91 | 00:22<<00:16 |  2.34 audio seconds/s
+89% | 81/91 | 00:33<<00:04 |  2.44 audio seconds/s
+100% | 91/91 | 00:37<<00:00 |  2.43 audio seconds/s
+Transcription speed: 2.4 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpokwazofk' directory.
+Operation finished in:  0:00:39.623
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_5\subtitle\【原始字幕】Последовательность 01_5-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-15 13:47:54.250910
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\655e1dcab4c95f0d7667a9f324f4d8a8.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_5\subtitle\【样式字幕】Последовательность 01_5-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260415_134754.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-15 13:47:54.282652
+开始合成视频: E:/Render/Последовательность 01_5.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_5.mp4" -acodec copy -vcodec libx264 -preset medium -vf ass='C\:/Temp/VideoCaptioner/temp_subtitle..ass' -y "E:\Render\【卡卡】Последовательность 01_5.mp4"
+视频总时长: 90.72秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_5.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmp21r36s6o.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp9t0cjnb6.wav
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpsoir9h7q.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpvee5bak9.wav
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex color=size=1080x1920:color=black[base];[0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1065:628:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1280:flags=fast_bilinear[game];[base][cam]overlay=0:0[tmp];[tmp][game]overlay=0:640[vout] -map [vout] -map 0:a? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -vf fps=30,scale=1080:1920:force_original_aspect_ratio=increase:flags=fast_bilinear,crop=1080:1920 -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex color=size=1080x1920:color=black[base];[0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1065:628:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1280:flags=fast_bilinear[game];[base][cam]overlay=0:0[tmp];[tmp][game]overlay=0:640[vout] -map [vout] -map 0:a? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpfjz1obyb.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpb5gfmh_o.wav
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 164.060 -t 31.640 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_164s_195s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 130.320 -t 39.260 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_002_130s_169s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 145.445 -t 37.435 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_003_145s_182s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 229.660 -t 39.720 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_004_229s_269s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 249.420 -t 32.505 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_005_249s_281s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 178.580 -t 27.970 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_006_178s_206s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 263.640 -t 36.240 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_007_263s_299s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 213.260 -t 20.100 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_008_213s_233s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 222.140 -t 17.920 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_009_222s_240s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 191.620 -t 23.730 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_010_191s_215s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 204.260 -t 21.460 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_011_204s_225s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 120.610 -t 24.835 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_012_120s_145s.mp4
