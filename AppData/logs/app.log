@@ -11025,3 +11025,70 @@ Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 222.140 -t 17.920
 Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 191.620 -t 23.730 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_010_191s_215s.mp4
 Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 204.260 -t 21.460 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_011_204s_225s.mp4
 Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 120.610 -t 24.835 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_012_120s_145s.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpha7qgrln.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpvtxyxqc6.wav
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmprl3s4d8i.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp563qwfmn.wav
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 145.445 -t 22.775 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_145s_168s.mp4
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpz9j8cvxo.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmptv49fxhh.wav
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 120.610 -t 30.170 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_120s_150s.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmp3yqoebow.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp8vpsortz.wav
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 120.610 -t 47.610 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_120s_168s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 184.200 -t 22.350 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_002_184s_206s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 229.660 -t 21.180 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_003_229s_250s.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmp3a9c1m86.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp8udfe_1v.wav
+转换为音频执行命令: ffmpeg -i C:\Temp\tmp_3wuob8p.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpnq8sltx1.wav
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpgp3_hrd2.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp4vseatt8.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpghn0f7mn\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 0 --sentence --max_line_width 90 --max_line_count 1 --max_comma 20 --max_comma_cent 50 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpghn0f7mn\audio.wav
+10% |  29/280 | 00:37<<05:24 |  0.77 audio seconds/s
+21% |  59/280 | 00:42<<02:40 |  1.38 audio seconds/s
+31% |  87/280 | 00:46<<01:43 |  1.86 audio seconds/s
+41% | 116/280 | 00:50<<01:11 |  2.30 audio seconds/s
+51% | 144/280 | 00:54<<00:51 |  2.63 audio seconds/s
+59% | 164/280 | 00:58<<00:41 |  2.79 audio seconds/s
+73% | 204/280 | 01:04<<00:23 |  3.18 audio seconds/s
+82% | 231/280 | 01:10<<00:14 |  3.28 audio seconds/s
+94% | 263/280 | 01:13<<00:04 |  3.57 audio seconds/s
+97% | 272/280 | 01:15<<00:02 |  3.61 audio seconds/s
+100% | 280/280 | 01:15<<00:00 |  3.71 audio seconds/s
+Transcription speed: 3.71 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpghn0f7mn' directory.
+Operation finished in:  0:01:17.439
+Faster Whisper 返回值: 3221226505
+Faster Whisper 识别完成
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 306.800 -t 18.800 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_306s_325s.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmprrs0j3eh.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp811yqlvl.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpal_q566m\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpal_q566m\audio.wav
+10% |  29/280 | 00:48<<06:59 |  0.60 audio seconds/s
+21% |  59/280 | 00:53<<03:22 |  1.09 audio seconds/s
+31% |  87/280 | 00:57<<02:08 |  1.50 audio seconds/s
+41% | 116/280 | 01:01<<01:27 |  1.87 audio seconds/s
+51% | 144/280 | 01:06<<01:02 |  2.18 audio seconds/s
+59% | 164/280 | 01:10<<00:49 |  2.33 audio seconds/s
+73% | 204/280 | 01:15<<00:28 |  2.69 audio seconds/s
+82% | 231/280 | 01:22<<00:17 |  2.81 audio seconds/s
+94% | 263/280 | 01:25<<00:05 |  3.08 audio seconds/s
+97% | 272/280 | 01:27<<00:02 |  3.12 audio seconds/s
+100% | 280/280 | 01:27<<00:00 |  3.20 audio seconds/s
+Transcription speed: 3.2 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpal_q566m' directory.
+Operation finished in:  0:01:29.289
+Faster Whisper 返回值: 3221226505
+Faster Whisper 识别完成
+2026-04-15 15:04:49 - shorts_processor - WARNING - Enterprise packet parse failed: Request timed out.
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 306.800 -t 18.800 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_306s_325s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 171.360 -t 15.360 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_002_171s_186s.mp4
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpdb5vmpi2.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp_39yeqw1.wav
+2026-04-15 15:07:32 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5470>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 250.540 -t 31.100 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_001_250s_281s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 302.820 -t 18.360 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_002_302s_321s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 344.560 -t 46.880 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_003_344s_391s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 323.280 -t 21.280 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_004_323s_344s.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 171.360 -t 15.360 -i E:/Render/Detroit Become Human 5.mp4 -filter_complex [0:v]fps=30,split=2[src_cam][src_game];[src_cam]crop=815:458:0:0,scale=1080:638:flags=fast_bilinear[cam];[src_game]crop=1712:1440:497:0,scale=1080:1282:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p1 -tune ll -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5\short_005_171s_186s.mp4

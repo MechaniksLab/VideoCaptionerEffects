@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import signal
 import subprocess
 import tempfile
 from datetime import datetime
@@ -18,6 +19,8 @@ from app.core.utils.logger import setup_logger
 logger = setup_logger("shorts_processor")
 
 RENDER_DEBUG_LOG = LOG_PATH / "auto_shorts_render.log"
+MAX_HEURISTIC_CANDIDATES = 300
+MAX_RENDER_CLIPS = 60
 
 
 def _append_render_debug(message: str):
@@ -37,6 +40,7 @@ class ShortCandidate:
     title: str
     reason: str
     excerpt: str
+    speech_ranges: Optional[List[Tuple[int, int]]] = None
 
     @property
     def duration_ms(self) -> int:
@@ -65,14 +69,28 @@ class ShortsProcessor:
         if progress_cb:
             progress_cb(5, "Поиск интересных фрагментов...")
 
-        candidates: List[ShortCandidate] = []
+        llm_candidates: List[ShortCandidate] = []
         if self._llm_ready():
             if progress_cb:
                 progress_cb(12, "AI Enterprise: семантический анализ эпизодов...")
-            candidates = self._build_enterprise_llm_candidates(asr_data, progress_cb=progress_cb)
+            llm_candidates = self._build_enterprise_llm_candidates(asr_data, progress_cb=progress_cb)
 
-        if not candidates:
-            candidates = self._build_heuristic_candidates(asr_data)
+        heuristic_candidates = self._build_heuristic_candidates(asr_data)
+        if llm_candidates:
+            # Не полагаемся только на LLM: домешиваем эвристику,
+            # чтобы не получать 1-2 скучных кандидата на всём диапазоне.
+            candidates = llm_candidates + heuristic_candidates[:140]
+            candidates.sort(key=lambda x: x.score, reverse=True)
+            candidates = self._deduplicate(candidates)
+        else:
+            candidates = heuristic_candidates
+
+        # Если после всех фильтров кандидатов всё ещё мало,
+        # делаем расширенный проход с более мягкими порогами.
+        if len(candidates) < 6:
+            expanded = self._build_heuristic_candidates(asr_data, relaxed=True)
+            candidates = self._deduplicate((candidates + expanded) if candidates else expanded)
+            candidates.sort(key=lambda x: x.score, reverse=True)
 
         if progress_cb:
             progress_cb(55, f"Найдено кандидатов (эвристика): {len(candidates)}")
@@ -80,8 +98,11 @@ class ShortsProcessor:
         reranked = self._try_llm_rerank(candidates)
         if progress_cb:
             progress_cb(85, f"Кандидаты после ранжирования: {len(reranked)}")
+        final_candidates = reranked[:MAX_HEURISTIC_CANDIDATES]
+        if progress_cb and len(reranked) > len(final_candidates):
+            progress_cb(92, f"Ограничение списка для качества/скорости: {len(final_candidates)} из {len(reranked)}")
 
-        return reranked
+        return final_candidates
 
     def _llm_ready(self) -> bool:
         return bool(self.llm_model and self.llm_base_url and self.llm_api_key)
@@ -194,6 +215,7 @@ class ShortsProcessor:
                 blended = min(100.0, 0.72 * base_score + 2.8 * (hook + emotion + novelty + shareability))
 
                 excerpt = " ".join((by_idx[k].text or "").strip() for k in range(s_idx, e_idx + 1))
+                speech_ranges = self._build_speech_ranges_from_segments([by_idx[k] for k in range(s_idx, e_idx + 1)])
                 result.append(
                     ShortCandidate(
                         start_ms=start_ms,
@@ -202,6 +224,7 @@ class ShortsProcessor:
                         title=str(item.get("title", "")).strip() or self._build_title(excerpt),
                         reason=str(item.get("reason", "")).strip() or "AI Enterprise selection",
                         excerpt=self._shorten(excerpt, 220),
+                        speech_ranges=speech_ranges,
                     )
                 )
             except Exception:
@@ -209,31 +232,97 @@ class ShortsProcessor:
 
         return result
 
-    def _build_heuristic_candidates(self, asr_data: ASRData) -> List[ShortCandidate]:
+    def _build_heuristic_candidates(self, asr_data: ASRData, relaxed: bool = False) -> List[ShortCandidate]:
         segments = [s for s in asr_data.segments if s.text and s.text.strip()]
         if not segments:
             return []
 
+        prepared = []
+        for seg in segments:
+            clean = self._normalize_text(seg.text)
+            token_count = self._count_tokens(clean)
+            if token_count <= 0:
+                continue
+            filler_hits = self._count_filler_hits(clean)
+            prepared.append(
+                {
+                    "seg": seg,
+                    "text": seg.text.strip(),
+                    "clean": clean,
+                    "token_count": token_count,
+                    "filler_hits": filler_hits,
+                }
+            )
+
+        if not prepared:
+            return []
+
         windows: List[ShortCandidate] = []
-        for i in range(len(segments)):
-            start = segments[i].start_time
+        n_prepared = len(prepared)
+        if n_prepared > 900:
+            start_step = 3
+        elif n_prepared > 450:
+            start_step = 2
+        else:
+            start_step = 1
+
+        if relaxed:
+            start_step = max(1, start_step - 1)
+
+        for i in range(0, n_prepared, start_step):
+            start = prepared[i]["seg"].start_time
             text_parts = []
             end = start
             punch = 0.0
+            speech_ms = 0
+            pause_ms = 0
+            token_sum = 0
+            filler_sum = 0
+            prev_end = start
 
-            for j in range(i, len(segments)):
-                seg = segments[j]
+            for j in range(i, len(prepared)):
+                rec = prepared[j]
+                seg = rec["seg"]
+                if j - i > 180:
+                    break
                 end = seg.end_time
-                text_parts.append(seg.text.strip())
+                text_parts.append(rec["text"])
+                speech_ms += max(1, int(seg.end_time - seg.start_time))
+                token_sum += int(rec["token_count"])
+                filler_sum += int(rec["filler_hits"])
+                if j > i:
+                    pause_ms += max(0, int(seg.start_time - prev_end))
+                prev_end = seg.end_time
+
                 duration = end - start
                 if duration > self.max_duration_ms:
                     break
                 if duration < self.min_duration_ms:
                     continue
 
+                speech_ratio = max(0.0, min(1.0, speech_ms / max(1, duration)))
+                pause_ratio = max(0.0, min(1.0, pause_ms / max(1, duration)))
+                filler_ratio = max(0.0, min(1.0, filler_sum / max(1, token_sum)))
+
+                # Отсекаем "пустые"/скучные фрагменты: мало речи, много пауз, много филлеров.
+                if relaxed:
+                    skip_window = speech_ratio < 0.48 or pause_ratio > 0.36 or filler_ratio > 0.52
+                else:
+                    skip_window = speech_ratio < 0.58 or pause_ratio > 0.24 or filler_ratio > 0.40
+                if skip_window:
+                    continue
+
                 joined = " ".join(text_parts)
-                score = self._heuristic_score(joined, duration)
+                score = self._heuristic_score(
+                    joined,
+                    duration,
+                    speech_ratio=speech_ratio,
+                    pause_ratio=pause_ratio,
+                    filler_ratio=filler_ratio,
+                )
                 if score <= 0:
+                    continue
+                if score < (39 if relaxed else 46):
                     continue
 
                 punch = max(punch, score)
@@ -246,17 +335,27 @@ class ShortsProcessor:
                         title=self._build_title(joined),
                         reason=self._build_reason(joined, score),
                         excerpt=excerpt,
+                        speech_ranges=self._build_speech_ranges_from_segments(
+                            [prepared[k]["seg"] for k in range(i, j + 1)]
+                        ),
                     )
                 )
 
                 # если уже очень сильный фрагмент — можно не расширять дальше
-                if punch > 95:
+                if punch > (97 if relaxed else 95):
                     break
 
         windows.sort(key=lambda x: x.score, reverse=True)
         return self._deduplicate(windows)
 
-    def _heuristic_score(self, text: str, duration_ms: int) -> float:
+    def _heuristic_score(
+        self,
+        text: str,
+        duration_ms: int,
+        speech_ratio: float = 1.0,
+        pause_ratio: float = 0.0,
+        filler_ratio: float = 0.0,
+    ) -> float:
         txt = (text or "").strip()
         if not txt:
             return 0
@@ -264,6 +363,11 @@ class ShortsProcessor:
         words = txt.split()
         token_count = max(len(words), len(re.findall(r"[\u4e00-\u9fff]", txt)))
         if token_count == 0:
+            return 0
+
+        lowered = txt.lower()
+        unique_ratio = len(set(re.findall(r"[\w\u4e00-\u9fff]+", lowered))) / max(1, token_count)
+        if token_count >= 18 and unique_ratio < 0.42:
             return 0
 
         duration_s = max(duration_ms / 1000.0, 1.0)
@@ -279,16 +383,21 @@ class ShortsProcessor:
         ]
         hype_kw = ["имба", "жёстко", "клатч", "тащит", "топ", "легенд", "финал", "камбэк"]
 
-        funny_hits = sum(1 for k in funny_kw if k in txt.lower())
-        hook_hits = sum(1 for k in hook_kw if k in txt.lower())
-        hype_hits = sum(1 for k in hype_kw if k in txt.lower())
+        funny_hits = sum(1 for k in funny_kw if k in lowered)
+        hook_hits = sum(1 for k in hook_kw if k in lowered)
+        hype_hits = sum(1 for k in hype_kw if k in lowered)
         punct_bonus = txt.count("!") * 2 + txt.count("?") * 1.5
         caps_bonus = min(8, len(re.findall(r"[A-ZА-ЯЁ]{3,}", txt)) * 2)
         digit_bonus = 4 if re.search(r"\d", txt) else 0
+        quote_bonus = 4 if any(sym in txt for sym in ["—", "«", "»", "\"", "'"]) else 0
 
         duration_target_bonus = 14 if 16 <= duration_s <= 42 else (6 if 12 <= duration_s <= 55 else 0)
         density_bonus = max(0, min(22, (density - 1.45) * 10))
-        anti_wall_penalty = -10 if density < 0.8 else 0
+        anti_wall_penalty = -14 if density < 0.8 else 0
+        pause_penalty = -18 * max(0.0, min(1.0, pause_ratio))
+        filler_penalty = -22 * max(0.0, min(1.0, filler_ratio))
+        low_speech_penalty = -20 * max(0.0, min(1.0, 1.0 - speech_ratio))
+        diversity_bonus = max(0.0, min(8.0, (unique_ratio - 0.42) * 20))
 
         score = (
             34
@@ -300,7 +409,12 @@ class ShortsProcessor:
             + punct_bonus
             + caps_bonus
             + digit_bonus
+            + quote_bonus
+            + diversity_bonus
             + anti_wall_penalty
+            + pause_penalty
+            + filler_penalty
+            + low_speech_penalty
         )
         return round(min(100.0, score), 2)
 
@@ -375,15 +489,118 @@ class ShortsProcessor:
         accepted: List[ShortCandidate] = []
         for c in candidates:
             overlap = False
+            c_tokens = self._token_set(c.excerpt or c.title)
             for a in accepted:
                 inter = max(0, min(c.end_ms, a.end_ms) - max(c.start_ms, a.start_ms))
                 short = max(1, min(c.duration_ms, a.duration_ms))
-                if inter / short > 0.65:
+                long = max(1, max(c.duration_ms, a.duration_ms))
+                iou = inter / max(1, (c.duration_ms + a.duration_ms - inter))
+                temporal_close = abs(c.start_ms - a.start_ms) < 3500 or abs(c.end_ms - a.end_ms) < 3500
+                a_tokens = self._token_set(a.excerpt or a.title)
+                text_sim = self._jaccard(c_tokens, a_tokens)
+
+                if inter / short > 0.62:
+                    overlap = True
+                    break
+                if iou > 0.42 and text_sim > 0.52:
+                    overlap = True
+                    break
+                if temporal_close and text_sim > 0.72 and inter / long > 0.22:
                     overlap = True
                     break
             if not overlap:
                 accepted.append(c)
         return accepted
+
+    @staticmethod
+    def _normalize_text(text: str) -> str:
+        t = (text or "").lower().strip()
+        t = re.sub(r"\s+", " ", t)
+        return t
+
+    @staticmethod
+    def _count_tokens(text: str) -> int:
+        if not text:
+            return 0
+        words = re.findall(r"[\w\u4e00-\u9fff]+", text, flags=re.UNICODE)
+        return len(words)
+
+    @staticmethod
+    def _count_filler_hits(text: str) -> int:
+        if not text:
+            return 0
+        filler_kw = [
+            "эм", "ээ", "мм", "ну", "типа", "короче", "как бы", "блин", "это самое",
+            "uh", "um", "erm", "hmm", "like", "you know",
+        ]
+        low = text.lower()
+        return sum(1 for k in filler_kw if k in low)
+
+    @staticmethod
+    def _token_set(text: str) -> set:
+        if not text:
+            return set()
+        tokens = re.findall(r"[\w\u4e00-\u9fff]{2,}", text.lower(), flags=re.UNICODE)
+        return set(tokens)
+
+    @staticmethod
+    def _jaccard(a: set, b: set) -> float:
+        if not a or not b:
+            return 0.0
+        inter = len(a & b)
+        uni = len(a | b)
+        return inter / max(1, uni)
+
+    @staticmethod
+    def _build_speech_ranges_from_segments(segments: List) -> List[Tuple[int, int]]:
+        if not segments:
+            return []
+        ranges: List[Tuple[int, int]] = []
+        for seg in segments:
+            s = int(getattr(seg, "start_time", 0) or 0)
+            e = int(getattr(seg, "end_time", 0) or 0)
+            if e - s < 120:
+                continue
+
+            word_ts = getattr(seg, "word_timestamps", None) or []
+            word_ranges: List[Tuple[int, int]] = []
+            if isinstance(word_ts, list):
+                for w in word_ts:
+                    try:
+                        ws = int(float(w.get("start_time", s)))
+                        we = int(float(w.get("end_time", ws + 60)))
+                    except Exception:
+                        continue
+                    ws = max(s, ws)
+                    we = min(e, we)
+                    if we - ws >= 80:
+                        word_ranges.append((ws, we))
+
+            if word_ranges:
+                ranges.extend(word_ranges)
+            else:
+                # Без word timestamps немного сжимаем сегмент,
+                # чтобы не тащить хвосты тишины по краям фраз.
+                dur = e - s
+                shrink = min(180, max(40, int(dur * 0.08)))
+                ns = s + shrink
+                ne = e - shrink
+                if ne - ns >= 120:
+                    ranges.append((ns, ne))
+                else:
+                    ranges.append((s, e))
+        if not ranges:
+            return []
+
+        ranges.sort(key=lambda x: x[0])
+        merged: List[Tuple[int, int]] = [ranges[0]]
+        for s, e in ranges[1:]:
+            ps, pe = merged[-1]
+            if s - pe <= 140:
+                merged[-1] = (ps, max(pe, e))
+            else:
+                merged.append((s, e))
+        return merged
 
     @staticmethod
     def _extract_json(text: str) -> Dict:
@@ -498,6 +715,32 @@ def render_shorts(
         return 1920, 1080, 30.0
 
     src_w_i, src_h_i, src_fps = _probe_video_meta(input_video)
+
+    def _probe_has_audio(path: str) -> bool:
+        try:
+            p = subprocess.run(
+                [
+                    "ffprobe",
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "a:0",
+                    "-show_entries",
+                    "stream=index",
+                    "-of",
+                    "default=noprint_wrappers=1:nokey=1",
+                    path,
+                ],
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+            return p.returncode == 0 and bool((p.stdout or "").strip())
+        except Exception:
+            return False
+
+    input_has_audio = _probe_has_audio(input_video)
     # Для Auto Shorts высокий FPS (например, 60) резко замедляет montage pipeline,
     # особенно при CPU filter graph (даже с NVENC энкодером).
     # Ограничиваем целевой FPS до 30 для более предсказуемой скорости.
@@ -638,8 +881,17 @@ def render_shorts(
                 pass
     _append_render_debug(f"ENCODER selected={selected_encoder_label}")
 
+    render_candidates = list(candidates)
+    if len(render_candidates) > MAX_RENDER_CLIPS:
+        _append_render_debug(
+            f"CANDIDATES_TRIM render={MAX_RENDER_CLIPS} from={len(render_candidates)}"
+        )
+        render_candidates = render_candidates[:MAX_RENDER_CLIPS]
+        if progress_cb:
+            progress_cb(1, f"Ограничено к рендеру: {len(render_candidates)} клипов (из {len(candidates)})")
+
     results: List[str] = []
-    total = max(1, len(candidates))
+    total = max(1, len(render_candidates))
 
     def _run_ffmpeg(cmd_line: List[str], clip_idx: int, clip_duration_s: float):
         progress_file = None
@@ -655,6 +907,8 @@ def render_shorts(
             progress_file = None
 
         creationflags = subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0
+        if os.name == "nt" and hasattr(subprocess, "CREATE_NEW_PROCESS_GROUP"):
+            creationflags |= subprocess.CREATE_NEW_PROCESS_GROUP
         p = subprocess.Popen(
             cmd_for_run,
             stdout=subprocess.PIPE,
@@ -666,6 +920,27 @@ def render_shorts(
         )
         t_run = perf_counter()
         last_real_frac = 0.0
+
+        def _force_stop_process_tree(proc: subprocess.Popen):
+            try:
+                if os.name == "nt":
+                    subprocess.run(
+                        ["taskkill", "/PID", str(proc.pid), "/T", "/F"],
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        errors="replace",
+                    )
+                else:
+                    try:
+                        os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+                    except Exception:
+                        proc.kill()
+            except Exception:
+                try:
+                    proc.kill()
+                except Exception:
+                    pass
 
         def _read_real_progress_frac() -> Optional[float]:
             if not progress_file:
@@ -697,10 +972,7 @@ def render_shorts(
                 try:
                     p.wait(timeout=2)
                 except Exception:
-                    try:
-                        p.kill()
-                    except Exception:
-                        pass
+                    _force_stop_process_tree(p)
                 try:
                     if progress_file and Path(progress_file).exists():
                         Path(progress_file).unlink()
@@ -719,8 +991,6 @@ def render_shorts(
                 return subprocess.CompletedProcess(cmd_for_run, rc, out or "", err or "")
 
             if progress_cb:
-                base = int(((clip_idx - 1) / total) * 100)
-                span = max(1, int(100 / total) - 1)
                 real_frac = _read_real_progress_frac()
                 progress_msg = f"Рендер шортсов: {clip_idx}/{total}"
                 if real_frac is not None:
@@ -736,10 +1006,14 @@ def render_shorts(
                     # Fallback на оценку по времени, если ffmpeg ещё не успел записать прогресс.
                     est = max(2.0, clip_duration_s * 1.8)
                     frac = min(0.90, (perf_counter() - t_run) / est)
-                progress_cb(min(99, base + int(span * frac)), progress_msg)
+                global_frac = ((clip_idx - 1) + frac) / max(1, total)
+                progress_value = min(99, int(global_frac * 100))
+                if clip_idx == 1:
+                    progress_value = max(1, progress_value)
+                progress_cb(progress_value, progress_msg)
             sleep(0.35)
 
-    for i, c in enumerate(candidates, 1):
+    for i, c in enumerate(render_candidates, 1):
         if cancel_cb and cancel_cb():
             _append_render_debug(f"CANCELLED before clip {i}/{total}")
             break
@@ -749,6 +1023,93 @@ def render_shorts(
         duration_s = max(0.2, end_s - start_s)
         out_name = f"short_{i:03d}_{int(start_s)}s_{int(end_s)}s.mp4"
         out_path = out_dir / out_name
+
+        def _normalize_candidate_ranges() -> List[Tuple[int, int]]:
+            raw = getattr(c, "speech_ranges", None) or []
+            if not raw:
+                return [(c.start_ms, c.end_ms)]
+            norm: List[Tuple[int, int]] = []
+            for it in raw:
+                try:
+                    s, e = int(it[0]), int(it[1])
+                except Exception:
+                    continue
+                s = max(c.start_ms, s)
+                e = min(c.end_ms, e)
+                if e - s >= 140:
+                    norm.append((s, e))
+            if not norm:
+                return [(c.start_ms, c.end_ms)]
+            norm.sort(key=lambda x: x[0])
+            merged: List[Tuple[int, int]] = [norm[0]]
+            for s, e in norm[1:]:
+                ps, pe = merged[-1]
+                if s - pe <= 90:
+                    merged[-1] = (ps, max(pe, e))
+                else:
+                    merged.append((s, e))
+            kept_ms = sum(max(0, e - s) for s, e in merged)
+            # Если есть 2+ диапазона, это уже реальный сигнал для склейки
+            # (даже если суммарная речь короткая).
+            if len(merged) >= 2:
+                return merged
+            if kept_ms < 900:
+                return [(c.start_ms, c.end_ms)]
+            return merged
+
+        candidate_ranges = _normalize_candidate_ranges()
+        has_internal_cuts = not (
+            len(candidate_ranges) == 1
+            and abs(candidate_ranges[0][0] - c.start_ms) <= 120
+            and abs(candidate_ranges[0][1] - c.end_ms) <= 120
+        )
+
+        src_ref = "0:v"
+        audio_map_label = "0:a:0?"
+        pre_cut = ""
+        if has_internal_cuts:
+            trim_parts = []
+            audio_parts = []
+            for idx_r, (rs, re_) in enumerate(candidate_ranges):
+                rel_s = max(0.0, (rs - c.start_ms) / 1000.0)
+                rel_e = max(rel_s + 0.05, (re_ - c.start_ms) / 1000.0)
+                trim_parts.append(
+                    f"[0:v]trim=start={rel_s:.3f}:end={rel_e:.3f},setpts=PTS-STARTPTS[vp{idx_r}]"
+                )
+                if input_has_audio:
+                    audio_parts.append(
+                        f"[0:a]atrim=start={rel_s:.3f}:end={rel_e:.3f},asetpts=PTS-STARTPTS[ap{idx_r}]"
+                    )
+
+            if len(trim_parts) == 1:
+                pre_cut = trim_parts[0] + ";"
+                src_ref = "vp0"
+                if input_has_audio and audio_parts:
+                    pre_cut += audio_parts[0] + ";"
+                    audio_map_label = "[ap0]"
+            else:
+                concat_v_inputs = "".join([f"[vp{k}]" for k in range(len(trim_parts))])
+                if input_has_audio and audio_parts:
+                    concat_a_inputs = "".join([f"[ap{k}]" for k in range(len(audio_parts))])
+                    pre_cut = (
+                        ";".join(trim_parts + audio_parts)
+                        + ";"
+                        + f"{concat_v_inputs}{concat_a_inputs}concat=n={len(trim_parts)}:v=1:a=1[vsrc][asrc];"
+                    )
+                    src_ref = "vsrc"
+                    audio_map_label = "[asrc]"
+                else:
+                    pre_cut = (
+                        ";".join(trim_parts)
+                        + ";"
+                        + f"{concat_v_inputs}concat=n={len(trim_parts)}:v=1:a=0[vsrc];"
+                    )
+                    src_ref = "vsrc"
+
+            kept_ms = sum(max(0, b - a) for a, b in candidate_ranges)
+            _append_render_debug(
+                f"CANDIDATE_MONTAGE clip={i}/{total} ranges={len(candidate_ranges)} raw_ms={int((c.end_ms-c.start_ms))} kept_ms={kept_ms}"
+            )
 
         cmd = [
             "ffmpeg",
@@ -822,9 +1183,9 @@ def render_shorts(
                 gm_stack_h = max(2, target_h_i - wc_stack_h)
 
             if use_nvenc_gpu_filters:
-                filter_complex = (
+                filter_complex = pre_cut + (
                     f"color=c=black:s={target_w_i}x{target_h_i},format=nv12,hwupload_cuda[base];"
-                    f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
+                    f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
                     f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
                     f"format=nv12,hwupload_cuda,scale_cuda={wc_out_w}:{wc_out_h}[cam];"
                     f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
@@ -836,8 +1197,8 @@ def render_shorts(
                 wc_scale = f"scale={wc_out_w}:{wc_out_h}:flags=fast_bilinear"
                 gm_scale = f"scale={gm_out_w}:{gm_out_h}:flags=fast_bilinear"
                 if is_vertical_stack_layout:
-                    filter_complex = (
-                        f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
+                    filter_complex = pre_cut + (
+                        f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
                         f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
                         f"scale={target_w_i}:{wc_stack_h}:flags=fast_bilinear[cam];"
                         f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
@@ -845,9 +1206,9 @@ def render_shorts(
                         f"[cam][game]vstack=inputs=2[vout]"
                     )
                 else:
-                    filter_complex = (
+                    filter_complex = pre_cut + (
                         f"color=size={target_w_i}x{target_h_i}:color=black[base];"
-                        f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
+                        f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
                         f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
                         f"{wc_scale}[cam];"
                         f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
@@ -858,8 +1219,8 @@ def render_shorts(
 
             # CPU-версия монтажного графа для корректного fallback без потери layout
             if is_vertical_stack_layout:
-                cpu_filter_complex = (
-                    f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
+                cpu_filter_complex = pre_cut + (
+                    f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
                     f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
                     f"scale={target_w_i}:{wc_stack_h}:flags=fast_bilinear[cam];"
                     f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
@@ -870,9 +1231,9 @@ def render_shorts(
                     f"LAYOUT path=vstack normalized_h={wc_stack_h}+{gm_stack_h} target_h={target_h_i}"
                 )
             else:
-                cpu_filter_complex = (
+                cpu_filter_complex = pre_cut + (
                     f"color=size={target_w_i}x{target_h_i}:color=black[base];"
-                    f"[0:v]fps={target_fps},split=2[src_cam][src_game];"
+                    f"[{src_ref}]fps={target_fps},split=2[src_cam][src_game];"
                     f"[src_cam]crop={wc_crop_w}:{wc_crop_h}:{wc_crop_x}:{wc_crop_y},"
                     f"scale={wc_out_w}:{wc_out_h}:flags=fast_bilinear[cam];"
                     f"[src_game]crop={gm_crop_w}:{gm_crop_h}:{gm_crop_x}:{gm_crop_y},"
@@ -888,10 +1249,10 @@ def render_shorts(
                     filter_complex,
                     "-map",
                     "[vout]",
-                    "-map",
-                    "0:a:0?",
                 ]
             )
+            if audio_map_label:
+                cmd.extend(["-map", audio_map_label])
 
             cmd_cpu_base = [
                 "ffmpeg",
@@ -909,16 +1270,22 @@ def render_shorts(
                 cpu_filter_complex,
                 "-map",
                 "[vout]",
-                "-map",
-                "0:a:0?",
             ]
+            if audio_map_label:
+                cmd_cpu_base.extend(["-map", audio_map_label])
         else:
             vf = (
                 f"fps={target_fps},"
                 f"scale={target_w_i}:{target_h_i}:force_original_aspect_ratio=increase:flags=fast_bilinear,"
                 f"crop={target_w_i}:{target_h_i}"
             )
-            cmd.extend(["-vf", vf])
+            if has_internal_cuts:
+                filter_complex = pre_cut + f"[{src_ref}]{vf}[vout]"
+                cmd.extend(["-filter_complex", filter_complex, "-map", "[vout]"])
+                if audio_map_label:
+                    cmd.extend(["-map", audio_map_label])
+            else:
+                cmd.extend(["-vf", vf])
 
             cmd_cpu_base = [
                 "ffmpeg",
@@ -932,9 +1299,13 @@ def render_shorts(
                 f"{duration_s:.3f}",
                 "-i",
                 input_video,
-                "-vf",
-                vf,
             ]
+            if has_internal_cuts:
+                cmd_cpu_base.extend(["-filter_complex", filter_complex, "-map", "[vout]"])
+                if audio_map_label:
+                    cmd_cpu_base.extend(["-map", audio_map_label])
+            else:
+                cmd_cpu_base.extend(["-vf", vf])
 
         cmd_base = list(cmd)
         mux_args = [

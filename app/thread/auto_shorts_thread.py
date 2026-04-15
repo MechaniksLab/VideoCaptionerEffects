@@ -72,8 +72,8 @@ class AutoShortsAnalyzeThread(QThread):
 
             self.progress.emit(15, "Распознавание речи...")
             transcribe_task = TaskFactory.create_transcribe_task(self.video_path, need_next_task=False)
-            # Для быстрого поиска моментов достаточно фразового уровня
-            transcribe_task.transcribe_config.need_word_time_stamp = False
+            # Для плотного монтажа по речи нужны тайминги слов
+            transcribe_task.transcribe_config.need_word_time_stamp = True
             asr_data = self._transcribe_with_fast_profile(temp_wav, transcribe_task.transcribe_config)
 
             llm_cfg = self._resolve_llm_config()
@@ -125,7 +125,7 @@ class AutoShortsAnalyzeThread(QThread):
             try:
                 self.progress.emit(18, "Auto Shorts: быстрый ASR-профиль (FasterWhisper)...")
                 config.transcribe_model = TranscribeModelEnum.FASTER_WHISPER
-                config.faster_whisper_one_word = False
+                config.faster_whisper_one_word = True
                 config.faster_whisper_vad_filter = True
                 config.faster_whisper_ff_mdx_kim2 = False
                 return transcribe(wav_path, config, callback=_cb)
@@ -340,6 +340,7 @@ class AutoShortsRenderThread(QThread):
                     title=str(c.get("title", "")),
                     reason=str(c.get("reason", "")),
                     excerpt=str(c.get("excerpt", "")),
+                    speech_ranges=c.get("speech_ranges") or [],
                 )
                 for c in self.selected_candidates
             ]

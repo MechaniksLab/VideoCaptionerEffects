@@ -11,6 +11,7 @@ from PyQt5.QtGui import QColor, QPainter, QPen, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QScrollArea, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 from qfluentwidgets import Action, BodyLabel, CardWidget, CheckBox, ComboBox, CommandBar, FluentIcon, InfoBar, InfoBarPosition, PrimaryPushButton, ProgressBar, PushButton, StrongBodyLabel, SpinBox, isDarkTheme
 
+from app.common.config import cfg
 from app.config import APPDATA_PATH, WORK_PATH
 from app.core.entities import SupportedAudioFormats, SupportedVideoFormats
 from app.thread.auto_shorts_thread import AutoShortsAnalyzeThread, AutoShortsRenderThread
@@ -426,7 +427,8 @@ class AutoShortsInterface(QWidget):
         self.render_backend_label = BodyLabel("Рендер:")
         self.render_backend_combo = ComboBox(self)
         self.render_backend_combo.addItems(["Auto", "CPU", "GPU", "CUDA"])
-        self.render_backend_combo.setCurrentIndex(0)
+        self.render_backend_combo.setCurrentIndex(self._backend_to_index(str(cfg.auto_shorts_render_backend.value or "auto")))
+        self.render_backend_combo.currentIndexChanged.connect(self._on_render_backend_changed)
         self.render_btn = PrimaryPushButton("Сделать шортсы из выбранных")
         self.render_btn.clicked.connect(self._start_render)
         self.stop_render_btn = PushButton("Стоп")
@@ -928,6 +930,17 @@ class AutoShortsInterface(QWidget):
     def _get_render_backend(self) -> str:
         idx = self.render_backend_combo.currentIndex()
         return {0: "auto", 1: "cpu", 2: "gpu", 3: "cuda"}.get(idx, "auto")
+
+    @staticmethod
+    def _backend_to_index(backend: str) -> int:
+        b = (backend or "auto").strip().lower()
+        return {"auto": 0, "cpu": 1, "gpu": 2, "cuda": 3}.get(b, 0)
+
+    def _on_render_backend_changed(self, _index: int):
+        try:
+            cfg.set(cfg.auto_shorts_render_backend, self._get_render_backend())
+        except Exception:
+            pass
 
     @staticmethod
     def _fmt_s(total: int) -> str:

@@ -359,6 +359,12 @@ class Config(QConfig):
         LanguageSerializer(),
         restart=True,
     )
+    auto_shorts_render_backend = OptionsConfigItem(
+        "MainWindow",
+        "AutoShortsRenderBackend",
+        "auto",
+        OptionsValidator(["auto", "cpu", "gpu", "cuda"]),
+    )
 
     # ------------------- 更新配置 -------------------
     checkUpdateAtStartUp = ConfigItem(

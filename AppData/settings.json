@@ -1,4 +1,10 @@
 {
+    "MainWindow": {
+        "AutoShortsRenderBackend": "gpu",
+        "DpiScale": "Auto",
+        "Language": "Auto",
+        "MicaEnabled": false
+    },
     "Translate": {
         "BatchSize": 10,
         "DeeplxEndpoint": "",
@@ -19,7 +25,7 @@
         "LLMService": "LM Studio",
         "LmStudio_API_Base": "http://172.18.0.1:1234/v1",
         "LmStudio_API_Key": "lmstudio",
-        "LmStudio_Model": "meta-llama-3.1-8b-instruct",
+        "LmStudio_Model": "qwen2.5-14b-instruct",
         "Ollama_API_Base": "http://localhost:11434/v1",
         "Ollama_API_Key": "ollama",
         "Ollama_Model": "llama2",
@@ -48,11 +54,6 @@
         "TargetLanguage": "俄语",
         "UseProcessedSubtitleCache": true,
         "UseSubtitleCache": true
-    },
-    "MainWindow": {
-        "DpiScale": "Auto",
-        "Language": "Auto",
-        "MicaEnabled": false
     },
     "FasterWhisper": {
         "Device": "cuda",
