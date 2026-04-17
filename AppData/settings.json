@@ -108,7 +108,7 @@
         "MotionDirection": "up",
         "MotionEasing": "ease_out",
         "MotionJitter": 0,
-        "PreviewImage": "E:\\Neyro\\VideoCaptioner\\resource\\assets\\default_bg_portrait.png",
+        "PreviewImage": "E:\\Neyro\\ShortsCreatorStudio\\resource\\assets\\default_bg_portrait.png",
         "RainbowEndColor": "#4ca6ff",
         "SafeAreaEnabled": true,
         "SafeMarginX": 20,
