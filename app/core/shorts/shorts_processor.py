@@ -58,12 +58,14 @@ class ShortsProcessor:
         llm_base_url: str = "",
         llm_api_key: str = "",
         llm_model: str = "",
+        repeat_similarity_threshold: float = 0.72,
     ):
         self.min_duration_ms = int(min_duration_s * 1000)
         self.max_duration_ms = int(max_duration_s * 1000)
         self.llm_base_url = (llm_base_url or "").strip()
         self.llm_api_key = (llm_api_key or "").strip()
         self.llm_model = (llm_model or "").strip()
+        self.repeat_similarity_threshold = max(0.40, min(0.98, float(repeat_similarity_threshold or 0.72)))
 
     def find_candidates(self, asr_data: ASRData, progress_cb: Optional[Callable] = None) -> List[ShortCandidate]:
         if progress_cb:
@@ -526,6 +528,8 @@ class ShortsProcessor:
 
     def _deduplicate(self, candidates: List[ShortCandidate]) -> List[ShortCandidate]:
         accepted: List[ShortCandidate] = []
+        sim_strong = self.repeat_similarity_threshold
+        sim_near = min(0.98, sim_strong + 0.14)
         for c in candidates:
             overlap = False
             c_tokens = self._token_set(c.excerpt or c.title)
@@ -541,10 +545,10 @@ class ShortsProcessor:
                 if inter / short > 0.72:
                     overlap = True
                     break
-                if iou > 0.50 and text_sim > 0.58:
+                if iou > 0.50 and text_sim > sim_strong:
                     overlap = True
                     break
-                if temporal_close and text_sim > 0.72 and inter / long > 0.22:
+                if temporal_close and text_sim > sim_near and inter / long > 0.22:
                     overlap = True
                     break
             if not overlap:
@@ -704,6 +708,21 @@ def render_shorts(
     out_w, out_h = vertical_resolution.split("x")
     out_w_i, out_h_i = int(out_w), int(out_h)
     render_options = render_options or {}
+
+    def _opt_int(key: str, default: int, min_v: int, max_v: int) -> int:
+        try:
+            val = int(render_options.get(key, default))
+        except Exception:
+            val = int(default)
+        return max(min_v, min(max_v, val))
+
+    clip_head_pad_ms = _opt_int("clip_head_pad_ms", 120, 0, 2500)
+    clip_tail_pad_ms = _opt_int("clip_tail_pad_ms", 420, 0, 3500)
+    speech_pre_pad_ms = _opt_int("speech_pre_pad_ms", 220, 0, 1800)
+    speech_post_pad_ms = _opt_int("speech_post_pad_ms", 320, 0, 2200)
+    speech_merge_gap_ms = _opt_int("speech_merge_gap_ms", 260, 60, 2200)
+    speech_min_coverage_percent = _opt_int("speech_min_coverage_percent", 74, 30, 100)
+    speech_min_coverage_ratio = speech_min_coverage_percent / 100.0
 
     def _even_size(v: int) -> int:
         v = max(2, int(v))
@@ -1125,8 +1144,8 @@ def render_shorts(
             _append_render_debug(f"CANCELLED before clip {i}/{total}")
             break
 
-        clip_head_pad_s = 0.10
-        clip_tail_pad_s = 0.35
+        clip_head_pad_s = clip_head_pad_ms / 1000.0
+        clip_tail_pad_s = clip_tail_pad_ms / 1000.0
         start_s = max(0.0, (c.start_ms / 1000.0) - clip_head_pad_s)
         end_s = max(start_s + 0.2, (c.end_ms / 1000.0) + clip_tail_pad_s)
         duration_s = max(0.2, end_s - start_s)
@@ -1142,15 +1161,13 @@ def render_shorts(
             norm: List[Tuple[int, int]] = []
             # Небольшой контекст до/после речи, чтобы не рубить слова на стыках.
             # Это заметно смягчает "телепорт" между репликами.
-            pre_pad_ms = 220
-            post_pad_ms = 320
             for it in raw:
                 try:
                     s, e = int(it[0]), int(it[1])
                 except Exception:
                     continue
-                s = max(c.start_ms, s - pre_pad_ms)
-                e = min(c.end_ms, e + post_pad_ms)
+                s = max(c.start_ms, s - speech_pre_pad_ms)
+                e = min(c.end_ms, e + speech_post_pad_ms)
                 if e - s >= 180:
                     norm.append((s, e))
             if not norm:
@@ -1161,7 +1178,7 @@ def render_shorts(
                 ps, pe = merged[-1]
                 # Чуть более мягкий merge после добавления контекста,
                 # чтобы не плодить дробные микро-склейки.
-                if s - pe <= 260:
+                if s - pe <= speech_merge_gap_ms:
                     merged[-1] = (ps, max(pe, e))
                 else:
                     merged.append((s, e))
@@ -1179,7 +1196,7 @@ def render_shorts(
             # если после агрессивной чистки остаётся слишком мало покрытия
             # или разрывы между фразами в среднем маленькие,
             # лучше отдать цельный клип без внутренних склеек.
-            if kept_ms / raw_total_ms < 0.74:
+            if kept_ms / raw_total_ms < speech_min_coverage_ratio:
                 return [(c.start_ms, c.end_ms)]
             if len(merged) >= 4 and avg_gap_ms < 320:
                 return [(c.start_ms, c.end_ms)]

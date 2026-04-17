@@ -12336,3 +12336,1403 @@ CUDA可用
 视频总时长: 14.12秒
 视频合成完成
 视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 5_20260416_010141\【卡卡】шорт_008_Армейская куртка, синтетическое волокно. РТ, видимо инициалы. У него ин…_1884-1900с.mp4
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmp5h17nuq6.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpdaz_m_bw.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpzos19a9b\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpzos19a9b\audio.wav
+1% |   29/2460 | 00:07<<11:02 |  3.67 audio seconds/s
+2% |   41/2460 | 00:52<<51:39 |  0.78 audio seconds/s
+4% |   89/2460 | 00:54<<23:59 |  1.65 audio seconds/s
+5% |  118/2460 | 01:00<<19:54 |  1.96 audio seconds/s
+6% |  147/2460 | 01:07<<17:34 |  2.19 audio seconds/s
+7% |  173/2460 | 01:14<<16:19 |  2.34 audio seconds/s
+8% |  200/2460 | 01:19<<14:53 |  2.53 audio seconds/s
+9% |  230/2460 | 01:27<<14:04 |  2.64 audio seconds/s
+10% |  255/2460 | 01:31<<13:14 |  2.78 audio seconds/s
+12% |  287/2460 | 01:44<<13:13 |  2.74 audio seconds/s
+13% |  313/2460 | 01:57<<13:26 |  2.66 audio seconds/s
+14% |  342/2460 | 02:05<<12:56 |  2.73 audio seconds/s
+15% |  364/2460 | 02:07<<12:16 |  2.85 audio seconds/s
+16% |  401/2460 | 02:15<<11:34 |  2.96 audio seconds/s
+17% |  412/2460 | 02:18<<11:29 |  2.97 audio seconds/s
+18% |  436/2460 | 02:20<<10:49 |  3.11 audio seconds/s
+19% |  472/2460 | 02:50<<11:56 |  2.77 audio seconds/s
+20% |  501/2460 | 03:01<<11:51 |  2.75 audio seconds/s
+22% |  529/2460 | 03:10<<11:35 |  2.78 audio seconds/s
+23% |  557/2460 | 03:17<<11:16 |  2.81 audio seconds/s
+24% |  586/2460 | 03:23<<10:51 |  2.88 audio seconds/s
+25% |  615/2460 | 03:29<<10:29 |  2.93 audio seconds/s
+26% |  638/2460 | 03:34<<10:12 |  2.97 audio seconds/s
+27% |  667/2460 | 03:40<<09:53 |  3.02 audio seconds/s
+28% |  696/2460 | 03:49<<09:42 |  3.03 audio seconds/s
+29% |  723/2460 | 03:58<<09:33 |  3.03 audio seconds/s
+31% |  752/2460 | 04:03<<09:13 |  3.09 audio seconds/s
+32% |  781/2460 | 04:10<<08:58 |  3.12 audio seconds/s
+33% |  808/2460 | 05:10<<10:33 |  2.61 audio seconds/s
+34% |  829/2460 | 05:32<<10:54 |  2.49 audio seconds/s
+35% |  856/2460 | 05:45<<10:46 |  2.48 audio seconds/s
+36% |  880/2460 | 05:55<<10:38 |  2.47 audio seconds/s
+37% |  909/2460 | 06:02<<10:17 |  2.51 audio seconds/s
+38% |  938/2460 | 06:07<<09:56 |  2.55 audio seconds/s
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpq2m31mre.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp5i54upc1.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpab2f3n46\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpab2f3n46\audio.wav
+5% |  28/597 | 00:07<<02:29 |  3.79 audio seconds/s
+9% |  56/597 | 00:15<<02:25 |  3.72 audio seconds/s
+14% |  83/597 | 00:21<<02:14 |  3.81 audio seconds/s
+19% | 112/597 | 00:27<<01:59 |  4.07 audio seconds/s
+24% | 142/597 | 00:35<<01:53 |  4.00 audio seconds/s
+28% | 169/597 | 00:42<<01:46 |  4.01 audio seconds/s
+34% | 202/597 | 00:48<<01:35 |  4.13 audio seconds/s
+38% | 227/597 | 00:55<<01:30 |  4.10 audio seconds/s
+43% | 256/597 | 01:05<<01:27 |  3.88 audio seconds/s
+47% | 278/597 | 01:18<<01:30 |  3.53 audio seconds/s
+51% | 306/597 | 01:29<<01:25 |  3.41 audio seconds/s
+56% | 335/597 | 01:33<<01:12 |  3.59 audio seconds/s
+61% | 363/597 | 01:37<<01:02 |  3.74 audio seconds/s
+65% | 390/597 | 01:44<<00:55 |  3.73 audio seconds/s
+70% | 420/597 | 01:50<<00:46 |  3.81 audio seconds/s
+75% | 447/597 | 01:59<<00:39 |  3.75 audio seconds/s
+80% | 476/597 | 02:10<<00:33 |  3.66 audio seconds/s
+84% | 504/597 | 02:19<<00:25 |  3.61 audio seconds/s
+89% | 532/597 | 02:26<<00:17 |  3.62 audio seconds/s
+94% | 561/597 | 02:31<<00:09 |  3.69 audio seconds/s
+98% | 586/597 | 02:37<<00:02 |  3.72 audio seconds/s
+100% | 596/597 | 02:39<<00:00 |  3.73 audio seconds/s
+100% | 597/597 | 02:40<<00:00 |  3.73 audio seconds/s
+Transcription speed: 3.73 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpab2f3n46' directory.
+Operation finished in:  0:02:42.187
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+2026-04-16 12:53:35 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5411>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:35 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5714>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:35 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5819>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:36 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5800>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:36 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5806>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:36 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5757>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:36 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5757>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-16 12:53:36 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5750>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1836.660 -t 41.650 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=2.936,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=3.280:end=29.960,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=30.440:end=41.300,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=2.936,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=3.280:end=29.960,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=30.440:end=41.300,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1887.060 -t 35.170 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=2.580,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=2.940:end=12.545,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=13.604:end=29.507,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=30.760:end=34.820,setpts=PTS-STARTPTS[vp3];[0:a]atrim=start=0.100:end=2.580,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=2.940:end=12.545,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=13.604:end=29.507,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=30.760:end=34.820,asetpts=PTS-STARTPTS[ap3];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3]concat=n=4:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_002_Конфликт между полицейским и начальством_1887-1922с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1857.980 -t 41.730 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=8.640,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=9.120:end=31.660,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=32.020:end=41.380,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=8.640,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=9.120:end=31.660,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=32.020:end=41.380,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_003_Андроиды становятся проблемой для полиции_1857-1899с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1873.720 -t 38.030 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=15.920,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=16.280:end=25.885,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=26.944:end=37.680,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=15.920,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=16.280:end=25.885,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=26.944:end=37.680,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_004_Конфликт между полицейским и андроидом_1873-1911с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1824.740 -t 41.750 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=1.280,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=1.800:end=14.856,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=15.200:end=41.400,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=1.280,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=1.800:end=14.856,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=15.200:end=41.400,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И даже убийствах, как…_1824-1866с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1647.660 -t 16.510 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_006_Детройта поймала дилеров красного льда. Более пятидесяти арестов по все…_1647-1664с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1652.480 -t 16.490 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_007_удар по охватившей город эпидемией красного льда. За решеткой оказалось…_1652-1668с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1688.000 -t 18.370 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=12.020,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=12.443:end=18.020,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.100:end=12.020,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=12.443:end=18.020,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_008_заявил, что он новое звание следовал присвоить уже давно, но по словам …_1688-1706с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1670.960 -t 23.510 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=3.072,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=3.860:end=23.160,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.100:end=3.072,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=3.860:end=23.160,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_009_и коллегами операцию образцом качественной полицейской работы. Детектив…_1670-1694с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1815.680 -t 30.770 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=3.540,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=4.200:end=10.340,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=10.860:end=23.916,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=24.260:end=30.420,setpts=PTS-STARTPTS[vp3];[0:a]atrim=start=0.100:end=3.540,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=4.200:end=10.340,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=10.860:end=23.916,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=24.260:end=30.420,asetpts=PTS-STARTPTS[ap3];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3]concat=n=4:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_010_на стол валится по 10 дел об андроидах каждый день. Раньше это были еди…_1815-1846с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1662.500 -t 23.770 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=11.532,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=12.320:end=23.420,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.100:end=11.532,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=12.320:end=23.420,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_011_которой потребовалось несколько месяцев, сыграл детектив Хэнк Андерсон.…_1662-1686с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1526.880 -t 16.590 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=7.080,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=7.460:end=8.420,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=8.700:end=16.240,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=7.080,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=7.460:end=8.420,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=8.700:end=16.240,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сейчас всех вас на чи…_1526-1543с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1693.200 -t 20.810 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=6.820,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=7.243:end=16.870,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=19.103:end=20.460,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=6.820,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=7.243:end=16.870,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=19.103:end=20.460,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтенанту прочит быстро…_1693-1714с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1535.660 -t 18.790 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=7.740,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=8.261:end=9.239,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=11.737:end=18.440,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=7.740,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=8.261:end=9.239,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=11.737:end=18.440,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_014_в какое время обычно приходит лейтенант Андерсон Зависит от того, как …_1535-1554с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1432.200 -t 15.630 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=5.900,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=6.480:end=12.520,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=13.940:end=15.280,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=5.900,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=6.480:end=12.520,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=13.940:end=15.280,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_015_лейтенант. Как сразу плавненько все стало, красивенько. Я тиже, блин, п…_1432-1447с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1452.840 -t 16.450 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=12.668,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=13.100:end=16.100,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.100:end=12.668,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=13.100:end=16.100,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_016_виток конфликта вокруг Арктики. Накануне патрульный катер ВМС США столк…_1452-1469с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1599.280 -t 18.090 -i E:/Downloads/СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4.mp4 -filter_complex [0:v]trim=start=0.100:end=7.060,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=8.500:end=14.524,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=14.820:end=17.740,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.100:end=7.060,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=8.500:end=14.524,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=14.820:end=17.740,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=609:348:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1105:1080:434:0,eq=brightness=0.230:contrast=1.370:saturation=1.000,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_017_не могу ответить. Оставьте сообщение, если приспичило, но перезвонить н…_1599-1617с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:56:14.900557
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpmoag30hj.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmph5obspf8\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmph5obspf8\audio.wav
+70% | 28/40 | 00:09<<00:04 |  2.92 audio seconds/s
+100% | 40/40 | 00:14<<00:00 |  2.75 audio seconds/s
+Transcription speed: 2.72 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmph5obspf8' directory.
+Operation finished in:  0:00:16.683
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с\subtitle\【原始字幕】шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:56:32.936806
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\87342d647140bf99e98c5de40bea40a6.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с\subtitle\【样式字幕】шорт_001_Полицейский отказывается от работы с андроидом_1836-1_cbfb466b.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125632.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:56:32.952806
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с.mp4"
+视频总时长: 40.37秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_001_Полицейский отказывается от работы с андроидом_1836-1878с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:56:47.667699
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_002_Конфликт между полицейским и начальством_1887-1922с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpn3q_t95_.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp6gy_0b4e\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp6gy_0b4e\audio.wav
+81% | 26/32 | 00:08<<00:01 |  3.22 audio seconds/s
+97% | 31/32 | 00:09<<00:00 |  3.12 audio seconds/s
+100% | 32/32 | 00:10<<00:00 |  3.12 audio seconds/s
+Transcription speed: 3.12 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp6gy_0b4e' directory.
+Operation finished in:  0:00:12.012
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_002_Конфликт между полицейским и начальством_1887-1922с\subtitle\【原始字幕】шорт_002_Конфликт между полицейским и начальством_1887-1922с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:57:01.114462
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\e8e9f92c4a413ed92f906b18fca49c6d.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_002_Конфликт между полицейским и начальством_1887-1922с\subtitle\【样式字幕】шорт_002_Конфликт между полицейским и начальством_1887-1922с-F_4bb9e6f5.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125701.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:57:01.126462
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_002_Конфликт между полицейским и начальством_1887-1922с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_002_Конфликт между полицейским и начальством_1887-1922с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_002_Конфликт между полицейским и начальством_1887-1922с.mp4"
+视频总时长: 32.05秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_002_Конфликт между полицейским и начальством_1887-1922с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:57:12.271224
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_003_Андроиды становятся проблемой для полиции_1857-1899с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp9gv_6h4s.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp4qvn_af6\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp4qvn_af6\audio.wav
+72% | 29/40 | 00:11<<00:04 |  2.55 audio seconds/s
+98% | 39/40 | 00:15<<00:00 |  2.52 audio seconds/s
+100% | 40/40 | 00:15<<00:00 |  2.54 audio seconds/s
+Transcription speed: 2.56 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp4qvn_af6' directory.
+Operation finished in:  0:00:17.529
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_003_Андроиды становятся проблемой для полиции_1857-1899с\subtitle\【原始字幕】шорт_003_Андроиды становятся проблемой для полиции_1857-1899с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:57:31.195794
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\e5798ed71effbff39a6bba18990742f6.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_003_Андроиды становятся проблемой для полиции_1857-1899с\subtitle\【样式字幕】шорт_003_Андроиды становятся проблемой для полиции_1857-1899с-_d54952e8.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125731.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:57:31.210794
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_003_Андроиды становятся проблемой для полиции_1857-1899с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_003_Андроиды становятся проблемой для полиции_1857-1899с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_003_Андроиды становятся проблемой для полиции_1857-1899с.mp4"
+视频总时长: 40.43秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_003_Андроиды становятся проблемой для полиции_1857-1899с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:57:45.753078
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_004_Конфликт между полицейским и андроидом_1873-1911с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpt4nlk1cg.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmplzar1lqc\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmplzar1lqc\audio.wav
+81% | 29/36 | 00:09<<00:02 |  2.98 audio seconds/s
+100% | 36/36 | 00:13<<00:00 |  2.75 audio seconds/s
+Transcription speed: 2.71 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmplzar1lqc' directory.
+Operation finished in:  0:00:15.151
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_004_Конфликт между полицейским и андроидом_1873-1911с\subtitle\【原始字幕】шорт_004_Конфликт между полицейским и андроидом_1873-1911с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:58:02.240611
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\e72bc029801cf9ba3a61a6ebb946a090.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_004_Конфликт между полицейским и андроидом_1873-1911с\subtitle\【样式字幕】шорт_004_Конфликт между полицейским и андроидом_1873-1911с-Fas_d17adfb8.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125802.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:58:02.249607
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_004_Конфликт между полицейским и андроидом_1873-1911с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_004_Конфликт между полицейским и андроидом_1873-1911с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_004_Конфликт между полицейским и андроидом_1873-1911с.mp4"
+视频总时长: 36.16秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_004_Конфликт между полицейским и андроидом_1873-1911с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:58:14.889018
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И даже убийствах, как…_1824-1866с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpgmk6r5a0.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpde3j83o4\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpde3j83o4\audio.wav
+72% | 29/40 | 00:08<<00:03 |  3.36 audio seconds/s
+100% | 40/40 | 00:12<<00:00 |  3.11 audio seconds/s
+Transcription speed: 3.07 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpde3j83o4' directory.
+Operation finished in:  0:00:14.940
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И д_b2ae3568\subtitle\【原始字幕】шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И д_b2ae3568-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:58:31.178430
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\8f37dbc35ef673849d201fba52331382.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И д_b2ae3568\subtitle\【样式字幕】шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И д_ae906443.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125831.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:58:31.190430
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И даже убийствах, как…_1824-1866с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И даже убийствах, как…_1824-1866с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И даже убийствах, как…_1824-1866с.mp4"
+视频总时长: 40.43秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_005_вся такая хрень. Но теперь речь идёт о нападении. И даже убийствах, как…_1824-1866с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:58:45.649162
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_006_Детройта поймала дилеров красного льда. Более пятидесяти арестов по все…_1647-1664с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp39sssmd_.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpap2u8s25\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpap2u8s25\audio.wav
+94% | 16/17 | 00:07<<00:00 |  2.00 audio seconds/s
+100% | 17/17 | 00:08<<00:00 |  2.05 audio seconds/s
+Transcription speed: 1.99 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpap2u8s25' directory.
+Operation finished in:  0:00:10.105
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_006_Детройта поймала дилеров красного льда. Более пятидес_ff1ec640\subtitle\【原始字幕】шорт_006_Детройта поймала дилеров красного льда. Более пятидес_ff1ec640-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:58:57.088822
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\9ddfe315e5119664b5279a172d599be0.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_006_Детройта поймала дилеров красного льда. Более пятидес_ff1ec640\subtitle\【样式字幕】шорт_006_Детройта поймала дилеров красного льда. Более пятидес_e1910f6c.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125857.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:58:57.099822
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_006_Детройта поймала дилеров красного льда. Более пятидесяти арестов по все…_1647-1664с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_006_Детройта поймала дилеров красного льда. Более пятидесяти арестов по все…_1647-1664с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_006_Детройта поймала дилеров красного льда. Более пятидесяти арестов по все…_1647-1664с.mp4"
+视频总时长: 16.51秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_006_Детройта поймала дилеров красного льда. Более пятидесяти арестов по все…_1647-1664с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:59:01.583346
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_007_удар по охватившей город эпидемией красного льда. За решеткой оказалось…_1652-1668с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpbirljo59.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp02ifa3yc\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp02ifa3yc\audio.wav
+88% | 15/17 | 00:01<<00:00 |  9.33 audio seconds/s
+100% | 17/17 | 00:01<<00:00 |  8.91 audio seconds/s
+Transcription speed: 8.6 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp02ifa3yc' directory.
+Operation finished in:  0:00:03.647
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_007_удар по охватившей город эпидемией красного льда. За_1c8b7318\subtitle\【原始字幕】шорт_007_удар по охватившей город эпидемией красного льда. За_1c8b7318-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:59:06.638585
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\6c221f3953d894b547b2bec9295d4818.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_007_удар по охватившей город эпидемией красного льда. За_1c8b7318\subtitle\【样式字幕】шорт_007_удар по охватившей город эпидемией красного льда. За__50a5631e.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125906.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:59:06.652583
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_007_удар по охватившей город эпидемией красного льда. За решеткой оказалось…_1652-1668с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_007_удар по охватившей город эпидемией красного льда. За решеткой оказалось…_1652-1668с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_007_удар по охватившей город эпидемией красного льда. За решеткой оказалось…_1652-1668с.mp4"
+视频总时长: 16.49秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_007_удар по охватившей город эпидемией красного льда. За решеткой оказалось…_1652-1668с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:59:10.750681
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_008_заявил, что он новое звание следовал присвоить уже давно, но по словам …_1688-1706с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmptuigacqw.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpm_n6a7ik\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpm_n6a7ik\audio.wav
+94% | 17/18 | 00:03<<00:00 |  4.58 audio seconds/s
+100% | 18/18 | 00:04<<00:00 |  4.49 audio seconds/s
+Transcription speed: 4.35 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpm_n6a7ik' directory.
+Operation finished in:  0:00:05.775
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_008_заявил, что он новое звание следовал присвоить уже да_cace090b\subtitle\【原始字幕】шорт_008_заявил, что он новое звание следовал присвоить уже да_cace090b-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:59:17.864676
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\927e66db6505f727ce49bc2022ae24e8.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_008_заявил, что он новое звание следовал присвоить уже да_cace090b\subtitle\【样式字幕】шорт_008_заявил, что он новое звание следовал присвоить уже да_4f28bed9.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125917.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:59:17.874676
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_008_заявил, что он новое звание следовал присвоить уже давно, но по словам …_1688-1706с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_008_заявил, что он новое звание следовал присвоить уже давно, но по словам …_1688-1706с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_008_заявил, что он новое звание следовал присвоить уже давно, но по словам …_1688-1706с.mp4"
+视频总时长: 17.5秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_008_заявил, что он новое звание следовал присвоить уже давно, но по словам …_1688-1706с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:59:22.047750
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_009_и коллегами операцию образцом качественной полицейской работы. Детектив…_1670-1694с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp7gxfnnev.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp4773mzah\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp4773mzah\audio.wav
+18% |  4/22 | 00:01<<00:07 |  2.43 audio seconds/s
+100% | 22/22 | 00:01<<00:00 | 11.34 audio seconds/s
+Transcription speed: 11.41 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp4773mzah' directory.
+Operation finished in:  0:00:03.740
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_009_и коллегами операцию образцом качественной полицейско_e2905bd2\subtitle\【原始字幕】шорт_009_и коллегами операцию образцом качественной полицейско_e2905bd2-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:59:27.127090
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\6bc52001c3918bab1501d0e869071546.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_009_и коллегами операцию образцом качественной полицейско_e2905bd2\subtitle\【样式字幕】шорт_009_и коллегами операцию образцом качественной полицейско_02844f5b.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125927.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:59:27.141090
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_009_и коллегами операцию образцом качественной полицейской работы. Детектив…_1670-1694с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_009_и коллегами операцию образцом качественной полицейской работы. Детектив…_1670-1694с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_009_и коллегами операцию образцом качественной полицейской работы. Детектив…_1670-1694с.mp4"
+视频总时长: 22.27秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_009_и коллегами операцию образцом качественной полицейской работы. Детектив…_1670-1694с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:59:32.436958
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_010_на стол валится по 10 дел об андроидах каждый день. Раньше это были еди…_1815-1846с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp6zh5vmtu.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp7rnbdnpa\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp7rnbdnpa\audio.wav
+86% | 25/29 | 00:08<<00:01 |  3.08 audio seconds/s
+100% | 29/29 | 00:10<<00:00 |  2.88 audio seconds/s
+Transcription speed: 2.78 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp7rnbdnpa' directory.
+Operation finished in:  0:00:12.121
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_010_на стол валится по 10 дел об андроидах каждый день. Р_8a7ecede\subtitle\【原始字幕】шорт_010_на стол валится по 10 дел об андроидах каждый день. Р_8a7ecede-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 12:59:45.908662
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\9826315124ca8a2490074c1e2c32769b.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_010_на стол валится по 10 дел об андроидах каждый день. Р_8a7ecede\subtitle\【样式字幕】шорт_010_на стол валится по 10 дел об андроидах каждый день. Р_a6bc7c21.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_125945.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 12:59:45.919662
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_010_на стол валится по 10 дел об андроидах каждый день. Раньше это были еди…_1815-1846с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_010_на стол валится по 10 дел об андроидах каждый день. Раньше это были еди…_1815-1846с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_010_на стол валится по 10 дел об андроидах каждый день. Раньше это были еди…_1815-1846с.mp4"
+视频总时长: 28.82秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_010_на стол валится по 10 дел об андроидах каждый день. Раньше это были еди…_1815-1846с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 12:59:55.630042
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_011_которой потребовалось несколько месяцев, сыграл детектив Хэнк Андерсон.…_1662-1686с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmph6hxrpsh.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpwum5sq_j\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpwum5sq_j\audio.wav
+100% | 23/23 | 00:10<<00:00 |  2.21 audio seconds/s
+Transcription speed: 2.11 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpwum5sq_j' directory.
+Operation finished in:  0:00:12.440
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_011_которой потребовалось несколько месяцев, сыграл детек_f73b0a3d\subtitle\【原始字幕】шорт_011_которой потребовалось несколько месяцев, сыграл детек_f73b0a3d-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:00:09.455538
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\62cff71e4c423a44d63aa257d554e54f.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_011_которой потребовалось несколько месяцев, сыграл детек_f73b0a3d\subtitle\【样式字幕】шорт_011_которой потребовалось несколько месяцев, сыграл детек_22294d73.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130009.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:00:09.469538
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_011_которой потребовалось несколько месяцев, сыграл детектив Хэнк Андерсон.…_1662-1686с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_011_которой потребовалось несколько месяцев, сыграл детектив Хэнк Андерсон.…_1662-1686с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_011_которой потребовалось несколько месяцев, сыграл детектив Хэнк Андерсон.…_1662-1686с.mp4"
+视频总时长: 22.53秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_011_которой потребовалось несколько месяцев, сыграл детектив Хэнк Андерсон.…_1662-1686с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:00:15.474277
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сейчас всех вас на чи…_1526-1543с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpbq8qad00.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp73sa2o_d\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp73sa2o_d\audio.wav
+88% | 14/16 | 00:05<<00:00 |  2.62 audio seconds/s
+100% | 16/16 | 00:05<<00:00 |  2.83 audio seconds/s
+Transcription speed: 2.74 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp73sa2o_d' directory.
+Operation finished in:  0:00:07.403
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сей_c93a06f7\subtitle\【原始字幕】шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сей_c93a06f7-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:00:24.242394
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\d4477ee7287b112cb7d8b420d39eca29.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сей_c93a06f7\subtitle\【样式字幕】шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сей_0ea39767.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130024.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:00:24.251395
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сейчас всех вас на чи…_1526-1543с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сейчас всех вас на чи…_1526-1543с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сейчас всех вас на чи…_1526-1543с.mp4"
+视频总时长: 15.49秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_012_занимается. Лейтенант Андерсон, кто короче это... Сейчас всех вас на чи…_1526-1543с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:00:29.603951
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтенанту прочит быстро…_1693-1714с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpuisacvhv.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp_ezm6f1w\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp_ezm6f1w\audio.wav
+100% | 18/18 | 00:08<<00:00 |  2.23 audio seconds/s
+Transcription speed: 2.11 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp_ezm6f1w' directory.
+Operation finished in:  0:00:10.110
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтен_f9fa7680\subtitle\【原始字幕】шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтен_f9fa7680-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:00:41.106878
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\b5612491ae90dda32b0e27ceb7f7c732.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтен_f9fa7680\subtitle\【样式字幕】шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтен_efe7feed.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130041.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:00:41.118878
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтенанту прочит быстро…_1693-1714с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтенанту прочит быстро…_1693-1714с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтенанту прочит быстро…_1693-1714с.mp4"
+视频总时长: 17.7秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_013_кем он приходил бы сработать. Свежеиспеченному лейтенанту прочит быстро…_1693-1714с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:00:46.349013
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_014_в какое время обычно приходит лейтенант Андерсон Зависит от того, как …_1535-1554с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpltcqij2o.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpvxsq3kru\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpvxsq3kru\audio.wav
+93% | 14/15 | 00:02<<00:00 |  5.22 audio seconds/s
+100% | 15/15 | 00:02<<00:00 |  5.03 audio seconds/s
+Transcription speed: 5.13 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpvxsq3kru' directory.
+Operation finished in:  0:00:04.832
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_014_в какое время обычно приходит лейтенант Андерсон Зави_8524a3d5\subtitle\【原始字幕】шорт_014_в какое время обычно приходит лейтенант Андерсон Зави_8524a3d5-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:00:52.489279
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\f6a9d12f9fe112aa3840e9b0e44c06c2.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_014_в какое время обычно приходит лейтенант Андерсон Зави_8524a3d5\subtitle\【样式字幕】шорт_014_в какое время обычно приходит лейтенант Андерсон Зави_d6c1c7ee.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130052.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:00:52.500279
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_014_в какое время обычно приходит лейтенант Андерсон Зависит от того, как …_1535-1554с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_014_в какое время обычно приходит лейтенант Андерсон Зависит от того, как …_1535-1554с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_014_в какое время обычно приходит лейтенант Андерсон Зависит от того, как …_1535-1554с.mp4"
+视频总时长: 15.33秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_014_в какое время обычно приходит лейтенант Андерсон Зависит от того, как …_1535-1554с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:00:58.053716
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_015_лейтенант. Как сразу плавненько все стало, красивенько. Я тиже, блин, п…_1432-1447с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpbyijlfyq.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpkj_2_c7t\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpkj_2_c7t\audio.wav
+92% | 12/13 | 00:05<<00:00 |  2.21 audio seconds/s
+100% | 13/13 | 00:05<<00:00 |  2.27 audio seconds/s
+Transcription speed: 2.3 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpkj_2_c7t' directory.
+Operation finished in:  0:00:07.452
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_015_лейтенант. Как сразу плавненько все стало, красивеньк_46107631\subtitle\【原始字幕】шорт_015_лейтенант. Как сразу плавненько все стало, красивеньк_46107631-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:01:06.835678
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\20af0969c7e3fa8d001aa488151a275d.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_015_лейтенант. Как сразу плавненько все стало, красивеньк_46107631\subtitle\【样式字幕】шорт_015_лейтенант. Как сразу плавненько все стало, красивеньк_9dce8886.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130106.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:01:06.847678
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_015_лейтенант. Как сразу плавненько все стало, красивенько. Я тиже, блин, п…_1432-1447с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_015_лейтенант. Как сразу плавненько все стало, красивенько. Я тиже, блин, п…_1432-1447с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_015_лейтенант. Как сразу плавненько все стало, красивенько. Я тиже, блин, п…_1432-1447с.mp4"
+视频总时长: 13.18秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_015_лейтенант. Как сразу плавненько все стало, красивенько. Я тиже, блин, п…_1432-1447с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:01:13.294747
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_016_виток конфликта вокруг Арктики. Накануне патрульный катер ВМС США столк…_1452-1469с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp4zy_ocwh.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp5b2e4azy\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp5b2e4azy\audio.wav
+88% | 14/16 | 00:06<<00:00 |  2.24 audio seconds/s
+100% | 16/16 | 00:06<<00:00 |  2.44 audio seconds/s
+Transcription speed: 2.37 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp5b2e4azy' directory.
+Operation finished in:  0:00:08.300
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_016_виток конфликта вокруг Арктики. Накануне патрульный к_67570341\subtitle\【原始字幕】шорт_016_виток конфликта вокруг Арктики. Накануне патрульный к_67570341-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:01:22.896247
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\e9ee658f313a405e49145865a01d8b7e.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_016_виток конфликта вокруг Арктики. Накануне патрульный к_67570341\subtitle\【样式字幕】шорт_016_виток конфликта вокруг Арктики. Накануне патрульный к_f714e657.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130122.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:01:22.903247
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_016_виток конфликта вокруг Арктики. Накануне патрульный катер ВМС США столк…_1452-1469с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_016_виток конфликта вокруг Арктики. Накануне патрульный катер ВМС США столк…_1452-1469с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_016_виток конфликта вокруг Арктики. Накануне патрульный катер ВМС США столк…_1452-1469с.mp4"
+视频总时长: 15.57秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_016_виток конфликта вокруг Арктики. Накануне патрульный катер ВМС США столк…_1452-1469с.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:01:29.238004
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_017_не могу ответить. Оставьте сообщение, если приспичило, но перезвонить н…_1599-1617с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpwd0xznlv.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpkxvwo83q\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpkxvwo83q\audio.wav
+94% | 15/16 | 00:05<<00:00 |  2.78 audio seconds/s
+100% | 16/16 | 00:05<<00:00 |  2.81 audio seconds/s
+Transcription speed: 2.79 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpkxvwo83q' directory.
+Operation finished in:  0:00:07.484
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_017_не могу ответить. Оставьте сообщение, если приспичило_44cb7314\subtitle\【原始字幕】шорт_017_не могу ответить. Оставьте сообщение, если приспичило_44cb7314-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:01:38.097034
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\51befe1f6d9b41db5f571c234b7612e6.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_017_не могу ответить. Оставьте сообщение, если приспичило_44cb7314\subtitle\【样式字幕】шорт_017_не могу ответить. Оставьте сообщение, если приспичило_a7083beb.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_130138.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:01:38.112424
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_017_не могу ответить. Оставьте сообщение, если приспичило, но перезвонить н…_1599-1617с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\шорт_017_не могу ответить. Оставьте сообщение, если приспичило, но перезвонить н…_1599-1617с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_017_не могу ответить. Оставьте сообщение, если приспичило, но перезвонить н…_1599-1617с.mp4"
+视频总时长: 15.92秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_СПАСЕНИЕ МАРКУСА, КЭРЫ И АЛИСЫ! ｜ Detroit Become Human #4_20260416_125453\【卡卡】шорт_017_не могу ответить. Оставьте сообщение, если приспичило, но перезвонить н…_1599-1617с.mp4
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-16 13:09:38.508997
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_6.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp5er9a36q.wav
+视频时长: 51.22秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpi9geagku\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpi9geagku\audio.wav
+59% | 30/51 | 00:12<<00:08 |  2.34 audio seconds/s
+100% | 51/51 | 00:21<<00:00 |  2.43 audio seconds/s
+Transcription speed: 2.4 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpi9geagku' directory.
+Operation finished in:  0:00:23.185
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_6\subtitle\【原始字幕】Последовательность 01_6-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:10:03.186055
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\22248008d6b4baa3510ea5a0ad95c9e0.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_6\subtitle\【样式字幕】Последовательность 01_6-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_131003.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:10:03.237788
+开始合成视频: E:/Render/Последовательность 01_6.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_6.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_6.mp4"
+视频总时长: 51.22秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_6.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:14:25.751611
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_7.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpchoxzpd8.wav
+视频时长: 23.89秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp92tv4j69\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp92tv4j69\audio.wav
+100% | 24/24 | 00:08<<00:00 |  2.93 audio seconds/s
+Transcription speed: 2.82 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp92tv4j69' directory.
+Operation finished in:  0:00:10.226
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_7\subtitle\【原始字幕】Последовательность 01_7-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:14:37.461015
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\a31808250fc3f65a20d16de78cbe2026.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_7\subtitle\【样式字幕】Последовательность 01_7-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_131437.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:14:37.493982
+开始合成视频: E:/Render/Последовательность 01_7.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_7.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_7.mp4"
+视频总时长: 23.89秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_7.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:18:22.246000
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_8.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp_iqq1nv5.wav
+视频时长: 61.93秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpt5xjql1k\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpt5xjql1k\audio.wav
+42% | 26/62 | 00:12<<00:17 |  2.04 audio seconds/s
+81% | 50/62 | 00:26<<00:06 |  1.87 audio seconds/s
+100% | 62/62 | 00:34<<00:00 |  1.79 audio seconds/s
+Transcription speed: 1.77 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpt5xjql1k' directory.
+Operation finished in:  0:00:36.740
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_8\subtitle\【原始字幕】Последовательность 01_8-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:19:00.515526
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\f9d35c1def7d640e324b2b30edb4e8ed.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_8\subtitle\【样式字幕】Последовательность 01_8-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_131900.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:19:00.545103
+开始合成视频: E:/Render/Последовательность 01_8.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_8.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_8.mp4"
+视频总时长: 61.93秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_8.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:25:09.279862
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_9.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpm6sqnb_o.wav
+视频时长: 110.28秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp_j3b9jkr\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp_j3b9jkr\audio.wav
+25% |  27/110 | 00:10<<00:33 |  2.50 audio seconds/s
+51% |  56/110 | 00:22<<00:21 |  2.51 audio seconds/s
+76% |  84/110 | 00:33<<00:10 |  2.54 audio seconds/s
+100% | 110/110 | 00:42<<00:00 |  2.57 audio seconds/s
+Transcription speed: 2.56 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp_j3b9jkr' directory.
+Operation finished in:  0:00:44.917
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_9\subtitle\【原始字幕】Последовательность 01_9-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:25:55.877497
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\96fd38cdede0b57636585a8604785aa5.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_9\subtitle\【样式字幕】Последовательность 01_9-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_132555.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:25:55.912386
+开始合成视频: E:/Render/Последовательность 01_9.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_9.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_9.mp4"
+视频总时长: 110.28秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_9.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:36:36.175075
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_10.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpyt_c1354.wav
+视频时长: 81.88秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpor0led_z\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpor0led_z\audio.wav
+35% | 29/82 | 00:12<<00:22 |  2.39 audio seconds/s
+71% | 58/82 | 00:24<<00:10 |  2.34 audio seconds/s
+100% | 82/82 | 00:34<<00:00 |  2.40 audio seconds/s
+Transcription speed: 2.38 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpor0led_z' directory.
+Operation finished in:  0:00:36.283
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_10\subtitle\【原始字幕】Последовательность 01_10-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:37:14.023775
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\3f34ebae307a08e98baeb6d7a66d2fe1.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_10\subtitle\【样式字幕】Последовательность 01_10-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_133714.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:37:14.051471
+开始合成视频: E:/Render/Последовательность 01_10.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_10.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_10.mp4"
+视频总时长: 81.88秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_10.mp4
+
+===========转录任务开始===========
+时间：2026-04-16 13:41:43.306658
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_11.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp0gzs_ge0.wav
+视频时长: 76.31秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpcfu7ianq\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpcfu7ianq\audio.wav
+32% | 24/76 | 00:12<<00:27 |  1.86 audio seconds/s
+62% | 47/76 | 00:25<<00:15 |  1.83 audio seconds/s
+93% | 71/76 | 00:38<<00:02 |  1.85 audio seconds/s
+97% | 74/76 | 00:40<<00:01 |  1.84 audio seconds/s
+100% | 76/76 | 00:40<<00:00 |  1.88 audio seconds/s
+Transcription speed: 1.88 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpcfu7ianq' directory.
+Operation finished in:  0:00:42.337
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_11\subtitle\【原始字幕】Последовательность 01_11-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-16 13:42:27.131842
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\a296cf0e5f6fe8295078d2450b99a70c.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_11\subtitle\【样式字幕】Последовательность 01_11-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260416_134227.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-16 13:42:27.158843
+开始合成视频: E:/Render/Последовательность 01_11.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_11.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_11.mp4"
+视频总时长: 76.31秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_11.mp4
+Latest version info: v1.3.3
+
+===========转录任务开始===========
+时间：2026-04-17 15:16:36.856894
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpczhtxdd4.wav
+视频时长: 52.89秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp2gn2jgzp\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp2gn2jgzp\audio.wav
+57% | 30/53 | 00:08<<00:06 |  3.65 audio seconds/s
+100% | 53/53 | 00:16<<00:00 |  3.13 audio seconds/s
+Transcription speed: 3.07 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp2gn2jgzp' directory.
+Operation finished in:  0:00:19.622
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【原始字幕】Последовательность 01-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:17:03.592210
+写入处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\1234efa7a826e65594a88c172b9cd478.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【样式字幕】Последовательность 01-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_151703.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:17:03.642516
+开始合成视频: E:/Render/Последовательность 01.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01.mp4"
+视频总时长: 52.89秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:17:42.576182
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpq7zhzbs_.wav
+视频时长: 52.89秒
+开始语音转录
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【原始字幕】Последовательность 01-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:17:42.745911
+命中处理后字幕缓存：E:\Neyro\VideoCaptionerEnchanted\AppData\cache\processed_subtitles\1234efa7a826e65594a88c172b9cd478.json
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【样式字幕】Последовательность 01-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_151742.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:17:42.781235
+开始合成视频: E:/Render/Последовательность 01.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01.mp4"
+视频总时长: 52.89秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:18:04.666627
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmph91t0uyw.wav
+视频时长: 52.89秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpnj__krsf\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpnj__krsf\audio.wav
+57% | 30/53 | 00:08<<00:06 |  3.65 audio seconds/s
+100% | 53/53 | 00:17<<00:00 |  3.10 audio seconds/s
+Transcription speed: 3.04 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpnj__krsf' directory.
+Operation finished in:  0:00:19.223
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【原始字幕】Последовательность 01-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:18:25.435505
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01\subtitle\【样式字幕】Последовательность 01-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_151825.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:18:25.462216
+开始合成视频: E:/Render/Последовательность 01.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01.mp4"
+视频总时长: 52.89秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:23:38.895382
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_1.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpsqmt1s1n.wav
+视频时长: 30.36秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpwr52hxeb\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpwr52hxeb\audio.wav
+97% | 29/30 | 00:11<<00:00 |  2.56 audio seconds/s
+100% | 30/30 | 00:12<<00:00 |  2.41 audio seconds/s
+Transcription speed: 2.38 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpwr52hxeb' directory.
+Operation finished in:  0:00:14.564
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_1\subtitle\【原始字幕】Последовательность 01_1-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:23:54.922179
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_1\subtitle\【样式字幕】Последовательность 01_1-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_152354.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:23:54.950732
+开始合成视频: E:/Render/Последовательность 01_1.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_1.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_1.mp4"
+视频总时长: 30.36秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_1.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:28:58.562489
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_2.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpyoh7u9aj.wav
+视频时长: 51.35秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp7luths_0\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp7luths_0\audio.wav
+51% | 26/51 | 00:09<<00:09 |  2.64 audio seconds/s
+100% | 51/51 | 00:19<<00:00 |  2.63 audio seconds/s
+Transcription speed: 2.61 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp7luths_0' directory.
+Operation finished in:  0:00:21.470
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_2\subtitle\【原始字幕】Последовательность 01_2-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:29:21.487833
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_2\subtitle\【样式字幕】Последовательность 01_2-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_152921.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:29:21.516015
+开始合成视频: E:/Render/Последовательность 01_2.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_2.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_2.mp4"
+视频总时长: 51.35秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_2.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:37:12.902777
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_3.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpgx8ic50x.wav
+视频时长: 29.8秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp6w0z4yf6\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp6w0z4yf6\audio.wav
+87% | 26/30 | 00:09<<00:01 |  2.69 audio seconds/s
+100% | 30/30 | 00:11<<00:00 |  2.55 audio seconds/s
+Transcription speed: 2.47 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp6w0z4yf6' directory.
+Operation finished in:  0:00:13.867
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_3\subtitle\【原始字幕】Последовательность 01_3-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:37:28.198148
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_3\subtitle\【样式字幕】Последовательность 01_3-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_153728.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:37:28.224148
+开始合成视频: E:/Render/Последовательность 01_3.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_3.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_3.mp4"
+视频总时长: 29.8秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_3.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:43:21.860244
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_4.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmp5e0u5niw.wav
+视频时长: 51.52秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpem4p15ou\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpem4p15ou\audio.wav
+54% | 28/52 | 00:03<<00:02 |  8.23 audio seconds/s
+83% | 43/52 | 00:14<<00:03 |  2.93 audio seconds/s
+100% | 52/52 | 00:14<<00:00 |  3.47 audio seconds/s
+Transcription speed: 3.44 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpem4p15ou' directory.
+Operation finished in:  0:00:16.799
+Faster Whisper 返回值: 3221226505
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_4\subtitle\【原始字幕】Последовательность 01_4-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:43:39.982878
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_4\subtitle\【样式字幕】Последовательность 01_4-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_154339.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:43:40.009526
+开始合成视频: E:/Render/Последовательность 01_4.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_4.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_4.mp4"
+视频总时长: 51.52秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_4.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 15:48:45.773079
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Render\Последовательность 01_5.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpzfebrxdw.wav
+视频时长: 27.33秒
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp8hozbe80\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp8hozbe80\audio.wav
+100% | 27/27 | 00:08<<00:00 |  3.23 audio seconds/s
+Transcription speed: 3.16 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp8hozbe80' directory.
+Operation finished in:  0:00:10.462
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_5\subtitle\【原始字幕】Последовательность 01_5-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 15:48:57.640829
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\Последовательность 01_5\subtitle\【样式字幕】Последовательность 01_5-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_154857.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 15:48:57.662471
+开始合成视频: E:/Render/Последовательность 01_5.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:/Render/Последовательность 01_5.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Render\【卡卡】Последовательность 01_5.mp4"
+视频总时长: 27.33秒
+视频合成完成
+视频合成完成，保存路径: E:\Render\【卡卡】Последовательность 01_5.mp4
+Latest version info: v1.3.3
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpcwcucrie.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmphz4dfit8.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp6t6llheh\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp6t6llheh\audio.wav
+7% |  30/437 | 00:05<<01:17 |  5.27 audio seconds/s
+14% |  59/437 | 00:10<<01:04 |  5.84 audio seconds/s
+20% |  88/437 | 00:14<<00:57 |  6.05 audio seconds/s
+26% | 113/437 | 00:19<<00:56 |  5.78 audio seconds/s
+32% | 140/437 | 00:26<<00:55 |  5.34 audio seconds/s
+38% | 168/437 | 00:31<<00:49 |  5.39 audio seconds/s
+44% | 192/437 | 00:36<<00:46 |  5.27 audio seconds/s
+50% | 220/437 | 00:42<<00:41 |  5.18 audio seconds/s
+57% | 249/437 | 00:48<<00:36 |  5.15 audio seconds/s
+64% | 279/437 | 00:55<<00:31 |  5.06 audio seconds/s
+70% | 307/437 | 01:02<<00:26 |  4.95 audio seconds/s
+77% | 336/437 | 01:08<<00:20 |  4.87 audio seconds/s
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpf53gpp13.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpj96vzwsu.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpceaffjb3\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpceaffjb3\audio.wav
+6% |  27/464 | 00:04<<01:19 |  5.47 audio seconds/s
+12% |  57/464 | 00:08<<00:57 |  7.06 audio seconds/s
+19% |  86/464 | 00:13<<00:57 |  6.60 audio seconds/s
+25% | 115/464 | 00:17<<00:52 |  6.65 audio seconds/s
+31% | 142/464 | 00:24<<00:54 |  5.91 audio seconds/s
+37% | 172/464 | 00:28<<00:48 |  6.00 audio seconds/s
+44% | 202/464 | 00:35<<00:45 |  5.71 audio seconds/s
+50% | 231/464 | 00:41<<00:41 |  5.55 audio seconds/s
+56% | 262/464 | 00:46<<00:36 |  5.61 audio seconds/s
+63% | 291/464 | 00:54<<00:32 |  5.35 audio seconds/s
+69% | 318/464 | 01:13<<00:33 |  4.35 audio seconds/s
+75% | 347/464 | 01:20<<00:26 |  4.34 audio seconds/s
+81% | 375/464 | 01:26<<00:20 |  4.35 audio seconds/s
+87% | 403/464 | 01:32<<00:13 |  4.38 audio seconds/s
+94% | 435/464 | 02:11<<00:08 |  3.30 audio seconds/s
+95% | 443/464 | 02:14<<00:06 |  3.30 audio seconds/s
+100% | 464/464 | 02:45<<00:00 |  2.80 audio seconds/s
+Transcription speed: 2.8 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpceaffjb3' directory.
+Operation finished in:  0:02:47.863
+Faster Whisper 返回值: 3221226505
+Faster Whisper 识别完成
+2026-04-17 16:20:47 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5466>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 16:20:47 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5764>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 16:20:48 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5778>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 16:20:48 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5772>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 519.860 -t 15.920 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_001_Не хочу купаться_519-535с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 446.500 -t 28.020 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=10.420,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=12.308:end=27.600,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.120:end=10.420,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=12.308:end=27.600,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_002_Нападение андроида_446-474с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 353.940 -t 18.260 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=1.460,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=1.820:end=6.000,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=9.673:end=17.840,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.120:end=1.460,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=1.820:end=6.000,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=9.673:end=17.840,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_003_Ссора с андроидом_353-372с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 400.940 -t 42.340 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=0.820,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=1.831:end=4.152,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=4.420:end=6.560,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=7.311:end=16.340,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=21.511:end=22.920,setpts=PTS-STARTPTS[vp4];[0:v]trim=start=24.131:end=41.920,setpts=PTS-STARTPTS[vp5];[0:a]atrim=start=0.120:end=0.820,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=1.831:end=4.152,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=4.420:end=6.560,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=7.311:end=16.340,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=21.511:end=22.920,asetpts=PTS-STARTPTS[ap4];[0:a]atrim=start=24.131:end=41.920,asetpts=PTS-STARTPTS[ap5];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4][vp5][ap5]concat=n=6:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_004_смотри что. Пойдешь, пойдешь, как миленький. Ты что затеял-то, а О, не…_400-443с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 426.860 -t 30.200 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=16.680,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=18.451:end=29.780,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.120:end=16.680,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=18.451:end=29.780,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_005_кипяток! Ай! А ты тут откуда взялся 43 минуты назад сообщили об убийст…_426-457с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 385.840 -t 31.580 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=3.940,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=5.651:end=8.640,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=11.151:end=15.920,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=16.931:end=19.252,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=19.520:end=21.660,setpts=PTS-STARTPTS[vp4];[0:v]trim=start=22.411:end=31.160,setpts=PTS-STARTPTS[vp5];[0:a]atrim=start=0.120:end=3.940,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=5.651:end=8.640,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=11.151:end=15.920,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=16.931:end=19.252,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=19.520:end=21.660,asetpts=PTS-STARTPTS[ap4];[0:a]atrim=start=22.411:end=31.160,asetpts=PTS-STARTPTS[ap5];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4][vp5][ap5]concat=n=6:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_006_все, я сейчас сблю. Да, судя на тебя. Иди блюй вон, в толчок. Улыбайся,…_385-417с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 484.720 -t 16.600 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=2.475,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=2.848:end=5.617,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=6.240:end=8.546,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=9.700:end=12.763,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=13.462:end=16.180,setpts=PTS-STARTPTS[vp4];[0:a]atrim=start=0.120:end=2.475,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=2.848:end=5.617,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=6.240:end=8.546,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=9.700:end=12.763,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=13.462:end=16.180,asetpts=PTS-STARTPTS[ap4];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4]concat=n=5:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_007_Дело не особенно интересное. В секс-клубе в центре города убили клиента…_484-501с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 437.580 -t 29.180 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=5.960,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=7.731:end=19.340,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=21.228:end=28.760,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.120:end=5.960,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=7.731:end=19.340,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=21.228:end=28.760,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_008_43 минуты назад сообщили об убийстве. Я не нашел вас по барам и решил п…_437-466с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 566.880 -t 16.500 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=4.939,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=5.756:end=11.660,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=12.596:end=13.724,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=14.547:end=16.080,setpts=PTS-STARTPTS[vp3];[0:a]atrim=start=0.120:end=4.939,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=5.756:end=11.660,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=12.596:end=13.724,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=14.547:end=16.080,asetpts=PTS-STARTPTS[ap3];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3]concat=n=4:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_009_Все в порядке, Лейтенант С бухущим ехать куда-то. Просто... чудесно. Т…_566-583с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 458.860 -t 34.560 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.120:end=15.514,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=22.056:end=23.550,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=24.060:end=25.500,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=25.804:end=28.335,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=28.708:end=31.477,setpts=PTS-STARTPTS[vp4];[0:v]trim=start=32.100:end=34.140,setpts=PTS-STARTPTS[vp5];[0:a]atrim=start=0.120:end=15.514,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=22.056:end=23.550,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=24.060:end=25.500,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=25.804:end=28.335,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=28.708:end=31.477,asetpts=PTS-STARTPTS[ap4];[0:a]atrim=start=32.100:end=34.140,asetpts=PTS-STARTPTS[ap5];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4][vp5][ap5]concat=n=6:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=768:457:0:0,eq=brightness=0.140:contrast=1.270:saturation=1.030,scale=1080:640:flags=fast_bilinear[cam];[src_game]crop=1584:1440:506:0,eq=brightness=0.040:contrast=1.330:saturation=0.880,unsharp=5:5:0.10:5:5:0.00,scale=1080:1280:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_010_Рационально. К сожалению, не могу. Я запрограммирован расследовать дело…_458-493с.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 16:26:25.579565
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_001_Не хочу купаться_519-535с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpsxjmoy1q.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpl4xm2ip2\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpl4xm2ip2\audio.wav
+94% | 15/16 | 00:03<<00:00 |  4.98 audio seconds/s
+100% | 16/16 | 00:03<<00:00 |  4.84 audio seconds/s
+Transcription speed: 4.81 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpl4xm2ip2' directory.
+Operation finished in:  0:00:05.206
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_001_Не хочу купаться_519-535с\subtitle\【原始字幕】шорт_001_Не хочу купаться_519-535с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 16:26:32.152575
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_001_Не хочу купаться_519-535с\subtitle\【样式字幕】шорт_001_Не хочу купаться_519-535с-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_162632.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 16:26:32.161314
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_001_Не хочу купаться_519-535с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_001_Не хочу купаться_519-535с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\【卡卡】шорт_001_Не хочу купаться_519-535с.mp4"
+视频总时长: 15.92秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\【卡卡】шорт_001_Не хочу купаться_519-535с.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 16:26:39.970042
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_002_Нападение андроида_446-474с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpfu7ezmtt.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpkuwrlsru\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpkuwrlsru\audio.wav
+100% | 26/26 | 00:08<<00:00 |  3.00 audio seconds/s
+Transcription speed: 2.84 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpkuwrlsru' directory.
+Operation finished in:  0:00:10.833
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_002_Нападение андроида_446-474с\subtitle\【原始字幕】шорт_002_Нападение андроида_446-474с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 16:26:52.173195
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_002_Нападение андроида_446-474с\subtitle\【样式字幕】шорт_002_Нападение андроида_446-474с-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_162652.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 16:26:52.184194
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_002_Нападение андроида_446-474с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_002_Нападение андроида_446-474с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\【卡卡】шорт_002_Нападение андроида_446-474с.mp4"
+视频总时长: 25.58秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\【卡卡】шорт_002_Нападение андроида_446-474с.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 16:27:03.371968
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_003_Ссора с андроидом_353-372с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpo4skx3es.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmp5sj1gswa\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp5sj1gswa\audio.wav
+100% | 14/14 | 00:07<<00:00 |  1.95 audio seconds/s
+Transcription speed: 1.83 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmp5sj1gswa' directory.
+Operation finished in:  0:00:09.221
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+字幕文件已保存到: E:\Neyro\VideoCaptioner\work-dir\шорт_003_Ссора с андроидом_353-372с\subtitle\【原始字幕】шорт_003_Ссора с андроидом_353-372с-FasterWhisper ✨-俄语.srt
+
+===========字幕处理任务开始===========
+时间：2026-04-17 16:27:14.052813
+字幕保存到 E:\Neyro\VideoCaptioner\work-dir\шорт_003_Ссора с андроидом_353-372с\subtitle\【样式字幕】шорт_003_Ссора с андроидом_353-372с-FasterWhisper ✨-俄语.ass
+诊断报告保存到 E:\Neyro\VideoCaptionerEnchanted\work-dir\subtitle_diagnostics_20260417_162714.json
+优化完成
+
+===========视频合成任务开始===========
+时间：2026-04-17 16:27:14.063767
+开始合成视频: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_003_Ссора с андроидом_353-372с.mp4
+使用硬字幕
+检查CUDA是否可用
+CUDA可用
+使用CUDA加速
+添加硬字幕执行命令: ffmpeg -hwaccel cuda -i "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_003_Ссора с андроидом_353-372с.mp4" -acodec copy -vcodec libx264 -preset medium -vf "ass='C\:/Temp/MechaniksLab Creator Studio/temp_subtitle..ass'" -y "E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\【卡卡】шорт_003_Ссора с андроидом_353-372с.mp4"
+视频总时长: 13.68秒
+视频合成完成
+视频合成完成，保存路径: E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\【卡卡】шорт_003_Ссора с андроидом_353-372с.mp4
+
+===========转录任务开始===========
+时间：2026-04-17 16:27:20.290851
+UseProcessedSubtitleCache=OFF: отключаем shortcut и ASR-кэш для транскрибации
+开始转换音频
+转换为音频执行命令: ffmpeg -i E:\Neyro\VideoCaptionerEnchanted\work-dir\shorts\shorts_Detroit Become Human 7_20260417_162157\шорт_004_смотри что. Пойдешь, пойдешь, как миленький. Ты что затеял-то, а О, не…_400-443с.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpunbyu5cs.wav
+开始语音转录
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\VideoCaptionerEnchanted\AppData\models C:\Temp\bk_asr\tmpqo6rzogx\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpqo6rzogx\audio.wav

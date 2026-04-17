@@ -1,6 +1,13 @@
 {
     "MainWindow": {
+        "AutoShortsClipHeadPadMs": 120,
+        "AutoShortsClipTailPadMs": 420,
         "AutoShortsRenderBackend": "gpu",
+        "AutoShortsRepeatSimilarityPercent": 72,
+        "AutoShortsSpeechMergeGapMs": 260,
+        "AutoShortsSpeechMinCoveragePercent": 74,
+        "AutoShortsSpeechPostPadMs": 320,
+        "AutoShortsSpeechPrePadMs": 220,
         "DpiScale": "Auto",
         "Language": "Auto",
         "MicaEnabled": false
@@ -23,7 +30,7 @@
         "Gemini_API_Key": "",
         "Gemini_Model": "gemini-pro",
         "LLMService": "LM Studio",
-        "LmStudio_API_Base": "http://172.18.0.1:1234/v1",
+        "LmStudio_API_Base": "http://192.168.0.10:1234/v1",
         "LmStudio_API_Key": "lmstudio",
         "LmStudio_Model": "qwen2.5-14b-instruct",
         "Ollama_API_Base": "http://localhost:11434/v1",
@@ -52,7 +59,7 @@
         "NeedsRemovePunctuation": true,
         "SplitType": "语义分段",
         "TargetLanguage": "俄语",
-        "UseProcessedSubtitleCache": true,
+        "UseProcessedSubtitleCache": false,
         "UseSubtitleCache": true
     },
     "FasterWhisper": {

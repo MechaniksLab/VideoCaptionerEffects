@@ -365,6 +365,27 @@ class Config(QConfig):
         "auto",
         OptionsValidator(["auto", "cpu", "gpu", "cuda"]),
     )
+    auto_shorts_clip_head_pad_ms = RangeConfigItem(
+        "MainWindow", "AutoShortsClipHeadPadMs", 120, RangeValidator(0, 2000)
+    )
+    auto_shorts_clip_tail_pad_ms = RangeConfigItem(
+        "MainWindow", "AutoShortsClipTailPadMs", 420, RangeValidator(0, 3000)
+    )
+    auto_shorts_speech_pre_pad_ms = RangeConfigItem(
+        "MainWindow", "AutoShortsSpeechPrePadMs", 220, RangeValidator(0, 1500)
+    )
+    auto_shorts_speech_post_pad_ms = RangeConfigItem(
+        "MainWindow", "AutoShortsSpeechPostPadMs", 320, RangeValidator(0, 2000)
+    )
+    auto_shorts_speech_merge_gap_ms = RangeConfigItem(
+        "MainWindow", "AutoShortsSpeechMergeGapMs", 260, RangeValidator(60, 2000)
+    )
+    auto_shorts_speech_min_coverage_percent = RangeConfigItem(
+        "MainWindow", "AutoShortsSpeechMinCoveragePercent", 74, RangeValidator(30, 100)
+    )
+    auto_shorts_repeat_similarity_percent = RangeConfigItem(
+        "MainWindow", "AutoShortsRepeatSimilarityPercent", 72, RangeValidator(40, 100)
+    )
 
     # ------------------- 更新配置 -------------------
     checkUpdateAtStartUp = ConfigItem(

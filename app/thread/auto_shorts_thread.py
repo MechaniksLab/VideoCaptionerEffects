@@ -36,6 +36,7 @@ class AutoShortsAnalyzeThread(QThread):
         range_enabled: bool = False,
         range_start_s: int = 0,
         range_end_s: int = 0,
+        repeat_similarity_percent: int = 72,
     ):
         super().__init__()
         self.video_path = video_path
@@ -44,6 +45,7 @@ class AutoShortsAnalyzeThread(QThread):
         self.range_enabled = bool(range_enabled)
         self.range_start_s = max(0, int(range_start_s or 0))
         self.range_end_s = max(0, int(range_end_s or 0))
+        self.repeat_similarity_percent = max(40, min(100, int(repeat_similarity_percent or 72)))
 
     def run(self):
         temp_wav = None
@@ -99,6 +101,7 @@ class AutoShortsAnalyzeThread(QThread):
                 llm_base_url=llm_cfg["base_url"],
                 llm_api_key=llm_cfg["api_key"],
                 llm_model=llm_cfg["model"],
+                repeat_similarity_threshold=self.repeat_similarity_percent / 100.0,
             )
 
             candidates = processor.find_candidates(

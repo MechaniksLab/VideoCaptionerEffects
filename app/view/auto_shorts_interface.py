@@ -487,6 +487,109 @@ class AutoShortsInterface(QWidget):
         )
         hint.setWordWrap(True)
         control_layout.addWidget(hint)
+
+        tune_title = StrongBodyLabel("Тонкая настройка монтажа")
+        control_layout.addWidget(tune_title)
+
+        anti_repeat_title = BodyLabel("1) Повторы моментов")
+        control_layout.addWidget(anti_repeat_title)
+        anti_repeat_hint = BodyLabel(
+            "Анти-дубль отсекает кандидаты с похожим текстом/смыслом. "
+            "Чем выше значение — тем строже фильтр и меньше повторов в выдаче."
+        )
+        anti_repeat_hint.setWordWrap(True)
+        control_layout.addWidget(anti_repeat_hint)
+
+        anti_repeat_row = QHBoxLayout()
+        anti_repeat_row.addWidget(BodyLabel("Анти-дубль (%):"))
+        self.repeat_similarity_spin = SpinBox(self)
+        self.repeat_similarity_spin.setRange(40, 100)
+        self.repeat_similarity_spin.setValue(int(cfg.get(cfg.auto_shorts_repeat_similarity_percent)))
+        self.repeat_similarity_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_repeat_similarity_percent, int(v))
+        )
+        anti_repeat_row.addWidget(self.repeat_similarity_spin)
+        anti_repeat_row.addStretch(1)
+        control_layout.addLayout(anti_repeat_row)
+
+        anti_cut_title = BodyLabel("2) Границы фраз (чтобы не резало слова)")
+        control_layout.addWidget(anti_cut_title)
+        anti_cut_hint = BodyLabel(
+            "Эти параметры влияют на внутренние склейки по речи: "
+            "добавляют контекст до/после слова, объединяют короткие паузы и "
+            "задают минимальную долю речи, ниже которой берётся цельный фрагмент без агрессивных склеек."
+        )
+        anti_cut_hint.setWordWrap(True)
+        control_layout.addWidget(anti_cut_hint)
+
+        tune_row_1 = QHBoxLayout()
+
+        tune_row_1.addWidget(BodyLabel("Покрытие речи (%):"))
+        self.speech_min_coverage_spin = SpinBox(self)
+        self.speech_min_coverage_spin.setRange(30, 100)
+        self.speech_min_coverage_spin.setValue(int(cfg.get(cfg.auto_shorts_speech_min_coverage_percent)))
+        self.speech_min_coverage_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_speech_min_coverage_percent, int(v))
+        )
+        tune_row_1.addWidget(self.speech_min_coverage_spin)
+
+        tune_row_1.addWidget(BodyLabel("Склейка пауз (мс):"))
+        self.speech_merge_gap_spin = SpinBox(self)
+        self.speech_merge_gap_spin.setRange(60, 2000)
+        self.speech_merge_gap_spin.setValue(int(cfg.get(cfg.auto_shorts_speech_merge_gap_ms)))
+        self.speech_merge_gap_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_speech_merge_gap_ms, int(v))
+        )
+        tune_row_1.addWidget(self.speech_merge_gap_spin)
+        tune_row_1.addStretch(1)
+        control_layout.addLayout(tune_row_1)
+
+        tune_row_2 = QHBoxLayout()
+        tune_row_2.addWidget(BodyLabel("Перед словом (мс):"))
+        self.speech_pre_pad_spin = SpinBox(self)
+        self.speech_pre_pad_spin.setRange(0, 1500)
+        self.speech_pre_pad_spin.setValue(int(cfg.get(cfg.auto_shorts_speech_pre_pad_ms)))
+        self.speech_pre_pad_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_speech_pre_pad_ms, int(v))
+        )
+        tune_row_2.addWidget(self.speech_pre_pad_spin)
+
+        tune_row_2.addWidget(BodyLabel("После слова (мс):"))
+        self.speech_post_pad_spin = SpinBox(self)
+        self.speech_post_pad_spin.setRange(0, 2000)
+        self.speech_post_pad_spin.setValue(int(cfg.get(cfg.auto_shorts_speech_post_pad_ms)))
+        self.speech_post_pad_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_speech_post_pad_ms, int(v))
+        )
+        tune_row_2.addWidget(self.speech_post_pad_spin)
+
+        tune_row_2.addWidget(BodyLabel("До клипа (мс):"))
+        self.clip_head_pad_spin = SpinBox(self)
+        self.clip_head_pad_spin.setRange(0, 2000)
+        self.clip_head_pad_spin.setValue(int(cfg.get(cfg.auto_shorts_clip_head_pad_ms)))
+        self.clip_head_pad_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_clip_head_pad_ms, int(v))
+        )
+        tune_row_2.addWidget(self.clip_head_pad_spin)
+
+        tune_row_2.addWidget(BodyLabel("После клипа (мс):"))
+        self.clip_tail_pad_spin = SpinBox(self)
+        self.clip_tail_pad_spin.setRange(0, 3000)
+        self.clip_tail_pad_spin.setValue(int(cfg.get(cfg.auto_shorts_clip_tail_pad_ms)))
+        self.clip_tail_pad_spin.valueChanged.connect(
+            lambda v: cfg.set(cfg.auto_shorts_clip_tail_pad_ms, int(v))
+        )
+        tune_row_2.addWidget(self.clip_tail_pad_spin)
+        tune_row_2.addStretch(1)
+        control_layout.addLayout(tune_row_2)
+
+        clip_pad_hint = BodyLabel(
+            "3) Общий отступ клипа: добавляет контекст в начало/конец уже выбранного фрагмента. "
+            "Полезно, если начало или концовка звучат обрезанно."
+        )
+        clip_pad_hint.setWordWrap(True)
+        control_layout.addWidget(clip_pad_hint)
+
         self.main_layout.addWidget(self.control_card)
 
         self.template_card = CardWidget(self)
@@ -960,6 +1063,7 @@ class AutoShortsInterface(QWidget):
             range_enabled=True,
             range_start_s=range_start,
             range_end_s=range_end,
+            repeat_similarity_percent=self.repeat_similarity_spin.value(),
         )
         self.analyze_thread.progress.connect(self._on_progress)
         self.analyze_thread.finished.connect(self._on_analyze_finished)
@@ -1149,6 +1253,13 @@ class AutoShortsInterface(QWidget):
                 "fps": (self.render_fps_combo.currentText() or "30").strip(),
                 "resolution": (self.render_resolution_combo.currentText() or "1080x1920").strip(),
                 "quality": (self.render_quality_combo.currentText() or "Сбалансированное").strip(),
+                "repeat_similarity_percent": int(self.repeat_similarity_spin.value()),
+                "speech_min_coverage_percent": int(self.speech_min_coverage_spin.value()),
+                "speech_merge_gap_ms": int(self.speech_merge_gap_spin.value()),
+                "speech_pre_pad_ms": int(self.speech_pre_pad_spin.value()),
+                "speech_post_pad_ms": int(self.speech_post_pad_spin.value()),
+                "clip_head_pad_ms": int(self.clip_head_pad_spin.value()),
+                "clip_tail_pad_ms": int(self.clip_tail_pad_spin.value()),
             },
         }
 
@@ -1249,6 +1360,31 @@ class AutoShortsInterface(QWidget):
                 quality_text = str(render_settings.get("quality", "") or "").strip()
                 if quality_text in {"Высокое", "Сбалансированное", "Быстрое"}:
                     self.render_quality_combo.setCurrentText(quality_text)
+
+                try:
+                    self.repeat_similarity_spin.setValue(
+                        int(render_settings.get("repeat_similarity_percent", self.repeat_similarity_spin.value()))
+                    )
+                    self.speech_min_coverage_spin.setValue(
+                        int(render_settings.get("speech_min_coverage_percent", self.speech_min_coverage_spin.value()))
+                    )
+                    self.speech_merge_gap_spin.setValue(
+                        int(render_settings.get("speech_merge_gap_ms", self.speech_merge_gap_spin.value()))
+                    )
+                    self.speech_pre_pad_spin.setValue(
+                        int(render_settings.get("speech_pre_pad_ms", self.speech_pre_pad_spin.value()))
+                    )
+                    self.speech_post_pad_spin.setValue(
+                        int(render_settings.get("speech_post_pad_ms", self.speech_post_pad_spin.value()))
+                    )
+                    self.clip_head_pad_spin.setValue(
+                        int(render_settings.get("clip_head_pad_ms", self.clip_head_pad_spin.value()))
+                    )
+                    self.clip_tail_pad_spin.setValue(
+                        int(render_settings.get("clip_tail_pad_ms", self.clip_tail_pad_spin.value()))
+                    )
+                except Exception:
+                    pass
 
             self._refresh_output_composite_preview()
         except Exception:
@@ -1591,6 +1727,12 @@ class AutoShortsInterface(QWidget):
             "resolution_mode": resolution_mode,
             "resolution": resolution_value,
             "quality_profile": quality_profile,
+            "clip_head_pad_ms": int(self.clip_head_pad_spin.value()),
+            "clip_tail_pad_ms": int(self.clip_tail_pad_spin.value()),
+            "speech_pre_pad_ms": int(self.speech_pre_pad_spin.value()),
+            "speech_post_pad_ms": int(self.speech_post_pad_spin.value()),
+            "speech_merge_gap_ms": int(self.speech_merge_gap_spin.value()),
+            "speech_min_coverage_percent": int(self.speech_min_coverage_spin.value()),
         }
 
     @staticmethod
