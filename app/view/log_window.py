@@ -7,7 +7,8 @@ from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QTextEdit, QVBoxLayout, QWidget, QHBoxLayout
 from qfluentwidgets import Dialog, FluentStyleSheet, TextEdit, isDarkTheme, PushButton
 
-from app.config import LOG_PATH, RESOURCE_PATH
+from app.common.theme_manager import get_theme_palette
+from app.config import LOG_PATH
 
 
 class LogWindow(QWidget):
@@ -17,12 +18,7 @@ class LogWindow(QWidget):
         self.resize(800, 600)
 
         FluentStyleSheet.FLUENT_WINDOW.apply(self)
-
-        theme = "dark" if isDarkTheme() else "light"
-        with open(
-            RESOURCE_PATH / "assets" / "qss" / theme / "demo.qss", encoding="utf-8"
-        ) as f:
-            self.setStyleSheet(f.read())
+        self.refresh_theme()
 
         # 设置为非模态对话框
         self.setWindowModality(Qt.NonModal)
@@ -158,3 +154,24 @@ class LogWindow(QWidget):
     def open_log_folder(self):
         """打开日志文件所在文件夹"""
         os.startfile(str(LOG_PATH))
+
+    def refresh_theme(self):
+        p = get_theme_palette()
+        self.setStyleSheet(
+            f"""
+            QWidget {{ background: {p['window_bg']}; color: {p['text']}; }}
+            QTextEdit {{
+                background: {p['card_bg']};
+                color: {p['text']};
+                border: 1px solid {p['border']};
+                border-radius: 6px;
+            }}
+            QPushButton {{
+                background: {p['panel_bg']};
+                color: {p['text']};
+                border: 1px solid {p['border']};
+                border-radius: 6px;
+                padding: 4px 10px;
+            }}
+            """
+        )

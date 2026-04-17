@@ -26,7 +26,7 @@ from qfluentwidgets import (
 )
 
 from app.common.config import cfg
-from app.config import APP_NAME, APPDATA_PATH, ASSETS_PATH, VERSION
+from app.config import APP_LOGO_PATH, APP_NAME, APPDATA_PATH, VERSION
 from app.core.entities import (
     LLMServiceEnum,
     SupportedAudioFormats,
@@ -38,7 +38,7 @@ from app.components.DonateDialog import DonateDialog
 from app.components.LanguageSettingDialog import LanguageSettingDialog
 from app.core.entities import TranscribeModelEnum
 
-LOGO_PATH = ASSETS_PATH / "logo.png"
+LOGO_PATH = APP_LOGO_PATH
 
 
 class TaskCreationInterface(QWidget):

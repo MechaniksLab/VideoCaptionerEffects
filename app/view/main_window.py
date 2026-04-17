@@ -14,15 +14,17 @@ from qfluentwidgets import (
 )
 
 from app.common.config import cfg
+from app.common.theme_manager import apply_vscode_theme
 from app.components.DonateDialog import DonateDialog
-from app.config import APP_NAME, ASSETS_PATH, GITHUB_REPO_URL
+from app.config import APP_ICON_PATH, APP_NAME, APP_SPLASH_LOGO_PATH, GITHUB_REPO_URL
 from app.thread.version_manager_thread import VersionManager
 from app.view.batch_process_interface import BatchProcessInterface
 from app.view.home_interface import HomeInterface
 from app.view.setting_interface import SettingInterface
 from app.view.subtitle_style_interface import SubtitleStyleInterface
 
-LOGO_PATH = ASSETS_PATH / "logo.png"
+LOGO_PATH = APP_ICON_PATH
+APP_WINDOW_TITLE_RU = "Лаборатория Механика - Студия создания шортсов"
 
 
 class MainWindow(FluentWindow):
@@ -50,6 +52,7 @@ class MainWindow(FluentWindow):
 
         # 初始化导航界面
         self.initNavigation()
+        apply_vscode_theme(refresh_widgets=True)
         self.splashScreen.finish()
 
         # 注册退出处理， 清理进程
@@ -85,10 +88,7 @@ class MainWindow(FluentWindow):
         self.switchTo(self.homeInterface)
 
     def switchTo(self, interface):
-        if interface.windowTitle():
-            self.setWindowTitle(interface.windowTitle())
-        else:
-            self.setWindowTitle(APP_NAME)
+        self.setWindowTitle(APP_WINDOW_TITLE_RU)
         self.stackedWidget.setCurrentWidget(interface, popOut=False)
 
     def initWindow(self):
@@ -96,13 +96,13 @@ class MainWindow(FluentWindow):
         self.resize(1050, 800)
         self.setMinimumWidth(700)
         self.setWindowIcon(QIcon(str(LOGO_PATH)))
-        self.setWindowTitle(APP_NAME)
+        self.setWindowTitle(APP_WINDOW_TITLE_RU)
 
         self.setMicaEffectEnabled(cfg.get(cfg.micaEnabled))
 
         # 创建启动画面
-        self.splashScreen = SplashScreen(self.windowIcon(), self)
-        self.splashScreen.setIconSize(QSize(106, 106))
+        self.splashScreen = SplashScreen(QIcon(str(APP_SPLASH_LOGO_PATH)), self)
+        self.splashScreen.setIconSize(QSize(170, 170))
         self.splashScreen.raise_()
 
         # 设置窗口位置, 居中

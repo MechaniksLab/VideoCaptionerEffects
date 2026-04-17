@@ -1,7 +1,8 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QSizePolicy, QStackedWidget, QVBoxLayout, QWidget
-from qfluentwidgets import SegmentedWidget, isDarkTheme
+from qfluentwidgets import SegmentedWidget
 
+from app.common.theme_manager import get_theme_palette
 from app.core.task_factory import TaskFactory
 from app.view.auto_shorts_interface import AutoShortsInterface
 from app.view.subtitle_interface import SubtitleInterface
@@ -17,10 +18,7 @@ class HomeInterface(QWidget):
 
         # 设置对象名称和样式
         self.setObjectName("HomeInterface")
-        if isDarkTheme():
-            self.setStyleSheet("HomeInterface{background: #202124;}")
-        else:
-            self.setStyleSheet("HomeInterface{background: #f5f6f8;}")
+        self.refresh_theme()
 
         # 创建分段控件和堆叠控件
         self.pivot = SegmentedWidget(self)
@@ -37,7 +35,14 @@ class HomeInterface(QWidget):
         self.auto_shorts_interface = AutoShortsInterface(self)
 
         self.addSubInterface(
-            self.task_creation_interface, "TaskCreationInterface", "Создание задачи"
+            self.auto_shorts_interface,
+            "AutoShortsInterface",
+            "Создание шортсов",
+        )
+        self.addSubInterface(
+            self.task_creation_interface,
+            "TaskCreationInterface",
+            "Создание субтитров",
         )
         self.addSubInterface(
             self.transcription_interface, "TranscriptionInterface", "Распознавание речи"
@@ -52,12 +57,6 @@ class HomeInterface(QWidget):
             "VideoSynthesisInterface",
             "Синтез видео с субтитрами",
         )
-        self.addSubInterface(
-            self.auto_shorts_interface,
-            "AutoShortsInterface",
-            "Auto Shorts (поиск моментов)",
-        )
-
         self.vBoxLayout.addWidget(self.pivot)
         self.vBoxLayout.addWidget(self.stackedWidget)
         self.vBoxLayout.setContentsMargins(30, 10, 30, 30)
@@ -128,3 +127,7 @@ class HomeInterface(QWidget):
         self.video_synthesis_interface.close()
         self.auto_shorts_interface.close()
         super().closeEvent(event)
+
+    def refresh_theme(self):
+        p = get_theme_palette()
+        self.setStyleSheet(f"HomeInterface{{background: {p['window_bg']};}}")

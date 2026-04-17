@@ -359,6 +359,11 @@ class Config(QConfig):
         LanguageSerializer(),
         restart=True,
     )
+    ui_window_bg = ConfigItem("MainWindow", "UiWindowBg", "")
+    ui_panel_bg = ConfigItem("MainWindow", "UiPanelBg", "")
+    ui_card_bg = ConfigItem("MainWindow", "UiCardBg", "")
+    ui_border_color = ConfigItem("MainWindow", "UiBorderColor", "")
+    ui_text_color = ConfigItem("MainWindow", "UiTextColor", "")
     auto_shorts_render_backend = OptionsConfigItem(
         "MainWindow",
         "AutoShortsRenderBackend",

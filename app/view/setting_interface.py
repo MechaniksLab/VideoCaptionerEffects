@@ -1,7 +1,7 @@
 import webbrowser
 
 from PyQt5.QtCore import Qt, QThread, QUrl, pyqtSignal
-from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtGui import QDesktopServices, QColor
 from PyQt5.QtWidgets import QFileDialog, QLabel, QWidget
 from qfluentwidgets import ComboBoxSettingCard, CustomColorSettingCard, ExpandLayout
 from qfluentwidgets import FluentIcon as FIF
@@ -16,11 +16,10 @@ from qfluentwidgets import (
     ScrollArea,
     SettingCardGroup,
     SwitchSettingCard,
-    setTheme,
-    setThemeColor,
 )
 
 from app.common.config import cfg
+from app.common.theme_manager import apply_vscode_theme, get_theme_palette
 from app.common.signal_bus import signalBus
 from app.components.EditComboBoxSettingCard import EditComboBoxSettingCard
 from app.components.LineEditSettingCard import LineEditSettingCard
@@ -29,6 +28,7 @@ from app.core.entities import LLMServiceEnum, TranscribeModelEnum, TranslatorSer
 from app.core.utils.test_opanai import get_openai_models, test_openai
 from app.thread.version_manager_thread import VersionManager
 from app.components.MySettingCard import ComboBoxSettingCard as MyComboBoxSettingCard
+from app.components.MySettingCard import ColorSettingCard
 
 
 class SettingInterface(ScrollArea):
@@ -174,6 +174,48 @@ class SettingInterface(ScrollArea):
             "Изменение акцентного цвета приложения",
             self.personalGroup,
         )
+        self.uiWindowBgCard = ColorSettingCard(
+            self._cfg_color_or_default(cfg.ui_window_bg, "#1E1E1E"),
+            FIF.BRUSH,
+            "Фон окна",
+            "Основной фон страницы/рабочей области",
+            self.personalGroup,
+        )
+        self.uiPanelBgCard = ColorSettingCard(
+            self._cfg_color_or_default(cfg.ui_panel_bg, "#252526"),
+            FIF.PALETTE,
+            "Фон панелей",
+            "Цвет фона для панелей и областей ввода",
+            self.personalGroup,
+        )
+        self.uiCardBgCard = ColorSettingCard(
+            self._cfg_color_or_default(cfg.ui_card_bg, "#2D2D30"),
+            FIF.PALETTE,
+            "Фон карточек",
+            "Цвет карточек и блоков настроек",
+            self.personalGroup,
+        )
+        self.uiBorderColorCard = ColorSettingCard(
+            self._cfg_color_or_default(cfg.ui_border_color, "#3C3C3C"),
+            FIF.BRUSH,
+            "Цвет границ",
+            "Границы таблиц, карточек и полей",
+            self.personalGroup,
+        )
+        self.uiTextColorCard = ColorSettingCard(
+            self._cfg_color_or_default(cfg.ui_text_color, "#D4D4D4"),
+            FIF.FONT,
+            "Основной цвет текста",
+            "Базовый цвет текста интерфейса",
+            self.personalGroup,
+        )
+        self.applyThemeCard = PushSettingCard(
+            "Применить",
+            FIF.BRUSH,
+            "Применить тему и цвета",
+            "Применяет выбранные цвета и тему без перезапуска",
+            self.personalGroup,
+        )
         self.zoomCard = OptionsSettingCard(
             cfg.dpiScale,
             FIF.ZOOM,
@@ -239,6 +281,12 @@ class SettingInterface(ScrollArea):
 
         self.personalGroup.addSettingCard(self.themeCard)
         self.personalGroup.addSettingCard(self.themeColorCard)
+        self.personalGroup.addSettingCard(self.uiWindowBgCard)
+        self.personalGroup.addSettingCard(self.uiPanelBgCard)
+        self.personalGroup.addSettingCard(self.uiCardBgCard)
+        self.personalGroup.addSettingCard(self.uiBorderColorCard)
+        self.personalGroup.addSettingCard(self.uiTextColorCard)
+        self.personalGroup.addSettingCard(self.applyThemeCard)
         self.personalGroup.addSettingCard(self.zoomCard)
         self.personalGroup.addSettingCard(self.languageCard)
 
@@ -506,10 +554,11 @@ class SettingInterface(ScrollArea):
             QLabel#settingLabel {
                 font: 33px 'Microsoft YaHei';
                 background-color: transparent;
-                color: white;
+                color: #D4D4D4;
             }
         """
         )
+        self.refresh_theme()
 
     def __initLayout(self):
         """初始化布局"""
@@ -568,8 +617,8 @@ class SettingInterface(ScrollArea):
         )
 
         # 个性化
-        self.themeCard.optionChanged.connect(lambda ci: setTheme(cfg.get(ci)))
-        self.themeColorCard.colorChanged.connect(setThemeColor)
+        self.themeCard.optionChanged.connect(lambda _ci: self._on_theme_mode_changed())
+        self.applyThemeCard.clicked.connect(self._apply_theme_from_controls)
 
         # 反馈
         self.feedbackCard.clicked.connect(
@@ -594,6 +643,56 @@ class SettingInterface(ScrollArea):
         )
         self.softSubtitleCard.checkedChanged.connect(signalBus.soft_subtitle_changed)
         self.needVideoCard.checkedChanged.connect(signalBus.need_video_changed)
+
+    def _cfg_color_or_default(self, item, fallback: str) -> QColor:
+        value = cfg.get(item)
+        q = QColor(str(value) if value is not None else "")
+        if not q.isValid():
+            q = QColor(fallback)
+        return q
+
+    def _on_theme_mode_changed(self):
+        palette = get_theme_palette()
+        if cfg.get(cfg.themeMode).name == "LIGHT":
+            self.uiWindowBgCard.setColor(QColor("#F3F3F3"))
+            self.uiPanelBgCard.setColor(QColor("#FFFFFF"))
+            self.uiCardBgCard.setColor(QColor("#FFFFFF"))
+            self.uiBorderColorCard.setColor(QColor("#E1E1E1"))
+            self.uiTextColorCard.setColor(QColor("#1F1F1F"))
+        elif cfg.get(cfg.themeMode).name == "DARK":
+            self.uiWindowBgCard.setColor(QColor("#1E1E1E"))
+            self.uiPanelBgCard.setColor(QColor("#252526"))
+            self.uiCardBgCard.setColor(QColor("#2D2D30"))
+            self.uiBorderColorCard.setColor(QColor("#3C3C3C"))
+            self.uiTextColorCard.setColor(QColor("#D4D4D4"))
+        else:
+            self.uiWindowBgCard.setColor(QColor(palette["window_bg"]))
+            self.uiPanelBgCard.setColor(QColor(palette["panel_bg"]))
+            self.uiCardBgCard.setColor(QColor(palette["card_bg"]))
+            self.uiBorderColorCard.setColor(QColor(palette["border"]))
+            self.uiTextColorCard.setColor(QColor(palette["text"]))
+
+    def _apply_theme_from_controls(self):
+        cfg.set(cfg.ui_window_bg, self.uiWindowBgCard.colorPicker.color.name(QColor.HexRgb))
+        cfg.set(cfg.ui_panel_bg, self.uiPanelBgCard.colorPicker.color.name(QColor.HexRgb))
+        cfg.set(cfg.ui_card_bg, self.uiCardBgCard.colorPicker.color.name(QColor.HexRgb))
+        cfg.set(cfg.ui_border_color, self.uiBorderColorCard.colorPicker.color.name(QColor.HexRgb))
+        cfg.set(cfg.ui_text_color, self.uiTextColorCard.colorPicker.color.name(QColor.HexRgb))
+
+        apply_vscode_theme(refresh_widgets=True)
+        self.refresh_theme()
+        InfoBar.success(
+            "Тема применена",
+            "Новые цвета интерфейса применены в реальном времени",
+            duration=2200,
+            parent=self,
+        )
+
+    def refresh_theme(self):
+        p = get_theme_palette()
+        self.settingLabel.setStyleSheet(
+            f"font: 33px 'Microsoft YaHei'; background: transparent; color: {p['text']};"
+        )
 
     def __showRestartTooltip(self):
         """显示重启提示"""

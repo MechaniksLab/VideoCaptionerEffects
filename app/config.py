@@ -16,6 +16,7 @@ FEEDBACK_URL = "https://github.com/MechaniksLab/VideoCaptionerEnchanted/issues"
 ROOT_PATH = Path(__file__).parent
 
 RESOURCE_PATH = ROOT_PATH.parent / "resource"
+ICONS_PATH = ROOT_PATH.parent / "icons"
 APPDATA_PATH = ROOT_PATH.parent / "AppData"
 WORK_PATH = ROOT_PATH.parent / "work-dir"
 
@@ -23,6 +24,9 @@ WORK_PATH = ROOT_PATH.parent / "work-dir"
 BIN_PATH = RESOURCE_PATH / "bin"
 ASSETS_PATH = RESOURCE_PATH / "assets"
 SUBTITLE_STYLE_PATH = RESOURCE_PATH / "subtitle_style"
+APP_ICON_PATH = ICONS_PATH / "favicon.ico"
+APP_LOGO_PATH = ICONS_PATH / "android-chrome-192x192.png"
+APP_SPLASH_LOGO_PATH = ICONS_PATH / "android-chrome-512x512.png"
 
 LOG_PATH = APPDATA_PATH / "logs"
 SETTINGS_PATH = APPDATA_PATH / "settings.json"

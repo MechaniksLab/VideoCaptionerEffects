@@ -18,7 +18,7 @@ from qfluentwidgets.multimedia.media_play_bar import (
 )
 
 from app.common.signal_bus import signalBus
-from app.config import APP_NAME, RESOURCE_PATH
+from app.config import APP_ICON_PATH, APP_NAME
 
 
 class MediaStatus(Enum):
@@ -480,7 +480,7 @@ class MyVideoWidget(QWidget):
         # 设置初始窗口大小
         self.resize(800, 600)
         self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon(str(RESOURCE_PATH / "assets" / "logo.png")))
+        self.setWindowIcon(QIcon(str(APP_ICON_PATH)))
 
         # 创建一个专门用于视频输出的 widget
         self.videoWidget = QWidget(self)

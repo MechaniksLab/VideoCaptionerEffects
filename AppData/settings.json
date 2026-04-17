@@ -9,12 +9,17 @@
         "AutoShortsSpeechPostPadMs": 320,
         "AutoShortsSpeechPrePadMs": 220,
         "BatchSynthesisFpsMode": "60",
-        "BatchSynthesisQualityProfile": "balanced",
+        "BatchSynthesisQualityProfile": "high",
         "BatchSynthesisResolution": "1080x1920",
-        "BatchSynthesisResolutionMode": "fixed",
+        "BatchSynthesisResolutionMode": "source",
         "DpiScale": "Auto",
         "Language": "Auto",
-        "MicaEnabled": false
+        "MicaEnabled": false,
+        "UiBorderColor": "#3c3c3c",
+        "UiCardBg": "#2d2d30",
+        "UiPanelBg": "#252526",
+        "UiTextColor": "#d4d4d4",
+        "UiWindowBg": "#1e1e1e"
     },
     "Translate": {
         "BatchSize": 10,
@@ -55,7 +60,7 @@
     },
     "Subtitle": {
         "CustomPromptText": "",
-        "MaxWordCountCJK": 22,
+        "MaxWordCountCJK": 23,
         "MaxWordCountEnglish": 18,
         "NeedOptimize": false,
         "NeedSplit": false,
@@ -86,7 +91,7 @@
         "AntiFlicker": true,
         "AutoContrast": false,
         "Effect": "zoom_in",
-        "EffectDuration": 260,
+        "EffectDuration": 250,
         "EffectIntensity": 90,
         "GradientColor1": "#00ff33",
         "GradientColor2": "#ffffff",
@@ -109,7 +114,7 @@
         "StylePreset": "shorts_clean"
     },
     "QFluentWidgets": {
-        "ThemeColor": "#ff28f08b",
+        "ThemeColor": "#ff4ec063",
         "ThemeMode": "Dark"
     },
     "Transcribe": {

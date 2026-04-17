@@ -15,16 +15,16 @@ from PyQt5.QtWidgets import (
     QLabel,
     QListWidget,
     QListWidgetItem,
-    QScrollArea,
     QSlider,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
-from qfluentwidgets import Action, BodyLabel, CardWidget, CheckBox, ComboBox, CommandBar, FluentIcon, InfoBar, InfoBarPosition, PrimaryPushButton, ProgressBar, PushButton, StrongBodyLabel, SpinBox, isDarkTheme
+from qfluentwidgets import Action, BodyLabel, CardWidget, CheckBox, ComboBox, CommandBar, FluentIcon, InfoBar, InfoBarPosition, PrimaryPushButton, ProgressBar, PushButton, ScrollArea, StrongBodyLabel, SpinBox, isDarkTheme
 
 from app.common.config import cfg
+from app.common.theme_manager import get_theme_palette
 from app.config import APPDATA_PATH, WORK_PATH
 from app.core.entities import BatchTaskType, SupportedAudioFormats, SupportedVideoFormats
 from app.thread.auto_shorts_thread import AutoShortsAnalyzeThread, AutoShortsRenderThread
@@ -395,7 +395,7 @@ class AutoShortsInterface(QWidget):
     def _init_ui(self):
         root_layout = QVBoxLayout(self)
         root_layout.setContentsMargins(0, 0, 0, 0)
-        self.scroll_area = QScrollArea(self)
+        self.scroll_area = ScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -887,50 +887,77 @@ class AutoShortsInterface(QWidget):
         self._schedule_template_autosave()
 
     def _apply_theme_style(self):
-        dark = isDarkTheme()
+        p = get_theme_palette()
+        dark = bool(p.get("is_dark"))
         self.source_preview.set_theme(dark)
         self.output_preview.set_theme(dark)
         self.effects_preview.set_theme(dark)
 
-        if dark:
-            self.setStyleSheet(
-                """
-                QWidget#AutoShortsInterface { background: #202124; }
-                QScrollArea { border: none; background: transparent; }
-                QScrollArea > QWidget > QWidget { background: #202124; }
-                QLabel, BodyLabel, StrongBodyLabel { color: #EDEDED; }
-                CardWidget { border-radius: 10px; }
-                CardWidget#shortsVideoCard, CardWidget#shortsStageCard, CardWidget#shortsControlCard,
-                CardWidget#shortsTemplateCard, CardWidget#shortsBottomCard {
-                    background: #2A2B2E;
-                    border: 1px solid #3A3D42;
-                }
-                QTableWidget { background: #2A2B2E; color: #EDEDED; gridline-color: #3A3D42; }
-                QTableWidget::item { background: #2A2B2E; color: #EDEDED; }
-                QTableWidget::item:alternate { background: #242529; color: #EDEDED; }
-                QHeaderView::section { background: #31343A; color: #EDEDED; border: none; padding: 4px; }
-                QTableWidget::item:selected { background: #3B82F6; color: white; }
-                """
-            )
-        else:
-            self.setStyleSheet(
-                """
-                QWidget#AutoShortsInterface { background: #f5f6f8; }
-                QScrollArea { border: none; background: transparent; }
-                QScrollArea > QWidget > QWidget { background: #f5f6f8; }
-                CardWidget { border-radius: 10px; }
-                CardWidget#shortsVideoCard, CardWidget#shortsStageCard, CardWidget#shortsControlCard,
-                CardWidget#shortsTemplateCard, CardWidget#shortsBottomCard {
-                    background: #FFFFFF;
-                    border: 1px solid #E5E7EB;
-                }
-                QTableWidget { background: #FFFFFF; color: #202124; gridline-color: #E5E7EB; }
-                QTableWidget::item { background: #FFFFFF; color: #202124; }
-                QTableWidget::item:alternate { background: #F9FAFB; color: #202124; }
-                QHeaderView::section { background: #F3F4F6; color: #202124; border: none; padding: 4px; }
-                QTableWidget::item:selected { background: #DBEAFE; color: #111827; }
-                """
-            )
+        row_alt_bg = "#252526" if dark else "#F7F7F7"
+        selected_bg = p["accent"]
+        selected_fg = "#FFFFFF" if dark else "#FFFFFF"
+
+        self.setStyleSheet(
+            f"""
+            QWidget#AutoShortsInterface {{ background: {p['window_bg']}; }}
+            QScrollArea {{ border: none; background: transparent; }}
+            QScrollArea > QWidget > QWidget {{ background: {p['window_bg']}; }}
+            QLabel, BodyLabel, StrongBodyLabel {{ color: {p['text']}; }}
+            CardWidget {{ border-radius: 10px; }}
+            CardWidget#shortsVideoCard, CardWidget#shortsStageCard, CardWidget#shortsControlCard,
+            CardWidget#shortsTemplateCard, CardWidget#shortsBottomCard, CardWidget#shortsRenderedCard {{
+                background: {p['card_bg']};
+                border: 1px solid {p['border']};
+            }}
+            QTableWidget {{ background: {p['card_bg']}; color: {p['text']}; gridline-color: {p['border']}; }}
+            QTableWidget::item {{ background: {p['card_bg']}; color: {p['text']}; }}
+            QTableWidget::item:alternate {{ background: {row_alt_bg}; color: {p['text']}; }}
+            QHeaderView::section {{ background: {p['panel_bg']}; color: {p['text']}; border: none; padding: 4px; }}
+            QTableWidget::item:selected {{ background: {selected_bg}; color: {selected_fg}; }}
+
+            QScrollBar:vertical {{
+                background: transparent;
+                width: 12px;
+                margin: 2px;
+            }}
+            QScrollBar::handle:vertical {{
+                background: {p['border']};
+                min-height: 40px;
+                border-radius: 6px;
+            }}
+            QScrollBar::handle:vertical:hover {{
+                background: {p['accent']};
+            }}
+            QScrollBar::add-line:vertical,
+            QScrollBar::sub-line:vertical,
+            QScrollBar::add-page:vertical,
+            QScrollBar::sub-page:vertical {{
+                background: transparent;
+                height: 0px;
+            }}
+
+            QScrollBar:horizontal {{
+                background: transparent;
+                height: 12px;
+                margin: 2px;
+            }}
+            QScrollBar::handle:horizontal {{
+                background: {p['border']};
+                min-width: 40px;
+                border-radius: 6px;
+            }}
+            QScrollBar::handle:horizontal:hover {{
+                background: {p['accent']};
+            }}
+            QScrollBar::add-line:horizontal,
+            QScrollBar::sub-line:horizontal,
+            QScrollBar::add-page:horizontal,
+            QScrollBar::sub-page:horizontal {{
+                background: transparent;
+                width: 0px;
+            }}
+            """
+        )
 
     def _set_stage(self, stage_idx: int):
         labels = [self.stage_1, self.stage_2, self.stage_3, self.stage_4]
@@ -1090,10 +1117,11 @@ class AutoShortsInterface(QWidget):
 
     def _fill_table(self, candidates: List[Dict]):
         self.table.setRowCount(0)
-        dark = isDarkTheme()
-        fg = QColor("#EDEDED") if dark else QColor("#202124")
-        bg_even = QColor("#2A2B2E") if dark else QColor("#FFFFFF")
-        bg_odd = QColor("#242529") if dark else QColor("#F9FAFB")
+        p = get_theme_palette()
+        dark = bool(p.get("is_dark"))
+        fg = QColor(p["text"])
+        bg_even = QColor(p["card_bg"])
+        bg_odd = QColor("#252526" if dark else "#F7F7F7")
         for row, c in enumerate(candidates):
             self.table.insertRow(row)
             cb = CheckBox("", self)

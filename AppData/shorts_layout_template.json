@@ -11,8 +11,8 @@
     "out_h": 640
   },
   "game": {
-    "crop_x": 508,
-    "crop_y": 0,
+    "crop_x": 336,
+    "crop_y": -360,
     "crop_w": 1584,
     "crop_h": 1440,
     "out_x": 0,
@@ -30,7 +30,7 @@
     "brightness": 0.04,
     "contrast": 1.33,
     "saturation": 0.88,
-    "sharpness": 0.02
+    "sharpness": 0.0
   },
   "render_settings": {
     "backend": "gpu",
