@@ -748,6 +748,10 @@ class SynthesisConfig:
 
     need_video: bool = True
     soft_subtitle: bool = True
+    fps_mode: str = "source"  # source|30|60
+    resolution_mode: str = "source"  # source|fixed
+    resolution: str = "1080x1920"
+    quality_profile: str = "high"  # high|balanced|fast
 
 
 @dataclass

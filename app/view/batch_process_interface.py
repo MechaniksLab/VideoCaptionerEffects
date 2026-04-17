@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QDesktopServices, QColor, QFont
 from PyQt5.QtCore import QUrl
 from qfluentwidgets import (
+    BodyLabel,
     ComboBox,
     PushButton,
     TableWidget,
@@ -27,6 +28,7 @@ from qfluentwidgets import (
 )
 import os
 
+from app.common.config import cfg
 from app.thread.batch_process_thread import (
     BatchProcessThread,
     BatchTask,
@@ -79,6 +81,36 @@ class BatchProcessInterface(QWidget):
         top_layout.addStretch()
         top_layout.addWidget(self.start_all_btn)
 
+        # Блок качества финального видео (этап синтеза в Full Process)
+        quality_layout = QHBoxLayout()
+        quality_layout.setSpacing(10)
+        quality_layout.addWidget(BodyLabel("Качество финального видео:"))
+
+        quality_layout.addWidget(BodyLabel("FPS:"))
+        self.batch_fps_combo = ComboBox()
+        self.batch_fps_combo.addItems(["Исходный", "30", "60"])
+        quality_layout.addWidget(self.batch_fps_combo)
+
+        quality_layout.addWidget(BodyLabel("Разрешение:"))
+        self.batch_resolution_combo = ComboBox()
+        self.batch_resolution_combo.addItems(
+            ["Исходное", "1080x1920", "720x1280", "1440x2560"]
+        )
+        quality_layout.addWidget(self.batch_resolution_combo)
+
+        quality_layout.addWidget(BodyLabel("Профиль:"))
+        self.batch_quality_combo = ComboBox()
+        self.batch_quality_combo.addItems(["Высокое", "Сбалансированное", "Быстрое"])
+        quality_layout.addWidget(self.batch_quality_combo)
+
+        quality_layout.addStretch(1)
+
+        self.batch_quality_hint = BodyLabel(
+            "Применяется только для задач с синтезом видео (Полная обработка). "
+            "Для мягких субтитров параметры FPS/разрешения не меняют видео-поток."
+        )
+        self.batch_quality_hint.setWordWrap(True)
+
         # Создаём таблицу задач
         self.task_table = TableWidget()
         self.task_table.setColumnCount(3)
@@ -110,6 +142,8 @@ class BatchProcessInterface(QWidget):
 
         # Добавляем в основной макет
         main_layout.addLayout(top_layout)
+        main_layout.addLayout(quality_layout)
+        main_layout.addWidget(self.batch_quality_hint)
         main_layout.addWidget(self.task_table)
 
         # Подключаем сигналы
@@ -117,6 +151,63 @@ class BatchProcessInterface(QWidget):
         self.start_all_btn.clicked.connect(self.start_all_tasks)
         self.clear_btn.clicked.connect(self.clear_tasks)
         self.task_type_combo.currentTextChanged.connect(self.on_task_type_changed)
+        self.batch_fps_combo.currentTextChanged.connect(self._on_batch_quality_changed)
+        self.batch_resolution_combo.currentTextChanged.connect(self._on_batch_quality_changed)
+        self.batch_quality_combo.currentTextChanged.connect(self._on_batch_quality_changed)
+
+        self._load_batch_quality_from_cfg()
+        self._update_batch_quality_enabled_state()
+
+    def _load_batch_quality_from_cfg(self):
+        fps_map = {"source": "Исходный", "30": "30", "60": "60"}
+        fps_value = str(getattr(cfg, "batch_synthesis_fps_mode").value or "source").strip().lower()
+        self.batch_fps_combo.setCurrentText(fps_map.get(fps_value, "Исходный"))
+
+        res_mode = str(getattr(cfg, "batch_synthesis_resolution_mode").value or "source").strip().lower()
+        if res_mode == "source":
+            self.batch_resolution_combo.setCurrentText("Исходное")
+        else:
+            res_value = str(getattr(cfg, "batch_synthesis_resolution").value or "1080x1920").strip()
+            if res_value not in {"1080x1920", "720x1280", "1440x2560"}:
+                res_value = "1080x1920"
+            self.batch_resolution_combo.setCurrentText(res_value)
+
+        quality_map = {"high": "Высокое", "balanced": "Сбалансированное", "fast": "Быстрое"}
+        q_value = str(getattr(cfg, "batch_synthesis_quality_profile").value or "high").strip().lower()
+        self.batch_quality_combo.setCurrentText(quality_map.get(q_value, "Высокое"))
+
+    def _on_batch_quality_changed(self):
+        fps_text = (self.batch_fps_combo.currentText() or "Исходный").strip()
+        fps_mode = "source" if fps_text == "Исходный" else fps_text
+        cfg.set(cfg.batch_synthesis_fps_mode, fps_mode)
+
+        res_text = (self.batch_resolution_combo.currentText() or "Исходное").strip()
+        if res_text == "Исходное":
+            cfg.set(cfg.batch_synthesis_resolution_mode, "source")
+        else:
+            cfg.set(cfg.batch_synthesis_resolution_mode, "fixed")
+            cfg.set(cfg.batch_synthesis_resolution, res_text)
+
+        quality_text = (self.batch_quality_combo.currentText() or "Высокое").strip()
+        quality_profile = {
+            "Высокое": "high",
+            "Быстрое": "fast",
+        }.get(quality_text, "balanced")
+        cfg.set(cfg.batch_synthesis_quality_profile, quality_profile)
+
+    def _update_batch_quality_enabled_state(self):
+        enabled = self.task_type_combo.currentText() == str(BatchTaskType.FULL_PROCESS)
+        self.batch_fps_combo.setEnabled(enabled)
+        self.batch_resolution_combo.setEnabled(enabled)
+        self.batch_quality_combo.setEnabled(enabled)
+        if enabled:
+            self.batch_quality_hint.setText(
+                "Настройки применятся на этапе синтеза видео в Полной обработке."
+            )
+        else:
+            self.batch_quality_hint.setText(
+                "Сейчас выбран режим без финального синтеза видео — настройки качества временно не используются."
+            )
 
     def setup_connections(self):
         # Сигналы потока пакетной обработки
@@ -427,6 +518,7 @@ class BatchProcessInterface(QWidget):
     def on_task_type_changed(self, task_type):
         # Очищаем текущий список задач
         self.clear_tasks()
+        self._update_batch_quality_enabled_state()
 
     def closeEvent(self, event):
         self.batch_thread.stop_all()

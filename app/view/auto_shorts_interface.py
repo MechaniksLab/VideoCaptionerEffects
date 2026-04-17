@@ -876,10 +876,14 @@ class AutoShortsInterface(QWidget):
         self.source_preview.set_keep_aspect(enabled)
         self.output_preview.set_keep_aspect(enabled)
         self.effects_preview.set_keep_aspect(enabled)
+        self._autosave_layout_template_silent()
         self._schedule_template_autosave()
 
     def _on_layout_changed(self):
         self._refresh_output_composite_preview()
+        # Важный фикс: сохраняем layout сразу при интерактивном перетаскивании зон,
+        # чтобы позиции точно не терялись после перезапуска приложения.
+        self._autosave_layout_template_silent()
         self._schedule_template_autosave()
 
     def _apply_theme_style(self):

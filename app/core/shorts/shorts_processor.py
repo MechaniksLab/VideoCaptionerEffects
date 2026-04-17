@@ -1150,6 +1150,7 @@ def render_shorts(
         end_s = max(start_s + 0.2, (c.end_ms / 1000.0) + clip_tail_pad_s)
         duration_s = max(0.2, end_s - start_s)
         clip_start_ms = int(round(start_s * 1000.0))
+        clip_end_ms = int(round(end_s * 1000.0))
         title_part = _safe_filename(c.title or c.excerpt or "short")
         out_name = f"шорт_{i:03d}_{title_part}_{int(start_s)}-{int(end_s)}с.mp4"
         out_path = out_dir / out_name
@@ -1157,7 +1158,7 @@ def render_shorts(
         def _normalize_candidate_ranges() -> List[Tuple[int, int]]:
             raw = getattr(c, "speech_ranges", None) or []
             if not raw:
-                return [(c.start_ms, c.end_ms)]
+                return [(clip_start_ms, clip_end_ms)]
             norm: List[Tuple[int, int]] = []
             # Небольшой контекст до/после речи, чтобы не рубить слова на стыках.
             # Это заметно смягчает "телепорт" между репликами.
@@ -1166,12 +1167,12 @@ def render_shorts(
                     s, e = int(it[0]), int(it[1])
                 except Exception:
                     continue
-                s = max(c.start_ms, s - speech_pre_pad_ms)
-                e = min(c.end_ms, e + speech_post_pad_ms)
+                s = max(clip_start_ms, s - speech_pre_pad_ms)
+                e = min(clip_end_ms, e + speech_post_pad_ms)
                 if e - s >= 180:
                     norm.append((s, e))
             if not norm:
-                return [(c.start_ms, c.end_ms)]
+                return [(clip_start_ms, clip_end_ms)]
             norm.sort(key=lambda x: x[0])
             merged: List[Tuple[int, int]] = [norm[0]]
             for s, e in norm[1:]:
@@ -1182,6 +1183,14 @@ def render_shorts(
                     merged[-1] = (ps, max(pe, e))
                 else:
                     merged.append((s, e))
+
+            # Всегда оставляем небольшой хвост в конце последней фразы,
+            # чтобы финальные слова не обрезались на полу-слоге.
+            if merged:
+                ls, le = merged[-1]
+                tail_guard_ms = max(260, speech_post_pad_ms)
+                merged[-1] = (ls, min(clip_end_ms, le + tail_guard_ms))
+
             kept_ms = sum(max(0, e - s) for s, e in merged)
 
             raw_total_ms = max(1, c.end_ms - c.start_ms)
@@ -1197,23 +1206,23 @@ def render_shorts(
             # или разрывы между фразами в среднем маленькие,
             # лучше отдать цельный клип без внутренних склеек.
             if kept_ms / raw_total_ms < speech_min_coverage_ratio:
-                return [(c.start_ms, c.end_ms)]
+                return [(clip_start_ms, clip_end_ms)]
             if len(merged) >= 4 and avg_gap_ms < 320:
-                return [(c.start_ms, c.end_ms)]
+                return [(clip_start_ms, clip_end_ms)]
 
             # Если есть 2+ диапазона, это уже реальный сигнал для склейки
             # (даже если суммарная речь короткая).
             if len(merged) >= 2:
                 return merged
             if kept_ms < 900:
-                return [(c.start_ms, c.end_ms)]
+                return [(clip_start_ms, clip_end_ms)]
             return merged
 
         candidate_ranges = _normalize_candidate_ranges()
         has_internal_cuts = not (
             len(candidate_ranges) == 1
-            and abs(candidate_ranges[0][0] - c.start_ms) <= 120
-            and abs(candidate_ranges[0][1] - c.end_ms) <= 120
+            and abs(candidate_ranges[0][0] - clip_start_ms) <= 120
+            and abs(candidate_ranges[0][1] - clip_end_ms) <= 120
         )
 
         src_ref = "0:v"

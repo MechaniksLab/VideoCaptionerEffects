@@ -45,6 +45,17 @@ class VideoSynthesisThread(QThread):
                 subtitle_file,
                 output_path,
                 soft_subtitle=soft_subtitle,
+                fps_mode=str(getattr(self.task.synthesis_config, "fps_mode", "source") or "source"),
+                resolution_mode=str(
+                    getattr(self.task.synthesis_config, "resolution_mode", "source") or "source"
+                ),
+                resolution=str(
+                    getattr(self.task.synthesis_config, "resolution", "1080x1920")
+                    or "1080x1920"
+                ),
+                quality_profile=str(
+                    getattr(self.task.synthesis_config, "quality_profile", "high") or "high"
+                ),
                 progress_callback=self.progress_callback,
             )
 

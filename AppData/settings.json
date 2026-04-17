@@ -8,6 +8,10 @@
         "AutoShortsSpeechMinCoveragePercent": 74,
         "AutoShortsSpeechPostPadMs": 320,
         "AutoShortsSpeechPrePadMs": 220,
+        "BatchSynthesisFpsMode": "60",
+        "BatchSynthesisQualityProfile": "balanced",
+        "BatchSynthesisResolution": "1080x1920",
+        "BatchSynthesisResolutionMode": "fixed",
         "DpiScale": "Auto",
         "Language": "Auto",
         "MicaEnabled": false

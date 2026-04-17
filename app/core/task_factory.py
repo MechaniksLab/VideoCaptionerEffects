@@ -295,6 +295,10 @@ class TaskFactory:
         config = SynthesisConfig(
             need_video=cfg.need_video.value,
             soft_subtitle=cfg.soft_subtitle.value,
+            fps_mode=str(cfg.batch_synthesis_fps_mode.value or "source"),
+            resolution_mode=str(cfg.batch_synthesis_resolution_mode.value or "source"),
+            resolution=str(cfg.batch_synthesis_resolution.value or "1080x1920"),
+            quality_profile=str(cfg.batch_synthesis_quality_profile.value or "high"),
         )
 
         return SynthesisTask(

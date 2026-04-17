@@ -119,6 +119,10 @@ def add_subtitles(
     ] = "medium",
     vcodec: str = "libx264",
     soft_subtitle: bool = False,
+    fps_mode: str = "source",
+    resolution_mode: str = "source",
+    resolution: str = "1080x1920",
+    quality_profile: str = "high",
     progress_callback: callable = None,
 ) -> None:
     assert Path(input_file).is_file(), "输入文件不存在"
@@ -147,6 +151,13 @@ def add_subtitles(
         logger.info("WebM格式视频，强制使用硬字幕")
 
     if soft_subtitle:
+        if (
+            str(fps_mode).strip().lower() not in {"", "source", "src", "original", "исходный"}
+            or str(resolution_mode).strip().lower() == "fixed"
+        ):
+            logger.info(
+                "Soft-sub режим: параметры FPS/разрешения не применяются (видеопоток копируется без перекодирования)"
+            )
         # 添加软字幕
         cmd = [
             "ffmpeg",
@@ -181,10 +192,54 @@ def add_subtitles(
         subtitle_file = Path(subtitle_file).as_posix().replace(":", r"\:")
         # Для ASS используем ass=..., для остальных subtitle-треков subtitles=...
         if suffix == ".ass":
-            vf = f"ass='{subtitle_file}'"
+            vf_base = f"ass='{subtitle_file}'"
         else:
             # 其他格式使用默认的vf参数
-            vf = f"subtitles='{subtitle_file}'"
+            vf_base = f"subtitles='{subtitle_file}'"
+
+        fps_mode_norm = str(fps_mode or "source").strip().lower()
+        if fps_mode_norm in {"60", "59.94"}:
+            target_fps = 60
+        elif fps_mode_norm in {"30"}:
+            target_fps = 30
+        else:
+            target_fps = None
+
+        resolution_mode_norm = str(resolution_mode or "source").strip().lower()
+        target_resolution = None
+        if resolution_mode_norm == "fixed":
+            raw_res = str(resolution or "").strip().lower().replace("×", "x")
+            if "x" in raw_res:
+                try:
+                    rw, rh = raw_res.split("x", 1)
+                    rw_i, rh_i = int(rw), int(rh)
+                    if rw_i >= 2 and rh_i >= 2:
+                        # yuv420p требует чётные размеры
+                        if rw_i % 2 != 0:
+                            rw_i -= 1
+                        if rh_i % 2 != 0:
+                            rh_i -= 1
+                        target_resolution = (max(2, rw_i), max(2, rh_i))
+                except Exception:
+                    target_resolution = None
+
+        vf_parts = [vf_base]
+        if target_fps:
+            vf_parts.append(f"fps={target_fps}")
+        if target_resolution:
+            vf_parts.append(f"scale={target_resolution[0]}:{target_resolution[1]}:flags=lanczos")
+        vf = ",".join(vf_parts)
+
+        profile = str(quality_profile or "high").strip().lower()
+        if profile == "fast":
+            enc_preset = "ultrafast"
+            enc_crf = "24"
+        elif profile == "balanced":
+            enc_preset = "veryfast"
+            enc_crf = "20"
+        else:
+            enc_preset = "medium"
+            enc_crf = "18"
 
         if Path(output).suffix.lower() == ".webm":
             vcodec = "libvpx-vp9"
@@ -205,9 +260,15 @@ def add_subtitles(
                 "-vcodec",
                 vcodec,
                 "-preset",
-                quality,
+                enc_preset,
+                "-crf",
+                enc_crf,
                 "-vf",
                 vf,
+                "-pix_fmt",
+                "yuv420p",
+                "-movflags",
+                "+faststart",
                 "-y",  # 覆盖输出文件
                 output,
             ]

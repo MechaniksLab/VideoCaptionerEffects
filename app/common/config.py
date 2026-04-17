@@ -386,6 +386,30 @@ class Config(QConfig):
     auto_shorts_repeat_similarity_percent = RangeConfigItem(
         "MainWindow", "AutoShortsRepeatSimilarityPercent", 72, RangeValidator(40, 100)
     )
+    batch_synthesis_fps_mode = OptionsConfigItem(
+        "MainWindow",
+        "BatchSynthesisFpsMode",
+        "source",
+        OptionsValidator(["source", "30", "60"]),
+    )
+    batch_synthesis_resolution_mode = OptionsConfigItem(
+        "MainWindow",
+        "BatchSynthesisResolutionMode",
+        "source",
+        OptionsValidator(["source", "fixed"]),
+    )
+    batch_synthesis_resolution = OptionsConfigItem(
+        "MainWindow",
+        "BatchSynthesisResolution",
+        "1080x1920",
+        OptionsValidator(["1080x1920", "720x1280", "1440x2560"]),
+    )
+    batch_synthesis_quality_profile = OptionsConfigItem(
+        "MainWindow",
+        "BatchSynthesisQualityProfile",
+        "high",
+        OptionsValidator(["high", "balanced", "fast"]),
+    )
 
     # ------------------- 更新配置 -------------------
     checkUpdateAtStartUp = ConfigItem(
