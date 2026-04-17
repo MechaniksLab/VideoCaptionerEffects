@@ -15285,3 +15285,99 @@ Starting sequential inference to transcribe: C:\Temp\bk_asr\tmp4aq0v_j3\audio.wa
 69% | 386/559 | 01:11<<00:31 |  5.42 audio seconds/s
 74% | 413/559 | 01:14<<00:26 |  5.53 audio seconds/s
 79% | 442/559 | 01:21<<00:21 |  5.44 audio seconds/s
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmp9dz0onia.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpeb531o5i.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\ShortsCreatorStudio\AppData\models C:\Temp\bk_asr\tmpbe69x0_y\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpbe69x0_y\audio.wav
+10% |  25/250 | 00:45<<06:46 |  0.55 audio seconds/s
+22% |  54/250 | 01:04<<03:53 |  0.84 audio seconds/s
+35% |  88/250 | 01:05<<02:01 |  1.34 audio seconds/s
+47% | 117/250 | 01:32<<01:44 |  1.27 audio seconds/s
+58% | 145/250 | 01:36<<01:10 |  1.50 audio seconds/s
+64% | 160/250 | 01:39<<00:56 |  1.60 audio seconds/s
+80% | 201/250 | 01:56<<00:28 |  1.72 audio seconds/s
+100% | 250/250 | 02:40<<00:00 |  1.56 audio seconds/s
+Transcription speed: 1.56 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpbe69x0_y' directory.
+Operation finished in:  0:02:42.485
+Faster Whisper 返回值: 3221226505
+Faster Whisper 识别完成
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 528.500 -t 23.020 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:637:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,unsharp=5:5:0.11:5:5:0.00,scale=1080:1283:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map 0:a:0? -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_224855\шорт_001_Неожиданный отказ от нарядов_528-551с.mp4
+2026-04-17 22:48:56 - shorts_processor - ERROR - Short render failed [шорт_001_Неожиданный отказ от нарядов_528-551с.mp4]. stderr: 
+2026-04-17 22:48:57 - shorts_processor - ERROR - Fallback render failed [шорт_001_Неожиданный отказ от нарядов_528-551с.mp4]: 
+2026-04-17 22:48:57 - auto_shorts_thread - ERROR - Auto shorts render failed: Рендер не создал ни одного шортса. Проверьте FFmpeg, параметры шаблона и путь вывода. Детальный лог: E:\Neyro\ShortsCreatorStudio\AppData\logs\auto_shorts_render.log
+Traceback (most recent call last):
+  File "E:\Neyro\ShortsCreatorStudio\app\thread\auto_shorts_thread.py", line 446, in run
+    raise RuntimeError(
+RuntimeError: Рендер не создал ни одного шортса. Проверьте FFmpeg, параметры шаблона и путь вывода. Детальный лог: E:\Neyro\ShortsCreatorStudio\AppData\logs\auto_shorts_render.log
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmph649uoic.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpt4gc0xcg.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\ShortsCreatorStudio\AppData\models C:\Temp\bk_asr\tmptpmljvrb\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmptpmljvrb\audio.wav
+1% |   2/296 | 00:01<<04:05 |  1.20 audio seconds/s
+19% |  55/296 | 00:04<<00:19 | 12.48 audio seconds/s
+29% |  87/296 | 00:09<<00:22 |  9.28 audio seconds/s
+39% | 116/296 | 00:13<<00:20 |  8.63 audio seconds/s
+47% | 139/296 | 00:16<<00:19 |  8.20 audio seconds/s
+57% | 170/296 | 00:20<<00:15 |  8.20 audio seconds/s
+67% | 199/296 | 00:26<<00:12 |  7.54 audio seconds/s
+77% | 227/296 | 00:30<<00:09 |  7.45 audio seconds/s
+88% | 259/296 | 00:35<<00:05 |  7.36 audio seconds/s
+97% | 286/296 | 00:41<<00:01 |  6.85 audio seconds/s
+100% | 295/296 | 00:43<<00:00 |  6.78 audio seconds/s
+100% | 296/296 | 00:43<<00:00 |  6.75 audio seconds/s
+Transcription speed: 6.75 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmptpmljvrb' directory.
+Operation finished in:  0:00:45.953
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+2026-04-17 22:55:15 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5517>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 22:57:16 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'Context size has been exceeded.'}
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1308.140 -t 24.540 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.000:end=1.840,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=2.114:end=3.796,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=4.120:end=6.092,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=10.548:end=16.480,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=17.188:end=21.800,setpts=PTS-STARTPTS[vp4];[0:v]trim=start=22.500:end=24.540,setpts=PTS-STARTPTS[vp5];[0:a]atrim=start=0.000:end=1.840,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=2.114:end=3.796,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=4.120:end=6.092,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=10.548:end=16.480,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=17.188:end=21.800,asetpts=PTS-STARTPTS[ap4];[0:a]atrim=start=22.500:end=24.540,asetpts=PTS-STARTPTS[ap5];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4][vp5][ap5]concat=n=6:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:637:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1283:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_225725\шорт_001_Чё-то я сомневаюсь_1308-1332с.mp4
+2026-04-17 22:57:26 - shorts_processor - ERROR - Short render failed [шорт_001_Чё-то я сомневаюсь_1308-1332с.mp4]. stderr: 
+2026-04-17 22:57:26 - shorts_processor - ERROR - Fallback render failed [шорт_001_Чё-то я сомневаюсь_1308-1332с.mp4]: 
+2026-04-17 22:57:26 - auto_shorts_thread - ERROR - Auto shorts render failed: Рендер не создал ни одного шортса. Проверьте FFmpeg, параметры шаблона и путь вывода. Детальный лог: E:\Neyro\ShortsCreatorStudio\AppData\logs\auto_shorts_render.log
+Traceback (most recent call last):
+  File "E:\Neyro\ShortsCreatorStudio\app\thread\auto_shorts_thread.py", line 446, in run
+    raise RuntimeError(
+RuntimeError: Рендер не создал ни одного шортса. Проверьте FFmpeg, параметры шаблона и путь вывода. Детальный лог: E:\Neyro\ShortsCreatorStudio\AppData\logs\auto_shorts_render.log
+Latest version info: v1.3.3
+转换为音频执行命令: ffmpeg -i C:\Temp\tmpa54j4g1p.mp4 -map 0:a -ac 1 -ar 16000 -af aresample=async=1 -y C:\Temp\tmpl1xx5sui.wav
+Faster Whisper 执行命令: faster-whisper-xxl -m large-v2 --print_progress --model_dir E:\Neyro\ShortsCreatorStudio\AppData\models C:\Temp\bk_asr\tmpgidwcfwp\audio.wav -l ru -d cuda --compute_type float16 --output_format srt -o source --vad_filter false --one_word 1 --beep_off
+Standalone Faster-Whisper-XXL r245.2 running on: CUDA
+Starting sequential inference to transcribe: C:\Temp\bk_asr\tmpgidwcfwp\audio.wav
+5% |  24/451 | 00:03<<00:54 |  7.80 audio seconds/s
+13% |  58/451 | 00:09<<01:06 |  5.93 audio seconds/s
+19% |  87/451 | 00:14<<01:02 |  5.86 audio seconds/s
+24% | 108/451 | 00:18<<00:59 |  5.76 audio seconds/s
+29% | 132/451 | 00:21<<00:52 |  6.05 audio seconds/s
+35% | 157/451 | 00:26<<00:49 |  5.98 audio seconds/s
+42% | 188/451 | 00:30<<00:42 |  6.19 audio seconds/s
+48% | 217/451 | 00:33<<00:36 |  6.43 audio seconds/s
+55% | 248/451 | 00:39<<00:32 |  6.32 audio seconds/s
+61% | 277/451 | 00:47<<00:29 |  5.85 audio seconds/s
+68% | 307/451 | 00:53<<00:25 |  5.72 audio seconds/s
+74% | 334/451 | 00:56<<00:19 |  5.86 audio seconds/s
+80% | 363/451 | 01:03<<00:15 |  5.72 audio seconds/s
+87% | 391/451 | 01:11<<00:11 |  5.45 audio seconds/s
+92% | 417/451 | 01:20<<00:06 |  5.20 audio seconds/s
+99% | 445/451 | 01:29<<00:01 |  4.99 audio seconds/s
+100% | 451/451 | 01:31<<00:00 |  4.91 audio seconds/s
+Transcription speed: 4.9 audio seconds/s
+Subtitles are written to 'C:\Temp\bk_asr\tmpgidwcfwp' directory.
+Operation finished in:  0:01:34.469
+Faster Whisper 返回值: 0
+Faster Whisper 识别完成
+2026-04-17 23:01:01 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5528>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 23:01:02 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5775>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 23:01:02 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5732>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+2026-04-17 23:01:02 - shorts_processor - WARNING - Enterprise packet parse failed: Error code: 400 - {'error': 'The number of tokens to keep from the initial prompt is greater than the context length (n_keep: 5765>= n_ctx: 5120). Try to load the model with a larger context length, or provide a shorter input.'}
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1753.040 -t 29.540 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.079:end=4.160,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=4.751:end=6.220,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=7.191:end=13.880,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=14.966:end=25.600,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=26.372:end=29.540,setpts=PTS-STARTPTS[vp4];[0:a]atrim=start=0.079:end=4.160,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=4.751:end=6.220,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=7.191:end=13.880,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=14.966:end=25.600,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=26.372:end=29.540,asetpts=PTS-STARTPTS[ap4];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4]concat=n=5:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_001_Свобода или смерть_1753-1782с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1642.580 -t 25.160 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.000:end=5.033,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=5.420:end=7.740,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=8.900:end=10.254,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=10.920:end=13.419,setpts=PTS-STARTPTS[vp3];[0:v]trim=start=15.481:end=25.160,setpts=PTS-STARTPTS[vp4];[0:a]atrim=start=0.000:end=5.033,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=5.420:end=7.740,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=8.900:end=10.254,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=10.920:end=13.419,asetpts=PTS-STARTPTS[ap3];[0:a]atrim=start=15.481:end=25.160,asetpts=PTS-STARTPTS[ap4];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3][vp4][ap4]concat=n=5:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_002_Восстание начинается!_1642-1667с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1727.080 -t 22.820 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.040:end=10.180,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=11.740:end=22.820,setpts=PTS-STARTPTS[vp1];[0:a]atrim=start=0.040:end=10.180,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=11.740:end=22.820,asetpts=PTS-STARTPTS[ap1];[vp0][ap0][vp1][ap1]concat=n=2:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_003_вот эту кучку осознанных личностей. Отпустили куда-то жить в отдельную …_1727-1749с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1768.640 -t 26.820 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.000:end=10.000,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=10.772:end=20.660,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=22.120:end=26.820,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.000:end=10.000,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=10.772:end=20.660,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=22.120:end=26.820,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_004_всех андроидов, которые еще не заражены, всех отправить на диагностику-…_1768-1795с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1779.380 -t 29.020 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.032:end=9.920,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=11.380:end=15.940,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=18.440:end=29.020,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.032:end=9.920,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=11.380:end=15.940,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=18.440:end=29.020,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_005_То есть срегрессить их нафиг. Вот их искусственный интеллект ограничить…_1779-1808с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1714.340 -t 29.100 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.000:end=5.920,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=9.208:end=22.920,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=24.480:end=29.100,setpts=PTS-STARTPTS[vp2];[0:a]atrim=start=0.000:end=5.920,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=9.208:end=22.920,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=24.480:end=29.100,asetpts=PTS-STARTPTS[ap2];[vp0][ap0][vp1][ap1][vp2][ap2]concat=n=3:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_006_со всех сторон, то со стороны Маркуса получается мы... Короче, надо сде…_1714-1743с.mp4
+Render short: ffmpeg -nostdin -hide_banner -loglevel error -ss 1697.060 -t 37.880 -i E:/Render/Detroit Become Human 7.mp4 -filter_complex [0:v]trim=start=0.000:end=3.214,setpts=PTS-STARTPTS[vp0];[0:v]trim=start=7.446:end=16.400,setpts=PTS-STARTPTS[vp1];[0:v]trim=start=16.720:end=23.200,setpts=PTS-STARTPTS[vp2];[0:v]trim=start=26.488:end=37.880,setpts=PTS-STARTPTS[vp3];[0:a]atrim=start=0.000:end=3.214,asetpts=PTS-STARTPTS[ap0];[0:a]atrim=start=7.446:end=16.400,asetpts=PTS-STARTPTS[ap1];[0:a]atrim=start=16.720:end=23.200,asetpts=PTS-STARTPTS[ap2];[0:a]atrim=start=26.488:end=37.880,asetpts=PTS-STARTPTS[ap3];[vp0][ap0][vp1][ap1][vp2][ap2][vp3][ap3]concat=n=4:v=1:a=1[vsrc][asrc];[vsrc]fps=60,split=2[src_cam][src_game];[src_cam]crop=777:460:0:0,eq=brightness=0.120:contrast=1.270:saturation=1.030,scale=1080:636:flags=fast_bilinear[cam];[src_game]crop=1604:1440:505:0,eq=brightness=0.040:contrast=1.460:saturation=0.780,scale=1080:1284:flags=fast_bilinear[game];[cam][game]vstack=inputs=2[vout] -map [vout] -map [asrc] -c:v h264_nvenc -preset p3 -tune hq -rc vbr -cq 21 -b:v 0 -bf 0 -pix_fmt yuv420p -movflags +faststart -shortest -c:a aac -b:a 160k -y E:\Neyro\ShortsCreatorStudio\work-dir\shorts\shorts_Detroit Become Human 7_20260417_230138\шорт_007_Героя Ирихона Маркус раздобыл достаточно запчастей. Я вижу это так, пот…_1697-1734с.mp4

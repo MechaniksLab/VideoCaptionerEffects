@@ -821,16 +821,17 @@ def render_shorts(
         brightness = float(fx.get("brightness", 0.0) or 0.0)
         contrast = float(fx.get("contrast", 1.0) or 1.0)
         saturation = float(fx.get("saturation", 1.0) or 1.0)
-        sharpness = float(fx.get("sharpness", 0.0) or 0.0)
 
         parts = []
         if abs(brightness) > 1e-6 or abs(contrast - 1.0) > 1e-6 or abs(saturation - 1.0) > 1e-6:
             parts.append(
                 f"eq=brightness={brightness:.3f}:contrast={contrast:.3f}:saturation={saturation:.3f}"
             )
-        if sharpness > 0.01:
-            amt = min(2.0, max(0.1, sharpness))
-            parts.append(f"unsharp=5:5:{amt:.2f}:5:5:0.00")
+        # Важно: unsharp на части Windows-сборок ffmpeg/nvenc может приводить
+        # к падению процесса ffmpeg без stderr (rc=3221226356), из-за чего
+        # шортсы не создаются (0 байтов). Поэтому в рендере Auto Shorts
+        # оставляем безопасную цветокоррекцию через eq, а шарп в пайплайн
+        # намеренно не добавляем.
         return ("," + ",".join(parts)) if parts else ""
 
     # Совместимость с возможной старой ссылкой в рантайме/кэше.
@@ -1344,8 +1345,14 @@ def render_shorts(
             gm_stack_h = gm_out_h
             if is_vertical_stack_layout:
                 total_h = max(2, wc_out_h + gm_out_h)
-                wc_stack_h = max(2, int(round(target_h_i * (wc_out_h / total_h))))
+                # Важно для стабильности ffmpeg на части Windows-сборок:
+                # промежуточные высоты в vstack должны быть чётными, иначе
+                # возможны падения процесса без stderr (0xc0000374 / 3221226356).
+                wc_stack_h = _even_size(max(2, int(round(target_h_i * (wc_out_h / total_h)))))
                 gm_stack_h = max(2, target_h_i - wc_stack_h)
+                if gm_stack_h % 2 != 0:
+                    gm_stack_h = max(2, gm_stack_h - 1)
+                    wc_stack_h = max(2, target_h_i - gm_stack_h)
 
             if use_nvenc_gpu_filters:
                 filter_complex = pre_cut + (
