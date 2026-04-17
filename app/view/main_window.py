@@ -3,7 +3,7 @@ import os
 import psutil
 from PyQt5.QtCore import QSize, QThread, QUrl, pyqtSignal
 from PyQt5.QtGui import QDesktopServices, QIcon
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QProgressDialog
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import (
     FluentWindow,
@@ -14,7 +14,7 @@ from qfluentwidgets import (
 )
 
 from app.common.config import cfg
-from app.common.theme_manager import apply_vscode_theme
+from app.common.theme_manager import apply_vscode_theme, get_theme_palette
 from app.components.DonateDialog import DonateDialog
 from app.config import APP_ICON_PATH, APP_NAME, APP_SPLASH_LOGO_PATH, GITHUB_REPO_URL
 from app.core.github_update_manager import GitHubUpdateManager
@@ -210,19 +210,76 @@ class MainWindow(FluentWindow):
         box.yesButton.setText("Обновить и перезапустить")
         box.cancelButton.setText("Позже")
         if box.exec():
-            result = self.updateManager.apply_update_and_restart()
-            if result.get("ok"):
-                QApplication.quit()
-            else:
-                err = str(result.get("error") or "Не удалось применить обновление")
-                fail_box = MessageBox("Ошибка обновления", err, self)
-                fail_box.yesButton.setText("ОК")
-                fail_box.cancelButton.hide()
-                fail_box.exec()
+            self._start_apply_update_with_progress()
 
     def _on_repo_update_check_failed(self, _error: str):
         # Проверка на старте должна быть максимально ненавязчивой.
         pass
+
+    def _start_apply_update_with_progress(self):
+        self.updateProgressDialog = QProgressDialog("Подготовка обновления...", None, 0, 100, self)
+        self.updateProgressDialog.setWindowTitle("Обновление")
+        self.updateProgressDialog.setCancelButton(None)
+        self.updateProgressDialog.setAutoClose(False)
+        self.updateProgressDialog.setAutoReset(False)
+        self.updateProgressDialog.setMinimumDuration(0)
+        self.updateProgressDialog.setValue(0)
+        self._style_update_progress_dialog()
+        self.updateProgressDialog.show()
+
+        self.applyUpdateThread = ApplyUpdateThread()
+        self.applyUpdateThread.progressChanged.connect(self._on_apply_update_progress)
+        self.applyUpdateThread.finishedResult.connect(self._on_apply_update_finished)
+        self.applyUpdateThread.start()
+
+    def _on_apply_update_progress(self, percent: int, text: str):
+        if hasattr(self, "updateProgressDialog") and self.updateProgressDialog is not None:
+            self.updateProgressDialog.setLabelText(text)
+            self.updateProgressDialog.setValue(max(0, min(100, int(percent))))
+
+    def _on_apply_update_finished(self, result: object):
+        if hasattr(self, "updateProgressDialog") and self.updateProgressDialog is not None:
+            self.updateProgressDialog.close()
+
+        result = result if isinstance(result, dict) else {}
+        if result.get("ok"):
+            QApplication.quit()
+            return
+
+        err = str(result.get("error") or "Не удалось применить обновление")
+        fail_box = MessageBox("Ошибка обновления", err, self)
+        fail_box.yesButton.setText("ОК")
+        fail_box.cancelButton.hide()
+        fail_box.exec()
+
+    def _style_update_progress_dialog(self):
+        if not hasattr(self, "updateProgressDialog") or self.updateProgressDialog is None:
+            return
+        p = get_theme_palette()
+        self.updateProgressDialog.setStyleSheet(
+            f"""
+            QProgressDialog {{
+                background-color: {p['card_bg']};
+                color: {p['text']};
+                border: 1px solid {p['border']};
+                border-radius: 8px;
+            }}
+            QProgressBar {{
+                border: 1px solid {p['border']};
+                border-radius: 6px;
+                text-align: center;
+                background: {p['panel_bg']};
+                color: {p['text']};
+            }}
+            QProgressBar::chunk {{
+                background-color: {p['accent']};
+                border-radius: 5px;
+            }}
+            QLabel {{
+                color: {p['text']};
+            }}
+            """
+        )
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -261,3 +318,18 @@ class RepoUpdateCheckThread(QThread):
             self.finishedCheck.emit(info)
         except Exception as e:
             self.failed.emit(str(e))
+
+
+class ApplyUpdateThread(QThread):
+    progressChanged = pyqtSignal(int, str)
+    finishedResult = pyqtSignal(object)
+
+    def run(self):
+        manager = GitHubUpdateManager()
+        try:
+            result = manager.apply_update_and_restart(
+                progress_cb=lambda p, t: self.progressChanged.emit(int(p), str(t))
+            )
+        except Exception as e:
+            result = {"ok": False, "error": str(e)}
+        self.finishedResult.emit(result)
